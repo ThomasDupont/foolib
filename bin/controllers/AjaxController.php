@@ -34,7 +34,6 @@ final class AjaxController extends Controller implements APIInterface {
         $functWhiteList = [
           '_SENDCONTACT',
           '_LOGIN',
-          '_GETCART',
           '_GETHOME',
           '_UPLOAD',
           '_CHECKUSER',
@@ -61,13 +60,6 @@ final class AjaxController extends Controller implements APIInterface {
         return json_encode($user->login((string) $request->login, (string) $request->password));
     }
 
-    private function _GETCART (\stdClass $request)
-    : string
-    {
-        $cart = new Cart($this->mysql);
-        $myCart = $cart->getCart();
-        //.....
-    }
     private function _GETHOME ()
     : string
     {

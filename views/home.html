@@ -1,6 +1,7 @@
 <div ng-controller="HomeController as c">
 
 <h1>Bienvenue</h1>
+<!--
 <form name="c.uploadForm" ng-submit="c.upload()" role="form" enctype='multipart/form-data'>
     <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
         <label for="file">File for PRODUCTION/{{ c.pathInUpload }}</label>
@@ -14,6 +15,7 @@
     </div>
 </form>
 <p>--------------------------------------------------</p>
+-->
 <form name="c.uploadForm" ng-submit="c.createFolder()" role="form">
     <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
         <label for="folderName">Name of your folder</label>
@@ -30,8 +32,6 @@
 
 <button ng-click="c.addCode()" class="btn btn-primary">Add a code Snippet</button>
 <code ng-show="c.addCodeBool" controller="c"></code>
-<p>--------------------------------------------------</p>
-<button ng-click="c.test()" class="btn btn-primary">Test</button>
 <p>--------------------------------------------------</p>
 <ul class="list-group">
     <folder ng-repeat="f in c.tree" folder="f" controller="c"></folder>

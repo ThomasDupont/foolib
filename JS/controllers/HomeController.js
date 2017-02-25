@@ -53,11 +53,6 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
               vm.filePath = path;
           };
 
-          vm.test = function () {
-
-              console.log(vm.selected.childrens);
-
-          };
           vm.addCode = function () {
 
               vm.addCodeBool = !vm.addCodeBool;
@@ -83,6 +78,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                   return false;
               }
           };
+          /*
           vm.upload = function () {
               var files = document.getElementsByClassName('fileUpload');
               for(var i = 0; i < files.length; i++) {
@@ -92,6 +88,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                   });
               }
           };
+          */
           vm.createFile = function() {
               vm.dataLoading = true;
               Upload.createFile(vm.codeContent, vm.codeTitle, vm.nodeidUpload, vm.codeLangage, function (promise) {
