@@ -1,0 +1,13 @@
+<br>
+
+<li class="list-group-item">
+    <button class="btn" ng-click="controller.deleteNode(folder.node_ID, folder)">Supr</button>
+    <button ng-if="folder.isFolder" ng-click="toggle(folder)" ng-class="{'btn btn-default' : folder.isFolder , 'btn btn-primary' : !folder.isFolder }">{{folder.record_name}}</button>
+    <button ng-if="!folder.isFolder" ng-click="controller.getDetail(folder.path)" ng-class="{'btn btn-default' : folder.isFolder , 'btn btn-primary' : !folder.isFolder }">{{folder.record_name}}</button>
+    <br>
+
+    <folder ng-show="folder.isSelected" ng-repeat="child in folder.childrens" folder="child" controller="controller">
+
+    </folder>
+
+</li>

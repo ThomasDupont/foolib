@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UnitTest</title>
+    <meta charset="UTF-8">
+<head>
+<body>
+
+<h1>Test Heading</h1>
+
+<p>Test paragraph. éêïèàù</p>
+
+<script src="../JS/lib/linq.hack.min.js"></script>
+<script src="testLib/jstest.min.js"></script>
+
+<script>
+"use strict";
+/*$(document).ready(function () {
+    $.get('test.json', function (r) {
+        console.log(r.length);
+        var time = new Date().getTime();
+        var tabTemp1 = [];
+        var tabTemp2 = [];
+        var test = [];
+        for(var i = 0; i < r.length ; i++) {
+
+            if(r[i].isActive) {
+                tabTemp1.push(r[i].picture);
+            } else if (r[i].gender == 'male' && r[i].index > 10) {
+                tabTemp2.push(r[i].picture);
+            }
+        }
+        console.log(new Date().getTime() - time);
+        time =  new Date().getTime();
+
+        var tabt =  Enumerable.From(r).Where("$.isActive").ToArray();
+        var tab2 = Enumerable.From(r).Where("$.gender == 'male' && $.index > 10").ToArray();
+
+        console.log(new Date().getTime() - time);
+
+        //console.log(tabTemp1);
+        //console.log(tabTemp2);
+    }, 'JSON');
+
+*/
+    var testObject = new JsTest();
+    testObject.setTimer(1000);
+    testObject.launchTest(
+        {
+            dataBase: function () {
+                testObject.$.post('unitTest.php', {DATABASE:true}, function(r) {
+                    console.log('%cTest DATABASE : CONNECT, CREATE, INSERT, SELECT, DROP', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            ziparchive: function () {
+                testObject.$.post('unitTest.php', {ZIPARCHIVE:true}, function(r) {
+                    console.log('%cTest File creation + zip file', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            emptypar: function () {
+                testObject.$.post('../app.php', {}, function(r) {
+                    console.log('%cTest API {}', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            nullpar: function () {
+                testObject.$.post('../app.php', {action:null, controller:null}, function(r) {
+                    console.log('%cTest API {action:null, controller:null}', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            testpar: function () {
+                testObject.$.post('../app.php', {action:'test', controller:'test'}, function(r) {
+                    console.log('%cTest API {action:test, controller:test}', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            jsonpar: function () {
+                testObject.$.post('../app.php', JSON.stringify({}), function(r) {
+                    console.log('%cTest API JSON.stringify({})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            jsonnull: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:null, controller:null}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:null, controller:null})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            jsontest: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:'test', controller:'test'}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:test, controller:test})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            ajaxtest: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:'test', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:test, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            disconnect: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:'DISCONNECT', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:DISCONNECT, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            logintrue: function () {
+                testObject.$.post('../app.php', JSON.stringify({login : true, password: "a", action:'LOGIN', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : true, password: "a", action:LOGIN, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            loginfalse: function () {
+                testObject.$.post('../app.php', JSON.stringify({login : false, password: "a", action:'LOGIN', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : false, password: "a", action:LOGIN, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            loginnull: function () {
+                testObject.$.post('../app.php', JSON.stringify({login : null, password: "a", action:'LOGIN', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : null, password: "a", action:LOGIN, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            passwordtrue: function () {
+                testObject.$.post('../app.php', JSON.stringify({login : "a", password: true, action:'LOGIN', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "a", password: true, action:LOGIN, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            passwordfalse: function () {
+                testObject.$.post('../app.php', JSON.stringify({login : "a", password: false, action:'LOGIN', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "a", password: false, action:LOGIN, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            passwordnull: function () {
+                testObject.$.post('../app.php', JSON.stringify({login : "a", password: null, action:'LOGIN', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "a", password: null, action:LOGIN, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            gethome: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:'GETHOME', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:GETHOME, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            checkuser: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:'CHECKUSER', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:CHECKUSER, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            csrf: function () {
+                testObject.$.post('../app.php', JSON.stringify({controller:'CSRF'}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "test", password: "azer", action:LOGIN, controller:Ajax})', 'color: GREEN');
+                    window.csrf = r;
+                    console.log(r);
+                }, 'text');
+            },
+            goodlogin: function () {
+                testObject.$.post('../app.php', JSON.stringify({login : "test", password: "azer", action:'LOGIN', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "test", password: "azer", action:LOGIN, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            gethome: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:'GETHOME', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:GETHOME, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            recheckuser: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:'CHECKUSER', controller:'Ajax'}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:CHECKUSER, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            logincsrf: function () {
+                testObject.$.post('../app.php', JSON.stringify({login : "test", password: "azer", action:'LOGIN', controller:'Ajax', csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "test", password: "azer", action:LOGIN, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            gethomecsrf: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:'GETHOME', controller:'Ajax', csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:GETHOME, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            checkusercsrf: function () {
+                testObject.$.post('../app.php', JSON.stringify({action:'CHECKUSER', controller:'Ajax', csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:CHECKUSER, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            }
+        }
+    );
+//});
+
+</script>
+</body>
+</html>

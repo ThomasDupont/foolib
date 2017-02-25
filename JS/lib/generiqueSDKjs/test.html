@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>
+            GenericSDK example
+        </title>
+        <script>
+
+
+
+        </script>
+    </head>
+    <body>
+        <h1>Generic JS SDK</h1>
+        <form action="javascript:test.request();">
+            <label for="dataset">dataset</label>
+            <select name="dataset" id="dataset">
+                <option selected="selected">chrono_taux_de_services_fournisseurs</option>
+                <option>chrono_evenement_production</option>
+                <option>chrono_anomalies_de_fabrication_vehicule</option>
+                <option>chrono_flux_vehicule_dans_usine</option>
+                <option>calendrier_evenement_production</option>
+                <option>carto_fournisseurs_site</option>
+                <option>chrono_duree_evenement_andon_par_uep</option>
+                <option>chrono_evenement_andon_par_uep</option>
+                <option>carto_localisation_employés</option>
+                <option>chrono_mode_transport_utilisés</option>
+                <option>vehicules_fabriques</option>
+                <option>chrono_evenement_absence</option>
+            </select>
+            <label for="query">query</label>
+            <input type="text" name="query" id="query">
+            <input type="submit" value="search">
+        </form>
+        <p id="nhits"></p>
+        <p id="main">
+
+        </p>
+
+
+    <script type='text/javascript'>
+
+    "use strict";
+    //declare sdk
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        // listerner
+        if (js.readyState){  //IE
+            js.onreadystatechange = function()
+            {
+                if (js.readyState == "loaded" ||
+                    js.readyState == "complete"){
+                        js.onreadystatechange = null;
+                        test.opendata();
+                }
+            }
+        } else {
+            js.onload = function ()
+            {
+                test.opendata();
+            };
+        }
+    }(document, 'script', 'generiquesdk'));
+
+
+    var test = {
+        opendata: function () {
+            GeneriqueSDK = new GeneriqueSDK();
+            GeneriqueSDK.setApikey("7b2b51dcc8bc960844df6cd087909cc16469e118643886d6ee1c6730");
+            GeneriqueSDK.setUrl("https://psa.opendatasoft.com/api/records/1.0/search/");
+
+        },
+
+        request: function () {
+            var e = document.getElementById("dataset");
+            var dataset = e.options[e.selectedIndex].text;
+            var query = document.getElementById("query").value;
+            var data = {
+                dataset: dataset,
+                lang: "fr",
+                q: query,
+                rows: 10000
+            };
+
+            GeneriqueSDK.get(data, function (r) {
+                if(r.error) {
+                    throw r.error;
+                }
+                if(data.dataset == "chrono_taux_de_services_fournisseurs") {
+                    console.log(test.extraValue(r));
+                }
+                document.getElementById("nhits").innerHTML = JSON.stringify("nb résultats: "+r.nhits);
+                //document.getElementById("main").innerHTML = JSON.stringify(r.records);
+                console.log(r);
+            });
+        },
+        extraValue: function (r) {
+            var j = 0;
+            for(var i= 0; i < r.records.length; i++) {
+                var theo = new Date(r.records[i].fields.theoricaldhxx);
+                var real = new Date(r.records[i].fields.realdhxx);
+
+                if(real.getTime()+(24*3600*1000)< theo.getTime() || real.getTime() > theo.getTime()+(2592*1000000)) {
+                    console.log(r.records[i].fields.precaracterisation);
+                    j++;
+                }
+            }
+            return j+" valeurs aberrantes";
+        }
+    };
+
+    </script>
+    </body>
+</html>
