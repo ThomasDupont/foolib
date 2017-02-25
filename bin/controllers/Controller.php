@@ -35,9 +35,6 @@ abstract class Controller {
         if(!is_dir(USERDIR)) {
             mkdir(USERDIR, 0777);
         }
-        if(!is_dir(LOGTMPDIR)) {
-            mkdir(LOGTMPDIR, 0777);
-        }
         umask($oldmask);
     }
 }

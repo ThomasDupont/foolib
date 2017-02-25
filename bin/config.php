@@ -38,7 +38,6 @@ define("FILE_TYPES"         , 'jpeg,jpg,png,txt');
 define("MAX_FILE_NUMBER"    , 3);
 define("USERDIR"            , ROOTDIR."PRODUCTION/" );
 define("FILETMPDIR"         , ROOTDIR."tmp/upload/" );
-define("LOGTMPDIR"          , ROOTDIR."tmp/logs/" );
 
 /**
 * @package Log
