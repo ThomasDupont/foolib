@@ -42,9 +42,9 @@ class Node {
             if(Role::checkRoles((array) str_split($dataSet['session']["roles"]))) {
                 $id = $dataSet['session']["id"];
                 $arrayReturn = [];
-                foreach($dataSet['result'] as $key => $value) {
+                foreach($dataSet['result'] as $value) {
                     $authUsers = explode("|", $value['authUsers']);
-                    if(in_array($id, $authUsers)) {
+                    if(in_array($id, $authUsers) || $authUsers[0] == 0) {
                         unset($value['authUsers']);
                         $arrayReturn[] = $value;
                     }

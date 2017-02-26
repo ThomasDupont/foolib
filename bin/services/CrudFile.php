@@ -42,7 +42,9 @@ final class CrudFile {
     public static function createFile(array $params)
     : array
     {
-        return Upload::checkFile($params['file'], $params['name'])->moveFile($params['parent'], $params['langage']);
+        return Upload::checkFile(
+            $params['file'],str_replace(" ","_",$params['name']))
+            ->moveFile($params['parent'], $params['langage']);
     }
 
     public static function deleteFile(int $nodeId)

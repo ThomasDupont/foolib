@@ -22,7 +22,7 @@
             })
             .when('/contact/:msg?', {
                 templateUrl: 'views/contact.html',
-                controller: 'contactController'
+                controller: 'ContactController'
             })
             .when('/register', {
                 templateUrl: 'views/login/register.html',

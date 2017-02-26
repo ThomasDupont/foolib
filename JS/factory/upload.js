@@ -3,7 +3,10 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
     return {
         csrfToken: "",
         test: function (vm) {
-            vm.injectNewFile = 'Salut';
+            //vm.injectNewFile = 'Salut';
+            $http.post("http://localhost:8080/test").then(function(promise) {
+                console.log(promise);
+            });
         },
         upload: function (file, parentNodeId , onSuccess) {
 

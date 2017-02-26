@@ -18,11 +18,6 @@ use bin\services\CrudFile;
 */
 final class AjaxController extends Controller implements APIInterface {
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
     * MUST be implemented
     *

@@ -12,6 +12,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
         vm.selected.childrens = [];
         vm.addCodeBool = false;
         vm.dataLoading = false;
+        vm.userdir = USERDIR;
         //vm.dataLoading = true;
         Ajax.getHome().then(
               function(promise){

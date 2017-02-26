@@ -3,6 +3,7 @@
 namespace bin\controllers;
 
 use bin\http\Http;
+use PHPMailer\PHPMailer\PHPMailer;
 
 abstract class Controller {
 
@@ -18,9 +19,15 @@ abstract class Controller {
     */
     protected $server;
 
+    /**
+    * Intance of phpmailer
+    */
+    protected $phpmailer;
+
     public function __construct()
     {
         $this->_instanceDir();
+        $this->phpmailer = new PHPMailer();
         $this->request = Http::getHttp();
         $this->server = Http::getServer();
     }

@@ -22,7 +22,7 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$location',
                           $scope.$parent.userName = promise.data.name;
                           $location.path('home');
                       } else {
-                          scope.PostDataResponse = "Erreur d'authentification";
+                          $scope.PostDataResponse = "Erreur à la création du compte";
                       }
                   });
           } else {
