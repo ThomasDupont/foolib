@@ -51,9 +51,10 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                       lastModif       : new Date(),
                       childrens       : []
                   }
-                  console.log(el);
+
                   vm.selected.childrens.push(el);
                   vm.listTree.push(el);
+                  vm.organizeNode(vm.listTree);
               } else {
                   alert("Une erreur est survenue");
                   return false;

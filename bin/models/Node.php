@@ -275,7 +275,7 @@ class Node {
     private function _createDir (string &$nodePath)
     : void
     {
-
+        $nodePath.="/";
         $oldmask = umask(0);
         mkdir(USERDIR.$nodePath, 0777);
         umask($oldmask);

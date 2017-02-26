@@ -15,11 +15,11 @@ angular.module('routeApp')
               scope.toggle = function(folder){
                   scope.controller.pathInUpload = folder.path;
                   scope.controller.nodeidUpload = folder.node_ID;
-                  scope.controller.selected =  folder ;
+                  scope.controller.selected = folder ;
                   folder.isSelected =  !folder.isSelected;
               };
               scope.preview = function(path) {
-                  console.log(USERDIR+path);
+                  //console.log(USERDIR+path);
                   return USERDIR+path;
               }
           }
