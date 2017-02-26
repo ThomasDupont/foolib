@@ -103,12 +103,13 @@ class Node {
         $check = $this->getNode($nodeId);
 
         if($check['success']) {
-            $nodePath = ($nodeId == 0) ? $name."/" : $check['result']->path.$name;
+            $nodePath = ($nodeId == 0) ? $name : $check['result']->path.$name;
         } else {
             return $check;
         }
         if($isDir) {
-            $paramArray = [$nodeId, $nodePath."", $name, $langage, SessionManager::getSession()['id']."|"];
+            $nodePath.="/";
+            $paramArray = [$nodeId, $nodePath, $name, $langage, SessionManager::getSession()['id']."|"];
             $this->_createDir($nodePath);
         } else {
             $paramArray = [$nodeId, $nodePath, $name, $langage, SessionManager::getSession()['id']."|"];
@@ -275,7 +276,6 @@ class Node {
     private function _createDir (string &$nodePath)
     : void
     {
-        $nodePath.="/";
         $oldmask = umask(0);
         mkdir(USERDIR.$nodePath, 0777);
         umask($oldmask);
