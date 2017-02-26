@@ -10,6 +10,7 @@
 namespace bin\models;
 
 use bin\models\mysql\{Mysql, SessionManager};
+use bin\models\Node;
 
 /**
 * To do the interface with the Mysql sub-service for user management
@@ -47,7 +48,10 @@ class User {
             ))
         ) {
             SessionManager::setSession($token, $roles, $id);
-            return ['success' => true];
+
+            //create the users node
+            $node = new Node();
+            return ['success' => $node->initUserFolder()];
         }
         return ['success' => false];
      }
@@ -59,7 +63,6 @@ class User {
      public function login (string $login, string $password)
      : array
      {
-
         $this->_mysql->setUser(true);
         $dataSet = $this->_mysql->getDBDatas(
             "SELECT * FROM users WHERE login = ?",

@@ -44,7 +44,7 @@ class Node {
                 $arrayReturn = [];
                 foreach($dataSet['result'] as $value) {
                     $authUsers = explode("|", $value['authUsers']);
-                    if(in_array($id, $authUsers) || $authUsers[0] == 0) {
+                    if(in_array($id, $authUsers)) {
                         unset($value['authUsers']);
                         $arrayReturn[] = $value;
                     }
@@ -64,21 +64,24 @@ class Node {
     public function getNode (int $nodeId)
     : array
     {
-        $dataSet = $this->_mysql->getDBDatas("
-          SELECT node_ID, parentNode_ID, path, record_name, authUsers, lastModif FROM nodes WHERE node_ID = ?
-        ", [$nodeId])->toObject();
+        if($nodeId != 0) {
+            $dataSet = $this->_mysql->getDBDatas("
+              SELECT node_ID, parentNode_ID, path, record_name, authUsers, lastModif FROM nodes WHERE node_ID = ?
+            ", [$nodeId])->toObject();
 
-        if($dataSet['success']) {
-            if(Role::checkRoles((array) str_split($dataSet['session']["roles"]))) {
+            if($dataSet['success']) {
+                if(Role::checkRoles((array) str_split($dataSet['session']["roles"]))) {
 
-                unset($dataSet['session']);
-                return ['success' => true, 'result' => $dataSet['result']];
-                //Action sur les roles
-            } else {
-                return ['success' => false, 'message' => 'You have not the permission'];
+                    unset($dataSet['session']);
+                    return ['success' => true, 'result' => $dataSet['result']];
+                    //Action sur les roles
+                } else {
+                    return ['success' => false, 'message' => 'You have not the permission'];
+                }
             }
+            return ['success' => false, 'message' => 'You have not the permission'];
         }
-        return ['success' => false, 'message' => 'You have not the permission'];
+        return ['success' => true, 'result' => "/"];
     }
 
     /**
@@ -100,12 +103,12 @@ class Node {
         $check = $this->getNode($nodeId);
 
         if($check['success']) {
-            $nodePath = ($nodeId == 0) ? "/".$name : $check['result']->path.$name;
+            $nodePath = ($nodeId == 0) ? $name."/" : $check['result']->path.$name;
         } else {
             return $check;
         }
         if($isDir) {
-            $paramArray = [$nodeId, $nodePath."/", $name, $langage, SessionManager::getSession()['id']."|"];
+            $paramArray = [$nodeId, $nodePath."", $name, $langage, SessionManager::getSession()['id']."|"];
             $this->_createDir($nodePath);
         } else {
             $paramArray = [$nodeId, $nodePath, $name, $langage, SessionManager::getSession()['id']."|"];
@@ -136,6 +139,88 @@ class Node {
         // @TODO Check if the node is set in the file system
     }
 
+    public function initUserFolder()
+    : bool
+    {
+        $token = md5(uniqid());
+        $folderList = [
+            /*"applescript",
+            "boxnote",
+            "c",
+            "csharp",
+            "cpp",*/
+            "css",
+            /*"csv",
+            "clojure",
+            "coffeescript",
+            "cfm",
+            "crystal",
+            "cypher",
+            "d",
+            "dart",
+            "diff",
+            "dockerfile",
+            "erlang",
+            "fsharp",
+            "fortran",
+            "gherkin",
+            "go",
+            "groovy",*/
+            "html",
+            /*"handlebars",
+            "haskell",
+            "haxe",
+            "java",*/
+            "javascript",
+            /*"julia",
+            "kotlin",
+            "latex",
+            "lisp",
+            "lua",
+            "matlab",
+            "mumps",
+            "markdown",
+            "ocaml",*/
+            "objc",
+            "php"/*,
+            "pascal",
+            "perl",
+            "pig",
+            "post",
+            "powershell",
+            "puppet",
+            "python",
+            "r",
+            "ruby",
+            "rust",
+            "sql",
+            "sass",
+            "scala",
+            "scheme",
+            "shell",
+            "smalltalk",
+            "swift",
+            "tsv",
+            "vb",
+            "vbscript",
+            "velocity",
+            "verilog",
+            "xml",
+            "yaml"*/
+        ];
+        $create = [];
+        $first = $this->setNode(0, $token, "", true);
+        if(!($r = $first['success'])) {
+            return $r;
+        }
+        foreach($folderList as $folder) {
+            usleep(1000);
+            if(!($create = $this->setNode($first['result']['nodeId'], $folder, "", true)['success'])) {
+                return $create;
+            }
+        }
+        return $create;
+    }
     /**
     * @param $nodeId
     * This function check if the nodeID exist, if the user has the power of this nodeId and if the deletion works fine
@@ -190,7 +275,7 @@ class Node {
     private function _createDir (string &$nodePath)
     : void
     {
-        $nodePath .= "/";
+
         $oldmask = umask(0);
         mkdir(USERDIR.$nodePath, 0777);
         umask($oldmask);

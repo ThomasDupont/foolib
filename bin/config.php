@@ -25,6 +25,15 @@ define("SQLPWD"             ,"root");
 define("OFFUSC"             , "base64_decode");
 
 /**
+* @package Mongo
+*/
+define("MONGOIP"              ,"127.0.0.1");
+define("MONGOPORT"            ,27017);
+define("MONGODATABASE"           ,"save");
+define("MONGOUSER"            ,"root");
+define("MONGOPWD"             ,"root");
+
+/**
 * @package Autoloader
 */
 define("DS"                 , DIRECTORY_SEPARATOR);

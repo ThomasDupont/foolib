@@ -42,6 +42,19 @@ final class CrudFile {
     public static function createFile(array $params)
     : array
     {
+        /* Mongo code
+
+            $insert = [[
+                'action' => 'insert', 'body' => [
+                    'userId' => SessionManager::getSession()['id'],
+                    'content' => base64_decode($params['file']),
+                    'langage' => $params['langage'],
+                    'name' => $params['name']
+                ]
+            ]];
+            return bin\models\mongo\Mongo::getInstance()->addToBulk($insert)->execute('save');
+
+        */
         return Upload::checkFile(
             $params['file'],str_replace(" ","_",$params['name']))
             ->moveFile($params['parent'], $params['langage']);

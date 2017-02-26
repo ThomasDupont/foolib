@@ -4,7 +4,7 @@
     <button class="btn" ng-click="controller.deleteNode(folder.node_ID, folder)">Supr</button>
     <button ng-if="folder.isFolder" ng-click="toggle(folder)" ng-class="{'btn btn-default' : folder.isFolder , 'btn btn-primary' : !folder.isFolder }">{{folder.record_name}}</button>
     <button ng-if="!folder.isFolder" ng-click="controller.getDetail(folder.path)" ng-class="{'btn btn-default' : folder.isFolder , 'btn btn-primary' : !folder.isFolder }">{{folder.record_name}}</button>
-    <div ng-if="!folder.isFolder && folder.isPreview(folder.path)"><pre ng-include="preview(folder.path)"></pre></div>
+    <div><pre ng-include="preview(folder.path)"></pre></div>
     <br>
 
     <folder ng-show="folder.isSelected" ng-repeat="child in folder.childrens" folder="child" controller="controller">
