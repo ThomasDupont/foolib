@@ -22,8 +22,8 @@ angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
         login: function (log, psw) {
           return $http.post(APP+"/"+controller+"/login/" , {login : log, password: psw, csrf: this.csrfToken});
         },
-        register: function (log, psw) {
-          return $http.post(APP+"/"+controller+"/register/" , {login : log, password: psw, csrf: this.csrfToken});
+        register: function (log, email, psw) {
+          return $http.post(APP+"/"+controller+"/register/" , {login : log, email:email, password: psw, csrf: this.csrfToken});
         }
     }
 });

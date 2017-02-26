@@ -109,7 +109,11 @@ final class AjaxController extends Controller implements APIInterface {
     : string
     {
         $user = new User();
-        $createUser = $user->register((string) $request->login, (string) $request->password);
+        $createUser = $user->register(
+            (string) $request->login,
+            (string) $request->email,
+            (string) $request->password
+        );
         return $createUser['success'] ? json_encode($createUser) : "Cet utilisateur éxiste déjà";
     }
 

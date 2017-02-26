@@ -30,18 +30,20 @@ class User {
 
      /**
      * @param $login
+     * @param $email
      * @param $pwd password
      * @param $roles (Admin, Owner folder, Read, Write)
      */
-     public function register (string $login, string $password, string $roles = "0111")
+     public function register (string $login, string $email, string $password, string $roles = "0111")
      : array
      {
         $token = md5(uniqid());
         $this->_mysql->setUser(true);
+        $password = password_hash($password,PASSWORD_DEFAULT);
         if(($id = $this->_mysql->setDBDatas(
                 "users",
-                "(login, password, API_key, roles, creationDate) VALUE (?, ?, ?, ?, NOW())",
-                [$login, $password, $token, $roles]
+                "(login, password, email, API_key, roles, creationDate) VALUE (?, ?, ?, ?, ?, NOW())",
+                [$login, $password, $email, $token, $roles]
             ))
         ) {
             SessionManager::setSession($token, $roles, $id);

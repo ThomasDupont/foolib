@@ -15,7 +15,7 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$location',
 
         $scope.register = function () {
           if($scope.password === $scope.passwordConfirm) {
-              Ajax.register($scope.username, $scope.password).then(
+              Ajax.register($scope.username, $scope.email, $scope.password).then(
                   function(promise){
                       if(promise.data.success) {
                           $scope.$parent.isDisconnectable = true;
