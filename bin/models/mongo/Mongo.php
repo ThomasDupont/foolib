@@ -8,7 +8,9 @@
      private static $_mongo;
      private static $_bulk;
      private static $_type;
+     private static $_query;
      private static $_result;
+     private static $_insertIds = [];
 
      private function __construct()
      {
@@ -32,6 +34,7 @@
              switch ($value['action']) {
                 case 'insert':
                     self::$_bulk->insert($value['body']);
+                    self::$_insertIds[] = $value['body']['id'];
                     break;
                 case 'update':
                     self::$_bulk->update($value['body']);
@@ -42,22 +45,36 @@
              }
 
          }
+
          self::$_type = "bulk";
+         return self::$_instance;
+     }
+
+     public static function createQuery(array $filter, array $options = [])
+     {
+         self::$_query = new \MongoDB\Driver\Query($filter, $options);
+         self::$_type = "query";
          return self::$_instance;
      }
 
      public static function execute (string $collection)
      : array
      {
+         $insertIds = self::$_insertIds;
+         self::$_insertIds = [];
          switch(self::$_type) {
             case "bulk":
                 self::$_result = self::$_mongo->executeBulkWrite(MONGODATABASE.'.'.$collection, self::$_bulk);
+                return ['success' => true, 'result' => $insertIds];
+                break;
+            case "query":
+                return self::$_mongo->executeQuery(MONGODATABASE.'.'.$collection, self::$_query)->toArray();
                 break;
             default:
                 return ['success' => false, 'message' => "No type of query setting"];
          }
 
-         return ['success' => true];
+
 
      }
 

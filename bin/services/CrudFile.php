@@ -1,8 +1,9 @@
 <?php
 namespace bin\services;
 
-use bin\models\mysql\Mysql;
+use bin\models\mysql\{Mysql, SessionManager};
 use bin\models\Node;
+use bin\models\mongo\Mongo;
 use bin\services\Upload;
 
 
@@ -42,34 +43,57 @@ final class CrudFile {
     public static function createFile(array $params)
     : array
     {
-        /* Mongo code
-
+        //* Mongo code
+            $userId = SessionManager::getSession()['id'];
             $insert = [[
                 'action' => 'insert', 'body' => [
-                    'userId' => SessionManager::getSession()['id'],
+                    'userId' => $userId,
                     'content' => base64_decode($params['file']),
                     'langage' => $params['langage'],
-                    'name' => $params['name']
+                    'name' => $params['name'],
+                    'time' => time(),
+                    'id' => md5(uniqid().$userId)
                 ]
             ]];
-            return bin\models\mongo\Mongo::getInstance()->addToBulk($insert)->execute('save');
+            return Mongo::getInstance()->addToBulk($insert)->execute('save');
 
-        */
+        /*/
         return Upload::checkFile(
             $params['file'],str_replace(" ","_",$params['name']))
             ->moveFile($params['parent'], $params['langage']);
+        //*/
     }
 
-    public static function deleteFile(int $nodeId)
-    : self
+    public static function deleteFile(string $elId)
+    : array
     {
-        //
+        $delete = [[
+            'action' => 'delete', 'body' => [
+                'userId' => SessionManager::getSession()['id'],
+                'id' => $elId
+            ]
+        ]];
+        return Mongo::getInstance()->addToBulk($delete)->execute('save');
     }
 
     public static function updateFile(array $params)
     : self
     {
         //
+    }
+
+    public static function getFiles()
+    : array
+    {
+        $filter = [
+            'userId' => SessionManager::getSession()['id']
+        ];
+        $options = [
+            'sort' => ['time' => -1]
+        ];
+        $result = Mongo::getInstance()->createQuery($filter, $options)->execute("save");
+        return ['success' => true, 'result' => $result];
+
     }
 
     public static function getFile(int $nodeId)

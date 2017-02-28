@@ -12,7 +12,71 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
         vm.selected.childrens = [];
         vm.addCodeBool = false;
         vm.dataLoading = false;
+        vm.updateCodeVar = false;
+
+        vm.createFile = function() {
+            vm.dataLoading = true;
+            /*for(var i = 0;i<vm.listTree.length; i++) {
+                if(vm.listTree[i].record_name == vm.codeLangage.value) {
+                    vm.nodeidUpload = vm.listTree[i].node_ID;
+                }
+            }*/
+            var lang = [];
+            lang.push(vm.codeLangage.value);
+            Upload.createFile(vm.codeContent, vm.codeTitle, vm.nodeidUpload, lang, function (promise) {
+                if(promise.data.success) {
+
+                    vm.addNode({
+                        id: promise.data.result[0],
+                        name: vm.codeTitle,
+                        langage: lang,
+                        content: vm.codeContent
+                    });
+                } else {
+                    return false;
+                }
+            });
+        };
+
+        Upload.getCodes().then(function (promise) {
+            if(promise.data.success) {
+                vm.tree = promise.data.result;
+            } else {
+                $location.path('login');
+                return false;
+            }
+        });
+        vm.addCode = function () {
+
+            vm.addCodeBool = !vm.addCodeBool;
+
+        };
+        vm.addNode = function(el) {
+            vm.tree.push(el);
+            console.log(vm.tree);
+        };
+        vm.supprCode = function (id) {
+            Upload.supprCode(id).then(function(promise) {
+                vm.tempTree = [];
+                for(var i = 0;i<vm.tree.length; i++) {
+                    var current = vm.tree[i];
+                    if(current.id != id) {
+                        vm.tempTree.push(vm.tree[i]);
+                    }
+                }
+                delete vm.tree;
+                vm.tree = vm.tempTree;
+                delete vm.tempTree;
+            });
+        };
+        vm.updateCode = function(el) {
+            Upload.updateCode(el).then(function (promise) {
+                console.log(promise);
+            });
+
+        };
         //vm.dataLoading = true;
+        /*
         Ajax.getHome().then(
               function(promise){
                   if(promise.data.success) {
@@ -31,11 +95,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
               vm.filePath = path;
           };
 
-          vm.addCode = function () {
 
-              vm.addCodeBool = !vm.addCodeBool;
-
-          };
           //Upload.test();
           vm.addNode = function (promise, name, isFolder) {
               vm.dataLoading = false;
@@ -71,18 +131,8 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
               }
           };
           */
-          vm.createFile = function() {
-              vm.dataLoading = true;
-              for(var i = 0;i<vm.listTree.length; i++) {
-                  if(vm.listTree[i].record_name == vm.codeLangage.value) {
-                      vm.nodeidUpload = vm.listTree[i].node_ID;
-                  }
-              }
 
-              Upload.createFile(vm.codeContent, vm.codeTitle, vm.nodeidUpload, vm.codeLangage.value, function (promise) {
-                  vm.addNode(promise, vm.codeTitle, false);
-              });
-          };
+          /*
           vm.organizeNode = function (tab) {
               for (var i = 0; i < vm.listTree.length; i++) {
                 //scan de tout les files pour choper les enfant de l'element en cours
@@ -108,8 +158,9 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                   t.childrens =  Enumerable.From(tab).Where("$.parentNode_ID == " + t.node_ID).ToArray() ;
               });
               vm.tree =  Enumerable.From(tab).Where("$.parentNode_ID == 0").ToArray() ;
-              */
+              /
           };
+
           vm.deleteNode = function (nodeId) {
               if(confirm("Vous allez supprimer cet élément, étes-vous sur?")) {
                   var tempTab = [];
@@ -134,7 +185,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                   });
               }
           };
-          /*
+
           vm.createFolder = function() {
               Upload.createFolder(vm.nodeidUpload, vm.folderName).then(function (promise) { vm.addNode(promise, vm.folderName, true)});
           };

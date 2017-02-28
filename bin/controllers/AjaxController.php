@@ -35,8 +35,7 @@ final class AjaxController extends Controller implements APIInterface {
           '_REGISTER',
           '_DISCONNECT',
           '_DELETENODE',
-          '_CREATEFOLDER',
-          '_CREATEFILE'
+          '_CREATEFOLDER'
         ];
         return in_array($funct, $functWhiteList) ? $this->$funct($this->request) : json_encode(['success' => false]);
     }
@@ -70,19 +69,7 @@ final class AjaxController extends Controller implements APIInterface {
         );
     }
 
-    private function _CREATEFILE (\stdClass $request)
-    : string
-    {
-        $params = [
-            'name'    => $request->filename,
-            'file'    => $request->file,
-            'parent'  => $request->pNodeId,
-            'langage' => $request->langage
-        ];
-        return json_encode(
-            CrudFile::createFile($params)
-        );
-    }
+    
 
     private function _CREATEFOLDER (\stdClass $request)
     : string

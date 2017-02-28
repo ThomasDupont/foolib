@@ -10,7 +10,7 @@ namespace bin;
  ************************************************************************************************/
 
 use bin\http\Http;
-use bin\controllers\AjaxController;
+use bin\controllers\{AjaxController, CodeController};
 use bin\log\Log;
 use bin\models\mysql\SessionManager;
 
@@ -35,6 +35,12 @@ final class ControllerFactory {
             case "upload":
                 if(!self::_checkCSRF($http)) return json_encode(['success' => false]);
                 $exec = new UploadController($http);
+                break;
+            case "code":
+
+                if(!self::_checkCSRF($http)) return json_encode(['success' => false]);
+                
+                $exec = new CodeController($http);
                 break;
             case "csrf":
                 return self::_CSRFToken();

@@ -17,7 +17,7 @@ require_once("bin/config.php");
 require_once("bin/Autoloader.php");
 require_once __DIR__.'/vendor/autoload.php';
 //phpinfo();
-        
+
 bin\Autoloader::register();
 if(($post = json_decode(file_get_contents("php://input"))) === null) {
     exit("Merci de passer un objet JSON");

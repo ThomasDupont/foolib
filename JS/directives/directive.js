@@ -68,4 +68,27 @@ angular.module('routeApp')
             }];
         }
     };
+}).directive("listcode", function(){
+    return {
+        restrict: 'E',
+        scope: {
+          controller: '=controller',
+          code: '=code'
+        },
+        createScope : false,
+        templateUrl: 'views/template/listCode.html',
+        link: function(scope, element, attrs) {
+            scope.wantView = scope.updateCodeVar = false;
+            scope.view = function(code) {
+                scope.wantView = !scope.wantView;
+            };
+            scope.updateCode = function () {
+                scope.updateCodeVar = !scope.updateCodeVar;
+            };
+            scope.updateCodeValidation = function(code) {
+                scope.controller.updateCode(code);
+                scope.updateCode();
+            }
+        }
+    }
 });

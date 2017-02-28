@@ -35,7 +35,8 @@
 <code ng-show="c.addCodeBool" controller="c"></code>
 <p>--------------------------------------------------</p>
 <ul class="list-group">
-    <folder ng-repeat="f in c.tree" folder="f" controller="c"></folder>
+    <listcode ng-repeat="f in c.tree" code="f" controller="c"></listcode>
+    <!--<folder ng-repeat="f in c.tree" folder="f" controller="c"></folder>-->
 </ul>
 
 <file ng-show="c.fileSelected" controller="c"></file>

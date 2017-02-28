@@ -1,5 +1,5 @@
 angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
-    var controller = "ajax";
+    var controller = "code";
     return {
         csrfToken: "",
         test: function (vm) {
@@ -8,6 +8,7 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                 console.log(promise);
             });
         },
+        /*
         upload: function (file, parentNodeId , onSuccess) {
 
             var reader = new FileReader();
@@ -24,12 +25,19 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                });
             };
         },
+        */
+        getCodes: function() {
+            return $http.post(
+                APP+"/"+controller+"/getcodes/",
+                {csrf: this.csrfToken}
+            );
+        },
         createFile: function (content, title, parentNodeId, langage, onSuccess) {
-            var base64 = "data:text/txt;base64,"+btoa(content);
-            console.log(base64);
+            //var base64 = "data:text/txt;base64,"+btoa(content);
+            var base64 = btoa(content);
             $http.post(
                 APP+"/"+controller+"/createfile/",
-                {file : base64, filename: title+".txt", pNodeId: parentNodeId, langage: langage, csrf: this.csrfToken}
+                {file : base64, filename: title, pNodeId: parentNodeId, langage: langage, csrf: this.csrfToken}
             ).then( function(promise) {
 
                 if(promise.data.success) {
@@ -37,6 +45,17 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                 }
             });
         },
+        supprCode: function(id) {
+            return $http.post(APP+"/"+controller+"/supprcode/",
+                {id: id, csrf: this.csrfToken}
+            );
+        },
+        updateCode: function(el) {
+            return $http.post(APP+"/"+controller+"/updatecode/",
+                {element: el, csrf: this.csrfToken}
+            );
+        }/*,
+
         deleteNode : function (nodeId) {
             return $http.post(
                 APP+"/"+controller+"/deletenode/",
@@ -48,6 +67,6 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                 APP+"/"+controller+"/createfolder/",
                 {nodeId: nodeId, name: name, csrf: this.csrfToken}
             );
-        }
+        }*/
     };
 });
