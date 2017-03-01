@@ -28,6 +28,9 @@
                 templateUrl: 'views/login/register.html',
                 controller: 'LoginController'
             })
+            .when('/profil', {
+                templateUrl: 'views/login/profil.html'
+            })
             .when('/home', {
                 templateUrl: 'views/home.html'
             })

@@ -1,0 +1,16 @@
+<div ng-controller="ProfilController as p" class="col-md-6 col-md-offset-3">
+    <p>{{$parent.userName}}</p>
+    <p>{{$parent.userEmail}}</p>
+    <button class="btn btn-primary" ng-click="p.updateProfil.show()">Update profil</button>
+    <form ng-submit="p.updateProfil.update()" ng-show="p.showUpdate">
+        <p>Nom d'utilisateur</p>
+        <input type="text" ng-model="$parent.userName"/>
+        <p>Email</p>
+        <input type="email" ng-model="$parent.userEmail"/>
+        <p>Mot de passe</p>
+        <input type="password" ng-model="p.updateProfil.modifPassword1"/>
+        <p>Confirmation mot de passe</p>
+        <input type="password" ng-model="p.updateProfil.modifPassword2"/>
+        <input type="submit" ng-show="p.updateProfil.modifPassword1 == p.updateProfil.modifPassword2" value="Envois" />
+    </form>
+</div>

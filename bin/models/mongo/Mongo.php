@@ -51,6 +51,7 @@
      }
 
      public static function createQuery(array $filter, array $options = [])
+     : self
      {
          self::$_query = new \MongoDB\Driver\Query($filter, $options);
          self::$_type = "query";

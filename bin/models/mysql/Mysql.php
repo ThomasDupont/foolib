@@ -89,7 +89,7 @@ class Mysql {
         if($result->num_rows) {
             $dataSet = $result->fetch_array();
             $result->close();
-            return ['success' => true, 'name' => $dataSet['login']];
+            return ['success' => true, 'name' => $dataSet['login'], 'email' => $dataSet['email']];
         } else {
             $result->close();
             return ['success' => false];

@@ -1,34 +1,43 @@
 angular.module('routeApp').controller('LoginController', ['$scope', '$location', 'Ajax',
     function($scope, $location, Ajax){
-        $scope.login = function () {
-          Ajax.login($scope.username, $scope.password).then(
-              function(promise){
-                  if(promise.data.success) {
-                      $scope.$parent.isDisconnectable = true;
-                      $scope.$parent.userName = promise.data.name;
-                      $location.path('home');
-                  } else {
-                      $scope.PostDataResponse = "Erreur d'authentification";
-                  }
-              }) ;
-        }
-
-        $scope.register = function () {
-          if($scope.password === $scope.passwordConfirm) {
-              Ajax.register($scope.username, $scope.email, $scope.password).then(
+        $scope.showpwd = false;
+        $scope.pwdforgetvar = "";
+            $scope.login = function () {
+              Ajax.login($scope.username, $scope.password).then(
                   function(promise){
                       if(promise.data.success) {
                           $scope.$parent.isDisconnectable = true;
                           $scope.$parent.userName = promise.data.name;
                           $location.path('home');
                       } else {
-                          $scope.PostDataResponse = "Erreur à la création du compte";
+                          $scope.PostDataResponse = "Erreur d'authentification";
                       }
-                  });
-          } else {
-              $scope.PostDataResponse = "Les mots de passe ne correspondent pas";
+                  }) ;
+            }
+
+            $scope.register = function () {
+              if($scope.password === $scope.passwordConfirm) {
+                  Ajax.register($scope.username, $scope.email, $scope.password).then(
+                      function(promise){
+                          if(promise.data.success) {
+                              $scope.$parent.isDisconnectable = true;
+                              $scope.$parent.userName = promise.data.name;
+                              $location.path('home');
+                          } else {
+                              $scope.PostDataResponse = "Erreur à la création du compte";
+                          }
+                      });
+              } else {
+                  $scope.PostDataResponse = "Les mots de passe ne correspondent pas";
+              }
+
+          };
+          $scope.pwdForgot = function () {
+              $scope.showpwd = !$scope.showpwd;
+          };
+          $scope.sendNewPwd = function() {
+              console.log($scope.pwdforgetvar);
           }
 
-        }
     }
 ]);

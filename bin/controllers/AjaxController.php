@@ -35,7 +35,8 @@ final class AjaxController extends Controller implements APIInterface {
           '_REGISTER',
           '_DISCONNECT',
           '_DELETENODE',
-          '_CREATEFOLDER'
+          '_CREATEFOLDER',
+          '_UPDATEPROFIL'
         ];
         return in_array($funct, $functWhiteList) ? $this->$funct($this->request) : json_encode(['success' => false]);
     }
@@ -69,7 +70,7 @@ final class AjaxController extends Controller implements APIInterface {
         );
     }
 
-    
+
 
     private function _CREATEFOLDER (\stdClass $request)
     : string
@@ -109,5 +110,12 @@ final class AjaxController extends Controller implements APIInterface {
     {
         $user = new User();
         return json_encode($user->disconnect());
+    }
+
+    private function _UPDATEPROFIL (\stdClass $request)
+    : string
+    {
+        $user = new User();
+        return json_encode($user->updateProfil($request));
     }
 }

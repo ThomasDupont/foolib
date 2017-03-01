@@ -14,6 +14,7 @@
         <li><h1 onclick="javascript:window.location.assign('/')">ADIICT</h1></li>
         <li><a href="#/login" class="btn">Page de login</a></li>
         <li><a href="#/contact" class="btn">Page de contact</a></li>
+        <li><a href="#/profil" class="btn">Page de profil</a></li>
         <li ng-show='isDisconnectable'><a  ng-click='disconnect();' class='btn' id='disconnect'>Déconnection</a> Connecté en tant que: {{ userName }}</li>
       </ul>
       <le-nom controller ='m' callback='m.test(value)' date="m.dateSuper"></le-nom>
@@ -30,6 +31,7 @@
     <script src="JS/controllers/HomeController.js"></script>
     <script src="JS/controllers/ContactController.js"></script>
     <script src="JS/controllers/LoginController.js"></script>
+    <script src="JS/controllers/ProfilController.js"></script>
     <script src="JS/directives/directive.js"></script>
     <script src="JS/factory/ajax.js"></script>
     <script src="JS/factory/upload.js"></script>

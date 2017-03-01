@@ -53,7 +53,7 @@ class User {
             $node = new Node();
             return ['success' => $node->initUserFolder()];
         }
-        return ['success' => false];
+        return ['success' => false, 'message' => "email ou nom déjà utilisé"];
      }
 
      /**
@@ -91,6 +91,20 @@ class User {
      : array
      {
          return $this->_mysql->getCurrentUser();
+     }
+
+     public function updateProfil(\stdClass $request)
+     : array
+     {
+         if($this->_mysql->updateDBDatas(
+                 "users",
+                 "login = ?, password = ?, email = ? WHERE id = ?",
+                 [$request->login, $request->password, $request->email, SessionManager::getSession()['id']]
+             )
+         ) {
+             return ['success' => true];
+         }
+         return ['success' => false, 'message' => "email ou nom déjà utilisé"];
      }
 
  }
