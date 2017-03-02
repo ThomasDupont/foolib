@@ -29,6 +29,27 @@ angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
             return $http.post(APP+"/"+controller+"/updateprofil/",
                 {login: name, email: email, password: pwd, csrf: this.csrfToken}
             );
+        },
+        onError: function(error) {
+            switch(error.status) {
+                case 404:
+                    alert("Vous n'êtes pas connecté, ou l'opération est introuvable");
+                    break;
+                case 500:
+                    alert("Error serveur");
+                    break;
+                case 403:
+                    alert("Vous n'avez pas la permission d'effectuer cette opération");
+                    break;
+                default:
+                    alert("Erreur status "+error.status);
+                    break;
+            }
+        },
+        testError: function() {
+            $http.post(APP).then(null, function(error){
+                console.log(error.status);
+            })
         }
     }
 });

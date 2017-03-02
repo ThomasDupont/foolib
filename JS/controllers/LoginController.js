@@ -21,7 +21,14 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$location',
                       function(promise){
                           if(promise.data.success) {
                               $scope.$parent.isDisconnectable = true;
-                              $scope.$parent.userName = promise.data.name;
+                              $scope.$parent.userName = $scope.username;
+                              $scope.$parent.userEmail = $scope.email;
+                              $scope.$parent.userFolder = promise.data.result.path;
+                              $scope.$parent.userFolderId = promise.data.result.nodeId;
+                              var file = document.getElementsByClassName('fileUploadPP');
+                              Upload.upload(file[0], promise.data.result.nodeId , function (promise) {
+                                  
+                              });
                               $location.path('home');
                           } else {
                               $scope.PostDataResponse = "Erreur à la création du compte";

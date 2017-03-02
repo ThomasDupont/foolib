@@ -2,17 +2,20 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
     function($scope, $http, $location, Ajax, Upload){
 
         var vm = this;
+        var parent = $scope.$parent.$parent;
+        vm.addCodeBool = false;
+        vm.dataLoading = false;
+        vm.updateCodeVar = false;
 
-        vm.tree = [];
+        /*
         vm.dataSet = {};
         vm.pathInUpload = "";
         vm.nodeidUpload = 1;
         vm.fileSelected = false;
         vm.selected =  {};
         vm.selected.childrens = [];
-        vm.addCodeBool = false;
-        vm.dataLoading = false;
-        vm.updateCodeVar = false;
+        */
+
 
         vm.createFile = function() {
             vm.dataLoading = true;
@@ -38,35 +41,30 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
             });
         };
 
-        Upload.getCodes().then(function (promise) {
-            if(promise.data.success) {
-                vm.tree = promise.data.result;
-            } else {
-                $location.path('login');
-                return false;
-            }
-        });
+
         vm.addCode = function () {
 
             vm.addCodeBool = !vm.addCodeBool;
 
         };
         vm.addNode = function(el) {
-            vm.tree.push(el);
-            console.log(vm.tree);
+            parent.tree.push(el);
+            $scope.$parent.nbSnippets = parent.tree.length;
+
         };
         vm.supprCode = function (id) {
             Upload.supprCode(id).then(function(promise) {
                 vm.tempTree = [];
-                for(var i = 0;i<vm.tree.length; i++) {
-                    var current = vm.tree[i];
+                for(var i = 0;i<parent.tree.length; i++) {
+                    var current = parent.tree[i];
                     if(current.id != id) {
-                        vm.tempTree.push(vm.tree[i]);
+                        vm.tempTree.push(parent.tree[i]);
                     }
                 }
-                delete vm.tree;
-                vm.tree = vm.tempTree;
+                delete parent.tree;
+                parent.tree = vm.tempTree;
                 delete vm.tempTree;
+                $scope.$parent.nbSnippets = parent.tree.length;
             });
         };
         vm.updateCode = function(el) {

@@ -47,7 +47,6 @@ final class CodeController extends Controller implements APIInterface {
 
     private function _GETCODES (\stdClass $request)
     {
-
         return json_encode(CrudFile::getFiles());
     }
 

@@ -141,17 +141,17 @@ class Node {
     }
 
     public function initUserFolder()
-    : bool
+    : array
     {
         $token = md5(uniqid());
-        $folderList = [
-            /*"applescript",
+        /*$folderList = [
+            "applescript",
             "boxnote",
             "c",
             "csharp",
-            "cpp",*/
+            "cpp",
             "css",
-            /*"csv",
+            "csv",
             "clojure",
             "coffeescript",
             "cfm",
@@ -166,14 +166,14 @@ class Node {
             "fortran",
             "gherkin",
             "go",
-            "groovy",*/
+            "groovy",
             "html",
-            /*"handlebars",
+            "handlebars",
             "haskell",
             "haxe",
-            "java",*/
+            "java",
             "javascript",
-            /*"julia",
+            "julia",
             "kotlin",
             "latex",
             "lisp",
@@ -181,9 +181,9 @@ class Node {
             "matlab",
             "mumps",
             "markdown",
-            "ocaml",*/
+            "ocaml",
             "objc",
-            "php"/*,
+            "php",
             "pascal",
             "perl",
             "pig",
@@ -207,9 +207,11 @@ class Node {
             "velocity",
             "verilog",
             "xml",
-            "yaml"*/
-        ];
-        $create = [];
+            "yaml"
+        ];*/
+        return $this->setNode(0, $token, "", true);
+        /*$create = [];
+
         $first = $this->setNode(0, $token, "", true);
         if(!($r = $first['success'])) {
             return $r;
@@ -221,6 +223,7 @@ class Node {
             }
         }
         return $create;
+        */
     }
     /**
     * @param $nodeId

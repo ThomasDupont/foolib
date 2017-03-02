@@ -8,7 +8,7 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                 console.log(promise);
             });
         },
-        /*
+
         upload: function (file, parentNodeId , onSuccess) {
 
             var reader = new FileReader();
@@ -25,7 +25,7 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                });
             };
         },
-        */
+        
         getCodes: function() {
             return $http.post(
                 APP+"/"+controller+"/getcodes/",

@@ -51,7 +51,7 @@ class User {
 
             //create the users node
             $node = new Node();
-            return ['success' => $node->initUserFolder()];
+            return $node->initUserFolder();
         }
         return ['success' => false, 'message' => "email ou nom déjà utilisé"];
      }
@@ -70,9 +70,11 @@ class User {
         )->toObject();
 
         if($dataSet['success']) {
-            if(password_verify($password, $dataSet['result']->password)) {
-              SessionManager::setSession($dataSet['result']->API_key, $dataSet['result']->roles, $dataSet['result']->id);
-              return ['success' => true, 'name' => $dataSet['result']->login];
+            $result = $dataSet['result'];
+            if(password_verify($password, $result->password)) {
+              SessionManager::setSession($result->API_key, $result->roles, $result->id);
+
+              return ['success' => true, 'name' => $result->login];
             } else {
               return ['success' => false];
             }
@@ -96,10 +98,13 @@ class User {
      public function updateProfil(\stdClass $request)
      : array
      {
+         if(empty($request->password)) {
+             return ['success' => false, 'message' => "Le mot de passe est vide"];
+         }
          if($this->_mysql->updateDBDatas(
                  "users",
                  "login = ?, password = ?, email = ? WHERE id = ?",
-                 [$request->login, $request->password, $request->email, SessionManager::getSession()['id']]
+                 [$request->login, password_hash($request->password,PASSWORD_DEFAULT), $request->email, SessionManager::getSession()['id']]
              )
          ) {
              return ['success' => true];
