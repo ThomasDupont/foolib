@@ -12,6 +12,10 @@
         <input type="password" ng-model="p.updateProfil.modifPassword1"/>
         <p>Confirmation mot de passe</p>
         <input type="password" ng-model="p.updateProfil.modifPassword2"/>
+        <div class="form-group">
+            <label for="file">Changez votre photo de profil</label>
+            <input onchange="angular.element(this).scope().fileNameChanged()" type="file" name="fichier" id="file" class="form-control fileUploadPPup" />
+        </div>
         <input type="submit" ng-show="p.updateProfil.modifPassword1 == p.updateProfil.modifPassword2" value="Envois" />
     </form>
 </div>

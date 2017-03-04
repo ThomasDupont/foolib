@@ -89,7 +89,7 @@ class Mysql {
         if($result->num_rows) {
             $dataSet = $result->fetch_array();
             $result->close();
-            return ['success' => true, 'name' => $dataSet['login'], 'email' => $dataSet['email']];
+            return ['success' => true, 'name' => $dataSet['login'], 'email' => $dataSet['email'], 'pp' => $dataSet['pp']];
         } else {
             $result->close();
             return ['success' => false];
@@ -137,7 +137,7 @@ class Mysql {
             return ['success' => true, 'result' => $dataSet, 'session' => SessionManager::getSession()];
         } else {
             self::$_result->close();
-            return ['success' => false];
+            return ['success' => false, 'result' => ""];
         }
     }
 

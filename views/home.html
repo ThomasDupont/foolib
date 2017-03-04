@@ -31,8 +31,8 @@
 -->
 <p>--------------------------------------------------</p>
 
-<button ng-click="c.addCode()" class="btn btn-primary">Add a code Snippet</button>
-<code ng-show="c.addCodeBool" controller="c"></code>
+<button ng-click="c.code.addCode()" class="btn btn-primary">Add a code Snippet</button>
+<code ng-show="c.code.addCodeBool" controller="c"></code>
 <p>--------------------------------------------------</p>
 <ul class="list-group">
     <listcode ng-repeat="f in $parent.tree" code="f" controller="c"></listcode>

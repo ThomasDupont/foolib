@@ -25,6 +25,7 @@ final class AjaxController extends Controller implements APIInterface {
     public function execute ()
     : string
     {
+
         $funct = "_".strtoupper($this->request->action);
         $functWhiteList = [
           '_SENDCONTACT',
@@ -38,7 +39,9 @@ final class AjaxController extends Controller implements APIInterface {
           '_CREATEFOLDER',
           '_UPDATEPROFIL'
         ];
-        return in_array($funct, $functWhiteList) ? $this->$funct($this->request) : json_encode(['success' => false]);
+        return in_array($funct, $functWhiteList) ?
+            $this->$funct($this->request) :
+            json_encode(['success' => false, 'message' => "not authorized $funct"]);
     }
 
     private function _SENDCONTACT (\stdClass $request)
@@ -65,9 +68,12 @@ final class AjaxController extends Controller implements APIInterface {
     private function _UPLOAD (\stdClass $request)
     : string
     {
-        return json_encode(
-            Upload::checkFile($request->file, $request->filename)->moveFile($request->pNodeId)
-        );
+        $user = new User();
+        $new = Upload::checkFile($request->file, $request->filename)->moveFile($request->pNodeId);
+        if($request->profil && $new['success']) {
+            $user->setPProfil($new['result']['path']);
+        }
+        return json_encode($new);
     }
 
 

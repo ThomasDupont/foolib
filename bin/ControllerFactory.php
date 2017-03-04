@@ -29,17 +29,17 @@ final class ControllerFactory {
         $type = $http->getHttp()->controller ?? "";
         switch($type) {
             case "ajax":
-                if(!self::_checkCSRF($http)) return json_encode(['success' => false]);
+                if(!self::_checkCSRF($http)) return json_encode(['success' => false, 'message' => "CSRF token invalide"]);
                 $exec = new AjaxController($http);
                 break;
             case "upload":
-                if(!self::_checkCSRF($http)) return json_encode(['success' => false]);
+                if(!self::_checkCSRF($http)) return json_encode(['success' => false, 'message' => "CSRF token invalide"]);
                 $exec = new UploadController($http);
                 break;
             case "code":
 
-                if(!self::_checkCSRF($http)) return json_encode(['success' => false]);
-                
+                if(!self::_checkCSRF($http)) return json_encode(['success' => false, 'message' => "CSRF token invalide"]);
+
                 $exec = new CodeController($http);
                 break;
             case "csrf":

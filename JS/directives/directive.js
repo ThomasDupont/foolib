@@ -86,7 +86,7 @@ angular.module('routeApp')
                 scope.updateCodeVar = !scope.updateCodeVar;
             };
             scope.updateCodeValidation = function(code) {
-                scope.controller.updateCode(code);
+                scope.controller.code.updateCode(code);
                 scope.updateCode();
             }
         }

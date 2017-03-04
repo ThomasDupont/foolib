@@ -5,6 +5,7 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$lo
         $scope.nodes = [];
         $scope.userName = "";
         $scope.userEmail ="";
+        $scope.pprofil= "";
         Ajax.csrf().then(function (promise) {
             Ajax.csrfToken = Upload.csrfToken = promise.data;
             $scope.isDisconnectable = false;
@@ -15,6 +16,7 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$lo
                     $scope.isDisconnectable = true;
                     $scope.userName = promise.data.name;
                     $scope.userEmail = promise.data.email;
+                    $scope.pprofil = (promise.data.pp == "") ? USERDIR+"default.png" : USERDIR+promise.data.pp;
                 } else {
                     $location.path('login');
                 }
@@ -26,7 +28,6 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$lo
                 $scope.userEmail ="";
             } ;
             Upload.getCodes().then(function (promise) {
-                console.log(promise.data);
                 if(promise.data.success) {
                     $scope.tree = promise.data.codes;
                     $scope.nodes = promise.data.nodes;

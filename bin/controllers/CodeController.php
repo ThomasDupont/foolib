@@ -19,7 +19,8 @@ final class CodeController extends Controller implements APIInterface {
         $functWhiteList = [
             '_CREATEFILE',
             '_GETCODES',
-            '_SUPPRCODE'
+            '_SUPPRCODE',
+            '_UPDATECODE'
         ];
         return in_array($funct, $functWhiteList) ?
             $this->$funct($this->request) :
@@ -46,14 +47,24 @@ final class CodeController extends Controller implements APIInterface {
     }
 
     private function _GETCODES (\stdClass $request)
+    : string
     {
         return json_encode(CrudFile::getFiles());
     }
 
     private function _SUPPRCODE (\stdClass $request)
+    : string
     {
         return json_encode(
             CrudFile::deleteFile($request->id)
+        );
+    }
+
+    private function _UPDATECODE (\stdClass $request)
+    : string
+    {
+        return json_encode(
+            CrudFile::updateFile($request->element)
         );
     }
 }

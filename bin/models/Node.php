@@ -84,6 +84,14 @@ class Node {
         return ['success' => true, 'result' => "/"];
     }
 
+    public function getNodeFromPath (string $path)
+    : array
+    {
+        return $this->_mysql->getDBDatas(
+            "SELECT * FROM nodes WHERE path = ?", [$path]
+        )->toObject();
+    }
+
     /**
     * @param $parentNodeId
     * @param $name
@@ -232,6 +240,9 @@ class Node {
     public function unsetNode (int $nodeId)
     : array
     {
+        if($nodeId < 1) {
+            return ['success' => false, 'message' => "Non permis de supprimer root"];
+        }
         $nodeInfo = $this->getNode($nodeId);
 
         if($nodeInfo['success']) {

@@ -3,9 +3,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
 
         var vm = this;
         var parent = $scope.$parent.$parent;
-        vm.addCodeBool = false;
         vm.dataLoading = false;
-        vm.updateCodeVar = false;
 
         /*
         vm.dataSet = {};
@@ -16,6 +14,57 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
         vm.selected.childrens = [];
         */
 
+        vm.code = {
+            addCodeBool: false,
+            choseLang: function() {
+
+            },
+            createFile: function () {
+                vm.dataLoading = true;
+                var lang = [];
+                lang.push(vm.codeLangage.value);
+                Upload.createFile(vm.codeContent, vm.codeTitle, vm.nodeidUpload, lang, function (promise) {
+                    if(promise.data.success) {
+
+                        this.addNode({
+                            id: promise.data.result[0],
+                            name: vm.codeTitle,
+                            langage: lang,
+                            content: vm.codeContent
+                        });
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            addCode: function () {
+                this.addCodeBool = !this.addCodeBool;
+            },
+            addNode: function (el) {
+                parent.tree.push(el);
+                parent.nbSnippets = parent.tree.length;
+            },
+            supprCode : function (id) {
+                Upload.supprCode(id).then(function(promise) {
+                    vm.tempTree = [];
+                    for(var i = 0;i<parent.tree.length; i++) {
+                        var current = parent.tree[i];
+                        if(current.id != id) {
+                            vm.tempTree.push(parent.tree[i]);
+                        }
+                    }
+                    delete parent.tree;
+                    parent.tree = vm.tempTree;
+                    delete vm.tempTree;
+                    parent.nbSnippets = parent.tree.length;
+                });
+            },
+            updateCode: function(el) {
+                Upload.updateCode(el).then(function (promise) {
+                    console.log(promise);
+                });
+            }
+        };
 
         vm.createFile = function() {
             vm.dataLoading = true;

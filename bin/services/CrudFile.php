@@ -76,10 +76,17 @@ final class CrudFile {
         return Mongo::getInstance()->addToBulk($delete)->execute('save');
     }
 
-    public static function updateFile(array $params)
-    : self
+    public static function updateFile(\stdClass $element)
+    : array
     {
-        //
+        unset($element->_id);
+        $element->updateTime = time();
+        $update = [[
+            'action' => 'update', 'body' => [
+                ['id' => $element->id ], ['$set' => $element]
+            ]
+        ]];
+        return Mongo::getInstance()->addToBulk($update)->execute('save');
     }
 
     public static function getFiles()

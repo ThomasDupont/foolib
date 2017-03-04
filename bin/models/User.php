@@ -40,11 +40,10 @@ class User {
      {
         $token = md5(uniqid());
         $this->_mysql->setUser(true);
-        $password = password_hash($password,PASSWORD_DEFAULT);
         if(($id = $this->_mysql->setDBDatas(
                 "users",
                 "(login, password, email, API_key, roles, creationDate) VALUE (?, ?, ?, ?, ?, NOW())",
-                [$login, $password, $email, $token, $roles]
+                [$login, $this->_hashPassword($rpassword), $email, $token, $roles]
             ))
         ) {
             SessionManager::setSession($token, $roles, $id);
@@ -104,12 +103,33 @@ class User {
          if($this->_mysql->updateDBDatas(
                  "users",
                  "login = ?, password = ?, email = ? WHERE id = ?",
-                 [$request->login, password_hash($request->password,PASSWORD_DEFAULT), $request->email, SessionManager::getSession()['id']]
+                 [$request->login, $this->_hashPassword($request->password), $request->email, SessionManager::getSession()['id']]
              )
          ) {
              return ['success' => true];
          }
          return ['success' => false, 'message' => "email ou nom déjà utilisé"];
+     }
+
+     public function setPProfil(string $path) {
+            //get old path
+            $oldPath = $this->_mysql->getDBDatas(
+                "SELECT pp FROM users WHERE id = ?", [SessionManager::getSession()['id']]
+            )->toObject()['result']->pp;
+            $node = new Node();
+            //unset old node
+            $node->unsetNode($node->getNodeFromPath($oldPath)['result']->node_ID);
+            //Set new node
+            return $this->_mysql->updateDBDatas(
+                     "users", "pp = ? WHERE id = ?", [$path, SessionManager::getSession()['id']]
+                 ) ? ['success' => true]
+                 : ['success' => false, 'message' => "Echec de la mise à jour de la photo de profil"];
+     }
+
+     private function _hashPassword(string $pwd)
+     : string
+     {
+         return password_hash($pwd,PASSWORD_DEFAULT);
      }
 
  }

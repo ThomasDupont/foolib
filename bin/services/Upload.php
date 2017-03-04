@@ -4,6 +4,7 @@ namespace bin\services;
 
 use bin\models\mysql\{Mysql, SessionManager};
 use bin\models\Node;
+use bin\services\Imagick;
 
 
 /**
@@ -35,6 +36,8 @@ final class Upload {
     */
     private static $_node;
 
+    private static $_fileTypes = [];
+
     private static function _getInstance ()
     : void
     {
@@ -45,6 +48,7 @@ final class Upload {
 
     private function __construct ()
     {
+        self::$_fileTypes = explode(',', FILE_TYPES);
         self::$_node = new Node();
     }
 
@@ -55,14 +59,20 @@ final class Upload {
 
         $contentFile = substr($file, strpos($file, "base64,")+7);
         $tmpName = md5(uniqid()).".".substr(strrchr($filename, '.'), 1);
-        
-        file_put_contents(FILETMPDIR.$tmpName, base64_decode($contentFile));
+        $path = FILETMPDIR.$tmpName;
+        file_put_contents($path, base64_decode($contentFile));
+        $ext = pathinfo($path)['extension'];
+        if(in_array($ext, self::$_fileTypes)){
 
+            $result = Imagick::createCropThumbernail($path);
+            
+        }
         return [
-            'ext' => pathinfo(FILETMPDIR.$tmpName)['extension'],
-            'tmp_name' => FILETMPDIR.$tmpName,
+            'ext' => $ext,
+            'tmp_path' => FILETMPDIR.$tmpName,
             'name' => $filename,
-            'size' => filesize(FILETMPDIR.$tmpName)
+            'size' => filesize(FILETMPDIR.$tmpName),
+            'tmp_name' => $tmpName
         ];
     }
 
@@ -73,16 +83,16 @@ final class Upload {
     public static function checkFile (string $file, string $filename)
     : self
     {
+
         self::$_fileInfo = $file = self::_createTmpFile($file, $filename);
 
-        $fileTypes = explode(',', FILE_TYPES);
         if(($length = $file['size']) > MAX_FILE_SIZE) {
             self::$_checkFile = ['success' => false, 'message' => "La taille du fichier est trop grande $length pour ".MAX_FILE_SIZE." autorisé"];
         } else if(
-            !in_array($file['ext'], $fileTypes)
-            && !preg_match("/(".implode(')|(',$fileTypes).")/", mime_content_type($file['tmp_name']))
+            !in_array($file['ext'], self::$_fileTypes)
+            && !preg_match("/(".implode(')|(',self::$_fileTypes).")/", mime_content_type($file['tmp_path']))
           ) {
-            self::$_checkFile = ['success' => false, 'message' => "Type de fichier ".mime_content_type($file['tmp_name'])." non autorisé"];
+            self::$_checkFile = ['success' => false, 'message' => "Type de fichier ".mime_content_type($file['tmp_path'])." non autorisé"];
         }
 
         self::$_checkFile = ['success' => true];
@@ -98,11 +108,11 @@ final class Upload {
     {
         if(self::$_checkFile['success']) {
             if(($token = SessionManager::getSession()['APITOKEN']) != "") {
-                $newNode = self::$_node->setNode($parentNodeId, self::$_fileInfo['name'], false);
+                $newNode = self::$_node->setNode($parentNodeId, self::$_fileInfo['tmp_name'], false);
                 if(!$newNode['success']) {
                     return $newNode;
                 }
-                $tmpFile = self::$_fileInfo['tmp_name'];
+                $tmpFile = self::$_fileInfo['tmp_path'];
                 rename($tmpFile, USERDIR.$newNode['result']['path']);
                 if(is_file($tmpFile)) {
                     unlink($tmpFile);

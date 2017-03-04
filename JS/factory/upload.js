@@ -9,15 +9,15 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
             });
         },
 
-        upload: function (file, parentNodeId , onSuccess) {
+        upload: function (file, parentNodeId, profil , onSuccess) {
 
             var reader = new FileReader();
             reader.readAsDataURL(file.files[0]);
-
+            var csrf = this.csrfToken;
             reader.onload = function(e) {
                  $http.post(
-                   APP+"/"+controller+"/upload/",
-                   {file : reader.result, filename: file.files[0].name, pNodeId: parentNodeId, csrf: this.csrfToken}
+                   APP+"/ajax/upload/",
+                   {file : reader.result, filename: file.files[0].name, pNodeId: parentNodeId, profil, csrf: csrf}
                ).then( function (promise){
                    if(promise.data.success) {
                        onSuccess(promise) ;
@@ -25,7 +25,7 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                });
             };
         },
-        
+
         getCodes: function() {
             return $http.post(
                 APP+"/"+controller+"/getcodes/",

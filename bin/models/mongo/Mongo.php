@@ -37,7 +37,7 @@
                     self::$_insertIds[] = $value['body']['id'];
                     break;
                 case 'update':
-                    self::$_bulk->update($value['body']);
+                    self::$_bulk->update($value['body'][0], $value['body'][1]);
                     break;
                 case 'delete':
                     self::$_bulk->delete($value['body']);
