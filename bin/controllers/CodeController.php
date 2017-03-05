@@ -36,11 +36,12 @@ final class CodeController extends Controller implements APIInterface {
             );
         }
         $params = [
+            'iteration' => (int) $request->iteration,
             'name'    => $request->filename,
             'file'    => $request->file,
-            'parent'  => $request->pNodeId,
             'langage' => $request->langage
         ];
+
         return json_encode(
             CrudFile::createFile($params)
         );
@@ -64,7 +65,7 @@ final class CodeController extends Controller implements APIInterface {
     : string
     {
         return json_encode(
-            CrudFile::updateFile($request->element)
+            CrudFile::updateFile($request->codes, $request->id, $request->name)
         );
     }
 }

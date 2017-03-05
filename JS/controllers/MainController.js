@@ -30,6 +30,7 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$lo
             Upload.getCodes().then(function (promise) {
                 if(promise.data.success) {
                     $scope.tree = promise.data.codes;
+                    console.log($scope.tree);
                     $scope.nodes = promise.data.nodes;
                     $scope.nbSnippets = $scope.tree.length;
 

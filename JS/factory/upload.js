@@ -32,12 +32,16 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                 {csrf: this.csrfToken}
             );
         },
-        createFile: function (content, title, parentNodeId, langage, onSuccess) {
+        createFile: function (content, title, langage, iteration, onSuccess) {
             //var base64 = "data:text/txt;base64,"+btoa(content);
-            var base64 = btoa(content);
+            var base64 = [];
+            for(var i=0; i<content.length; i++) {
+                base64.push(btoa(content[i]));
+            }
+
             $http.post(
                 APP+"/"+controller+"/createfile/",
-                {file : base64, filename: title, pNodeId: parentNodeId, langage: langage, csrf: this.csrfToken}
+                {file : base64, filename: title, langage: langage, iteration: iteration, csrf: this.csrfToken}
             ).then( function(promise) {
 
                 if(promise.data.success) {
@@ -50,9 +54,9 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                 {id: id, csrf: this.csrfToken}
             );
         },
-        updateCode: function(el) {
+        updateCode: function(el, id, name) {
             return $http.post(APP+"/"+controller+"/updatecode/",
-                {element: el, csrf: this.csrfToken}
+                {codes: el, id: id, name: name, csrf: this.csrfToken}
             );
         }/*,
 

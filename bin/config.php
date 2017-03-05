@@ -60,5 +60,5 @@ define("LOG_DEBUG_FILE"     , ROOT."tmp/logs/debug.log");
 /**
 * @package Imagick
 */
-define("WIDTH", 140);
-define("HEIGHT", 140);
+define("WIDTH", 110);
+define("HEIGHT", 110);

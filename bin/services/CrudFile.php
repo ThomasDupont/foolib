@@ -44,18 +44,23 @@ final class CrudFile {
     : array
     {
         //* Mongo code
-            $userId = SessionManager::getSession()['id'];
-            $insert = [[
-                'action' => 'insert', 'body' => [
-                    'userId' => $userId,
-                    'content' => base64_decode($params['file']),
-                    'langage' => $params['langage'],
-                    'name' => $params['name'],
-                    'time' => time(),
-                    'id' => md5(uniqid().$userId)
-                ]
-            ]];
-            return Mongo::getInstance()->addToBulk($insert)->execute('save');
+        $body = [];
+        $userId = SessionManager::getSession()['id'];
+        $body['id'] = md5(uniqid().$userId);
+        $body['userId'] = $userId;
+        $body['name'] = $params['name'];
+        $body['codes'] = [];
+        for($i = $params['iteration']; $i>=0; $i--) {
+            $body['codes'][] = [
+                'content' => base64_decode($params['file'][$i]),
+                'langage' => $params['langage'][$i],
+                'time' => time()
+            ];
+        }
+        $insert = [[
+            'action' => 'insert', 'body' => $body
+        ]];
+        return Mongo::getInstance()->addToBulk($insert)->execute('save');
 
         /*/
         return Upload::checkFile(
@@ -76,14 +81,16 @@ final class CrudFile {
         return Mongo::getInstance()->addToBulk($delete)->execute('save');
     }
 
-    public static function updateFile(\stdClass $element)
+    public static function updateFile(array $codes, string $id, string $name)
     : array
     {
-        unset($element->_id);
-        $element->updateTime = time();
+        //$result = Mongo::getInstance()->createQuery($filter, $options)->execute("save");
+        //$element->updateTime = time();
         $update = [[
             'action' => 'update', 'body' => [
-                ['id' => $element->id ], ['$set' => $element]
+                ['id' => $id ],
+                ['name' => $name],
+                ['$set' => ['codes' => $codes]]
             ]
         ]];
         return Mongo::getInstance()->addToBulk($update)->execute('save');

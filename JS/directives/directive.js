@@ -40,7 +40,8 @@ angular.module('routeApp')
     return {
         restrict: 'E',
         scope: {
-          controller: '=controller'
+            controller: '=controller',
+            iteration: '=iteration'
         },
         createScope : false,
         templateUrl: 'views/template/code.html',
@@ -73,7 +74,9 @@ angular.module('routeApp')
         restrict: 'E',
         scope: {
           controller: '=controller',
-          code: '=code'
+          codes: '=codes',
+          codeid: '=codeid',
+          codename: '=codename'
         },
         createScope : false,
         templateUrl: 'views/template/listCode.html',
@@ -85,8 +88,8 @@ angular.module('routeApp')
             scope.updateCode = function () {
                 scope.updateCodeVar = !scope.updateCodeVar;
             };
-            scope.updateCodeValidation = function(code) {
-                scope.controller.code.updateCode(code);
+            scope.updateCodeValidation = function(codes, id, codename) {
+                scope.controller.code.updateCode(codes, id, codename);
                 scope.updateCode();
             }
         }

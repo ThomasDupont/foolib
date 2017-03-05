@@ -2,10 +2,7 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$location',
     function($scope, $location, Ajax, Upload){
         $scope.showpwd = false;
         $scope.pwdforgetvar = "";
-        $scope.fileOk = false;
-        $scope.fileNameChanged = function() {
-           $scope.fileOk = true;
-        }
+
         $scope.login = function () {
           Ajax.login($scope.username, $scope.password).then(
               function(promise){
@@ -29,13 +26,6 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$location',
                           $scope.$parent.userEmail = $scope.email;
                           $scope.$parent.userFolder = promise.data.result.path;
                           $scope.$parent.userFolderId = promise.data.result.nodeId;
-                          if($scope.fileOk) {
-                              var file = document.getElementsByClassName('fileUploadPP');
-                              Upload.upload(file[0], promise.data.result.nodeId , function (promise) {
-                                  $scope.fileOk = false;
-                                  $scope.$parent.$parent.pprofil = USERDIR+promise.data.result.path;
-                              });
-                          }
                           $location.path('home');
                       } else {
                           $scope.PostDataResponse = "Erreur à la création du compte";

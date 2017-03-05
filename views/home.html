@@ -32,10 +32,29 @@
 <p>--------------------------------------------------</p>
 
 <button ng-click="c.code.addCode()" class="btn btn-primary">Add a code Snippet</button>
-<code ng-show="c.code.addCodeBool" controller="c"></code>
+<div ng-show="c.code.addCodeBool">
+    <div class="container">
+        <form ng-submit="c.code.createFile()" role="form">
+            <div class="form-group">
+                <label for="folderName">Title of your Snippet</label>
+                <input type="text" name="codeTitle" id="codeTitle" class="form-control" ng-model="c.codeTitle" />
+            </div>
+            <code ng-repeat="t in c.code.nbSnippet track by $index" iteration="$index" controller="c"></code>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Add code snipet</button>
+                <img ng-show="c.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </div>
+        </form>
+    </div>
+    <button ng-show="c.code.addSnippet" ng-click="c.code.growthNbSnippet()" class="btn btn-secondary">...</button>
+</div>
 <p>--------------------------------------------------</p>
-<ul class="list-group">
-    <listcode ng-repeat="f in $parent.tree" code="f" controller="c"></listcode>
+
+<ul ng-show="$parent.tree.length > 0" class="list-group">
+    <li class="list-group-item">
+        <listcode ng-repeat="f in $parent.tree track by $index" codes="f" codeid="f.id" codename="f.name" controller="c"></listcode>
+    </li>
     <!--<folder ng-repeat="f in c.tree" folder="f" controller="c"></folder>-->
 </ul>
 

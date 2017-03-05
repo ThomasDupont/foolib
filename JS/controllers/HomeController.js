@@ -4,6 +4,8 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
         var vm = this;
         var parent = $scope.$parent.$parent;
         vm.dataLoading = false;
+        vm.codeLangage = [];
+        vm.codeContent = [];
 
         /*
         vm.dataSet = {};
@@ -16,29 +18,43 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
 
         vm.code = {
             addCodeBool: false,
+            nbSnippet: [1],
+            addSnippet: false,
             choseLang: function() {
 
             },
             createFile: function () {
                 vm.dataLoading = true;
                 var lang = [];
-                lang.push(vm.codeLangage.value);
-                Upload.createFile(vm.codeContent, vm.codeTitle, vm.nodeidUpload, lang, function (promise) {
+                var newObj = [];
+                for(var i=0;i<vm.codeLangage.length; i++) {
+                    var tmpLang = vm.codeLangage[i].value;
+                    lang.push(tmpLang);
+                    newObj.push({
+                        langage: tmpLang,
+                        content: vm.codeContent[i]
+                    });
+                }
+                _this = this;
+                Upload.createFile(vm.codeContent, vm.codeTitle, lang, --i, function (promise) {
                     if(promise.data.success) {
-
-                        this.addNode({
+                        _this.addNode({
                             id: promise.data.result[0],
                             name: vm.codeTitle,
-                            langage: lang,
-                            content: vm.codeContent
+                            codes: newObj
                         });
-                    } else {
-                        return false;
                     }
+                    vm.dataLoading = !vm.dataLoading;
                 });
             },
             addCode: function () {
                 this.addCodeBool = !this.addCodeBool;
+                this.addSnippet = !this.addSnippet;
+                this.nbSnippet.length = 1;
+            },
+            growthNbSnippet: function() {
+                this.nbSnippet.push(1);
+                console.log(this.nbSnippet);
             },
             addNode: function (el) {
                 parent.tree.push(el);
@@ -59,8 +75,8 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                     parent.nbSnippets = parent.tree.length;
                 });
             },
-            updateCode: function(el) {
-                Upload.updateCode(el).then(function (promise) {
+            updateCode: function(el, id, name) {
+                Upload.updateCode(el, id, name).then(function (promise) {
                     console.log(promise);
                 });
             }
