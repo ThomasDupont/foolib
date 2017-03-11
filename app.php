@@ -25,8 +25,8 @@ if(($post = json_decode(file_get_contents("php://input"))) === null) {
 try {
     $http = bin\http\Http::getInstance()->setHttp($post)->parseURI($_SERVER['REQUEST_URI']);
     $response = bin\ControllerFactory::load($http);
-} catch(\Error $e) {
-    $response = json_encode(['success' => false, 'error' => "PHP Engine Exception", 'message' => DEBUG ? $e->getMessage() : "An error occured"]);
+//} catch(\Error $e) {
+//    $response = json_encode(['success' => false, 'error' => "PHP Engine Exception", 'message' => DEBUG ? $e->getMessage() : "An error occured"]);
 } catch(\Exception $e) {
     $response = json_encode(['success' => false, 'error' => "PHP Exception", 'message' => DEBUG ? $e->getMessage() : "An error occured"]);
 }

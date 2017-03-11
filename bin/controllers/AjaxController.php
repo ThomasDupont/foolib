@@ -37,11 +37,16 @@ final class AjaxController extends Controller implements APIInterface {
           '_DISCONNECT',
           '_DELETENODE',
           '_CREATEFOLDER',
-          '_UPDATEPROFIL'
+          '_UPDATEPROFIL',
+          '_TEST'
         ];
         return in_array($funct, $functWhiteList) ?
             $this->$funct($this->request) :
             json_encode(['success' => false, 'message' => "not authorized $funct"]);
+    }
+    private function _TEST (\stdClass $request)
+    {
+        var_dump($request);
     }
 
     private function _SENDCONTACT (\stdClass $request)
@@ -68,10 +73,29 @@ final class AjaxController extends Controller implements APIInterface {
     private function _UPLOAD (\stdClass $request)
     : string
     {
-        $user = new User();
-        $new = Upload::checkFile($request->file, $request->filename)->moveFile($request->pNodeId);
-        if($request->profil && $new['success']) {
-            $user->setPProfil($new['result']['path']);
+        $new = Upload::checkFile($request->file, $request->filename)->moveFile($request->params->pNodeId);
+        $request->params->path = $new['result']['path'];
+        $request->params->fileId = $new['result']['nodeId'];
+        switch ($request->params->type) {
+            case 'profil':
+                $user = new User();
+                if($new['success']) {
+                    $user->setPProfil($new['result']['path']);
+                }
+                break;
+            case 'create':
+                $request->params->type = '$addToSet';
+                if(!CrudFile::updateDocumentWithScreenshot($request->params)['success']){
+                    return ['success' => false, 'message' => "erreur query"];
+                }
+                break;
+            case 'update':            
+                if(!CrudFile::updateScreenshot($request->params)['success']){
+                    return ['success' => false, 'message' => "erreur query"];
+                }
+                break;
+            default:
+                return ['success' => false, 'message' => "no type of operation is set"];
         }
         return json_encode($new);
     }

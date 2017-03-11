@@ -88,9 +88,35 @@ final class CrudFile {
         //$element->updateTime = time();
         $update = [[
             'action' => 'update', 'body' => [
-                ['id' => $id ],
-                ['name' => $name],
-                ['$set' => ['codes' => $codes]]
+                ['id' => $id, 'userId' => SessionManager::getSession()['id']],
+                ['$set' => ['name' => $name, 'codes' => $codes]]
+            ]
+        ]];
+        return Mongo::getInstance()->addToBulk($update)->execute('save');
+    }
+
+    public static function updateDocumentWithScreenshot (\stdClass $params)
+    : array
+    {
+        $update = [[
+            'action' => 'update', 'body' => [
+                ['id' => $params->mongoId, 'userId' => SessionManager::getSession()['id']],
+                [$params->type => ['file' => ['path' => $params->path, 'id' => $params->fileId]]]
+            ]
+        ]];
+        return Mongo::getInstance()->addToBulk($update)->execute('save');
+    }
+
+    public static function updateScreenshot(\stdClass $params)
+    : array
+    {
+        $update = [[
+            'action' => 'update', 'body' => [
+                ['id' => $params->mongoId, 'userId' => SessionManager::getSession()['id']],
+                [
+                    '$each' => ['file' => ['path' => $params->path, 'id' => $params->fileId]],
+                    '$position' => $params->position
+                ]
             ]
         ]];
         return Mongo::getInstance()->addToBulk($update)->execute('save');

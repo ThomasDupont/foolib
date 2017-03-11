@@ -10,6 +10,7 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$lo
             Ajax.csrfToken = Upload.csrfToken = promise.data;
             $scope.isDisconnectable = false;
 
+            Ajax.test();
             Ajax.checkUser().then(function (promise) {
 
                 if(promise.data.success) {
@@ -30,7 +31,6 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$lo
             Upload.getCodes().then(function (promise) {
                 if(promise.data.success) {
                     $scope.tree = promise.data.codes;
-                    console.log($scope.tree);
                     $scope.nodes = promise.data.nodes;
                     $scope.nbSnippets = $scope.tree.length;
 
@@ -42,5 +42,12 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$lo
         }, function (error) {
             Ajax.onError(error)
         });
+
+        $scope.inArray = function (needle, haystack) {
+            for(var i = 0; i < haystack.length; i++) {
+                if(haystack[i] == needle) return true;
+            }
+            return false;
+        }
     }
 ]);

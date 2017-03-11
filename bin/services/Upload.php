@@ -61,11 +61,14 @@ final class Upload {
         $tmpName = md5(uniqid()).".".substr(strrchr($filename, '.'), 1);
         $path = FILETMPDIR.$tmpName;
         file_put_contents($path, base64_decode($contentFile));
+
+        Imagick::changeImageFormat($path, 'png');
+
         $ext = pathinfo($path)['extension'];
         if(in_array($ext, self::$_fileTypes)){
 
             $result = Imagick::createCropThumbernail($path);
-            
+
         }
         return [
             'ext' => $ext,

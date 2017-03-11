@@ -1,0 +1,16 @@
+<form ng-submit="updateCodeValidation(c.code.currentcode.codes, c.code.currentcode.id, c.code.currentcode.name)">
+    <h1>{{ c.code.currentcode.name }}</h2>
+    <div ng-repeat="code in c.code.currentcode.codes">
+
+        <p>{{ code.langage }}</p>
+        <pre>{{ code.content }}</pre>
+        <textarea ng-model="code.content"></textarea>
+    </div>
+    <input type="submit" value"Update">
+</form>
+<div ng-repeat="f in c.code.currentcode.file track by $index">
+    <p>Image {{$index}}</p>
+    <img alt="" ng-src="{{c.userdir+f.path}}" width=100 height=100>
+    <p>Changer de fichier</p>
+    <input type="file" class="updateFile">
+</div>

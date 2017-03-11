@@ -1,9 +1,13 @@
 angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
     var controller = "ajax";
+
     return {
         csrfToken: "",
         csrf: function () {
             return $http.post(APP+"/csrf/set/" , {controller: "CSRF"});
+        },
+        test : function() {
+            return $http.post(APP+"/"+controller+"/test/" , {test: {action : "ici"}, csrf: this.csrfToken});
         },
         contact: function (text) {
             return $http.post(APP+"/"+controller+"/sendcontact/" , {text : text, csrf: this.csrfToken});

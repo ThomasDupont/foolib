@@ -3,15 +3,8 @@
 <h3>{{codes.name}}</h3>
 <ul ng-repeat="code in codes.codes track by $index" class="list-group">
     <li class="list-group-item">
-        <button class="btn" ng-click="controller.code.supprCode(code.id)">Supr</button>
-        <button class="btn btn-primary" ng-click="updateCode()">Update</button>
-        <button ng-click="view(code)" class="btn btn-default">voir</button>
-
+        <button class="btn" ng-click="controller.code.supprCode(codeid)">Supr</button>
         <span>{{code.langage}}</span>
-        <pre ng-show="wantView">{{code.content}}</pre>
-        <form ng-show="updateCodeVar" ng-submit="updateCodeValidation(codes, codeid, codename)">
-            <textarea ng-model="code.content"></textarea>
-            <input type="submit" value"envois">
-        </form>
     </li>
 </ul>
+<button ng-click="controller.code.view(codes)" class="btn btn-default">voir</button>

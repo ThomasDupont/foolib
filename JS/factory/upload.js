@@ -9,21 +9,40 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
             });
         },
 
-        upload: function (file, parentNodeId, profil , onSuccess) {
+        upload: function (file, params, onSuccess) {
 
             var reader = new FileReader();
-            reader.readAsDataURL(file.files[0]);
-            var csrf = this.csrfToken;
-            reader.onload = function(e) {
-                 $http.post(
-                   APP+"/ajax/upload/",
-                   {file : reader.result, filename: file.files[0].name, pNodeId: parentNodeId, profil, csrf: csrf}
-               ).then( function (promise){
-                   if(promise.data.success) {
-                       onSuccess(promise) ;
-                   }
-               });
-            };
+            console.log(file.files[0]);
+
+            if(typeof(file.files[0]) != "undefined") {
+                var file = file.files[0];
+                var csrf = this.csrfToken;
+                reader.readAsDataURL(file);
+                reader.onload = function(e) {
+                    var filename = file.name;
+                    var split = filename.split('.').pop();
+                    if(split.length < 2) {
+                        alert("fichier sans extension");
+                        return false;
+                    }
+                    var ext = false;
+                    for(var i = 0; i < FILEEXT.length; i++) {
+                        if(FILEEXT[i] == split) ext = true;
+                    }
+                    if(!ext){
+                        alert("fichier avec extension non autorisée");
+                        return false;
+                    }
+                    $http.post(
+                       APP+"/ajax/upload/",
+                       {file : reader.result, filename: filename, params: params, csrf: csrf}
+                   ).then( function (promise){
+                       if(promise.data.success) {
+                           onSuccess(promise) ;
+                       }
+                   });
+                };
+            }
         },
 
         getCodes: function() {
