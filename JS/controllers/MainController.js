@@ -6,6 +6,7 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$lo
         $scope.userName = "";
         $scope.userEmail ="";
         $scope.pprofil= "";
+
         Ajax.csrf().then(function (promise) {
             Ajax.csrfToken = Upload.csrfToken = promise.data;
             $scope.isDisconnectable = false;

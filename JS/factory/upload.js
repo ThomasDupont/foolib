@@ -12,10 +12,9 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
         upload: function (file, params, onSuccess) {
 
             var reader = new FileReader();
-            console.log(file.files[0]);
+            console.log(file);
 
-            if(typeof(file.files[0]) != "undefined") {
-                var file = file.files[0];
+            if(typeof(file) != "undefined") {
                 var csrf = this.csrfToken;
                 reader.readAsDataURL(file);
                 reader.onload = function(e) {

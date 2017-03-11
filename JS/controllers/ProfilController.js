@@ -22,7 +22,7 @@ angular.module('routeApp').controller('ProfilController', ['$scope', '$location'
                         }
                     }
 
-                    Upload.upload(file[0], {pNodeId:nodeId, type: 'profil'}, function (promise) {
+                    Upload.upload(file[0].files[0], {pNodeId:nodeId, type: 'profil'}, function (promise) {
                         vm.fileOk = false;
                         $scope.$parent.$parent.pprofil = USERDIR+promise.data.result.path;
                     });

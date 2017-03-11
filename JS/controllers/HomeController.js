@@ -79,6 +79,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                     callback(promise);
                 });
             },
+            viewScreenAdd: false,
             addScreen: function(mongoId) {
                 var nodeID;
                 for(var i=0, nodes = $scope.$parent.$parent.nodes; i<nodes.length; i++) {
@@ -87,12 +88,14 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                     }
                 }
 
-                var file = document.getElementsByClassName("screenshot");
-                for(var i=0; i<file.length; i++) {
-                    Upload.upload(file[i], {pNodeId: nodeId, mongoId:mongoId, type: 'create'} , function (promise) {
+                //var file = document.getElementsByClassName("screenshot");
+                var files = drop.getResultObject();
+                for(var i=0; i<files.length; i++) {
+                    Upload.upload(files[i].data, {pNodeId: nodeId, mongoId:mongoId, type: 'create'} , function (promise) {
                         console.log(promise);
                     });
                 }
+                this.viewScreenAdd = false;
             },
             updateScreen: function(file, params, current) {
                 Upload.upload(file, params , function (promise) {

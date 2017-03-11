@@ -91,7 +91,8 @@ angular.module('routeApp')
         createScope : false,
         templateUrl: 'views/template/screenshot.html',
         link: function(scope, element, attrs) {
-
+            window.drop = new dropFile();
+            drop.init();
         }
     }
 });
