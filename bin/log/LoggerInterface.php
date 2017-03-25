@@ -38,4 +38,13 @@ interface LoggerInterface
      */
     public static function warning(string $message, array $context = [])
     : self;
+
+    /**
+     * Error on UI.
+     *
+     * @param $message
+     * @param $context
+     */
+    public static function user (string $message, array $context = [])
+    : self;
 }

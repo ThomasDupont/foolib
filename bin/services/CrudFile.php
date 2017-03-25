@@ -95,6 +95,9 @@ final class CrudFile {
         return Mongo::getInstance()->addToBulk($update)->execute('save');
     }
 
+    /**
+    * Add Screenshot to a Snippet
+    */
     public static function updateDocumentWithScreenshot (\stdClass $params)
     : array
     {
@@ -107,6 +110,9 @@ final class CrudFile {
         return Mongo::getInstance()->addToBulk($update)->execute('save');
     }
 
+    /**
+    * Update a screenShot inside a snippet
+    */
     public static function updateScreenshot(\stdClass $params)
     : array
     {
@@ -114,20 +120,23 @@ final class CrudFile {
             'action' => 'update', 'body' => [
                 ['id' => $params->mongoId, 'userId' => SessionManager::getSession()['id']],
                 [
-                    '$each' => ['file' => ['path' => $params->path, 'id' => $params->fileId]],
-                    '$position' => $params->position
+                    '$set' => ['file.'.$params->position => ['path' => $params->path, 'id' => $params->fileId]]
                 ]
             ]
         ]];
         return Mongo::getInstance()->addToBulk($update)->execute('save');
     }
 
+    /**
+    * Get all codes and file for the current user
+    */
     public static function getFiles()
     : array
     {
         $filter = [
-            'userId' => SessionManager::getSession()['id']
+            'userId' => SessionManager::getSession()['id'] ?? 0
         ];
+        //Tri par ordre décroissant
         $options = [
             'sort' => ['time' => -1]
         ];
@@ -141,7 +150,7 @@ final class CrudFile {
 
     }
 
-    public static function getFile(int $nodeId)
+    public static function getUniqFile(int $nodeId)
     : array
     {
         return self::$_node->getNode($nodeId);

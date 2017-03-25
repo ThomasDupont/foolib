@@ -11,6 +11,7 @@ namespace bin\controllers;
 
 use bin\models\{Cart, Order, Node, User};
 use bin\services\Upload;
+use bin\services\Emailing;
 use bin\services\CrudFile;
 
 /**
@@ -38,6 +39,8 @@ final class AjaxController extends Controller implements APIInterface {
           '_DELETENODE',
           '_CREATEFOLDER',
           '_UPDATEPROFIL',
+          '_SENDEMAIL',
+          '_CONFIRMEMAIL',
           '_TEST'
         ];
         return in_array($funct, $functWhiteList) ?
@@ -45,8 +48,10 @@ final class AjaxController extends Controller implements APIInterface {
             json_encode(['success' => false, 'message' => "not authorized $funct"]);
     }
     private function _TEST (\stdClass $request)
+    : string
     {
-        var_dump($request);
+        $email = new Emailing($this->phpmailer);
+        return json_encode($email->sendEmail('dupont.thomas70@gmail.com', 'thomas', 1));
     }
 
     private function _SENDCONTACT (\stdClass $request)
@@ -73,7 +78,7 @@ final class AjaxController extends Controller implements APIInterface {
     private function _UPLOAD (\stdClass $request)
     : string
     {
-        $new = Upload::checkFile($request->file, $request->filename)->moveFile($request->params->pNodeId);
+        $new = Upload::checkFile($request->file, $request->filename, $request->params->type)->moveFile($request->params->pNodeId);
         $request->params->path = $new['result']['path'];
         $request->params->fileId = $new['result']['nodeId'];
         switch ($request->params->type) {
@@ -89,7 +94,7 @@ final class AjaxController extends Controller implements APIInterface {
                     return ['success' => false, 'message' => "erreur query"];
                 }
                 break;
-            case 'update':            
+            case 'update':
                 if(!CrudFile::updateScreenshot($request->params)['success']){
                     return ['success' => false, 'message' => "erreur query"];
                 }
@@ -97,6 +102,7 @@ final class AjaxController extends Controller implements APIInterface {
             default:
                 return ['success' => false, 'message' => "no type of operation is set"];
         }
+        //[success => true, result => [path => path, nodeId => nodeId]]
         return json_encode($new);
     }
 
@@ -133,6 +139,25 @@ final class AjaxController extends Controller implements APIInterface {
             (string) $request->password
         );
         return $createUser['success'] ? json_encode($createUser) : "Cet utilisateur éxiste déjà";
+    }
+
+    private function _SENDEMAIL(\stdClass $request)
+    : string
+    {
+        $email = $request->params->email;
+        $login = $request->params->login;
+        $type  = $request->type;
+        $emailing = new Emailing($this->phpmailer);
+        $emailing->sendEmail($email, $login, $type);
+        return json_encode();
+    }
+
+    private function _CONFIRMEMAIL(\stdClass $request)
+    : string
+    {
+        $token = $request->token;
+        $user = new User();
+        return json_encode($user->confirmEmail($token));
     }
 
     private function _DISCONNECT ()

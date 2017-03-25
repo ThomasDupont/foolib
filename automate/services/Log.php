@@ -7,9 +7,9 @@
  * MIT License
  ************************************************************************************************/
 
-namespace bin\log;
+namespace services;
 
-final class Log implements LoggerInterface{
+final class Log {
 
     /**
     * @var Object Log()
@@ -41,7 +41,7 @@ final class Log implements LoggerInterface{
     * @param $context
     */
     public static function error (string $message, array $context = [])
-    : LoggerInterface
+    : self
     {
         self::_interpolate($message, $context);
         $error = var_export($message, true);
@@ -57,7 +57,7 @@ final class Log implements LoggerInterface{
     * @param $context
     */
     public static function debug (string $message, array $context = [])
-    : LoggerInterface
+    : self
     {
         if(DEBUG) {
             self::_interpolate($message, $context);
@@ -70,7 +70,7 @@ final class Log implements LoggerInterface{
     * @param $context
     */
     public static function warning (string $message, array $context = [])
-    : LoggerInterface
+    : self
     {
         self::_interpolate($message, $context);
         return self::_getInstance();
@@ -81,7 +81,7 @@ final class Log implements LoggerInterface{
     * @param $context
     */
     public static function user (string $message, array $context = [])
-    : LoggerInterface
+    : self
     {
         self::_interpolate($message, $context);
         $error = var_export($message, true);

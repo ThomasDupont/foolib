@@ -2,7 +2,7 @@ angular.module('routeApp').controller('ContactController', ['$scope', '$routePar
     function($scope, $routeParams, Ajax){
 
         $scope.message = "Bienvenue sur la page de contact";
-        $scope.msg = $routeParams.msg || "Bonne chance pour cette nouvelle appli !";
+        $scope.msg = $routeParams.token || "Bonne chance pour cette nouvelle appli !";
         $scope.PostDataResponse = "ta mere";
 
         $scope.contact = function () {

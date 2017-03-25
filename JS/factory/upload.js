@@ -12,7 +12,6 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
         upload: function (file, params, onSuccess) {
 
             var reader = new FileReader();
-            console.log(file);
 
             if(typeof(file) != "undefined") {
                 var csrf = this.csrfToken;
@@ -76,7 +75,13 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
             return $http.post(APP+"/"+controller+"/updatecode/",
                 {codes: el, id: id, name: name, csrf: this.csrfToken}
             );
-        }/*,
+        },
+        supprScreen: function(files, id) {
+            return $http.post(APP+"/"+controller+"/supprscreen/",
+                {files: files, id: id, csrf: this.csrfToken}
+            );
+        }
+        /*,
 
         deleteNode : function (nodeId) {
             return $http.post(

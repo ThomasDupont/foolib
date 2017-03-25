@@ -1,10 +1,11 @@
-
-<span ng-repeat="lg in codes.codes track by $index">{{lg.langage}}/</span>
-<h3>{{codes.name}}</h3>
-<ul ng-repeat="code in codes.codes track by $index" class="list-group">
-    <li class="list-group-item">
-        <button class="btn" ng-click="controller.code.supprCode(codeid)">Supr</button>
-        <span>{{code.langage}}</span>
-    </li>
-</ul>
-<button ng-click="controller.code.view(codes)" class="btn btn-default">voir</button>
+<li class="list-group-item">
+    <p ng-repeat="lg in codes.codes track by $index">{{lg.langage}}/</p>
+    <h3>{{codes.name}}</h3>
+    <ul ng-repeat="code in codes.codes track by $index" class="list-group">
+        <li class="list-group-item">
+            <button class="btn" ng-click="controller.code.supprCode(codeid)">Supr</button>
+            <span>{{code.langage}}</span>
+        </li>
+    </ul>
+    <button ng-click="controller.code.view(codes)" class="btn btn-default">voir</button>
+</li>

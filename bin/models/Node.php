@@ -276,7 +276,7 @@ class Node {
         if (is_dir($dir)) {
             $objects = scandir($dir);
             foreach ($objects as $object) {
-                if ($object != "." && $object != "..") {
+                if (substr($object, 0, 1) != "." && substr($object, 0, 2) != "..") {
                      if (is_dir($dir."/".$object))
                        $this->_rrmdir($dir."/".$object);
                      else

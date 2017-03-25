@@ -1,5 +1,13 @@
-angular.module('routeApp').controller('ProfilController', ['$scope', '$location', 'Ajax', 'Upload',
-    function($scope, $location, Ajax, Upload){
+angular.module('routeApp').controller('ProfilController', ['$scope', '$routeParams', '$location', 'Ajax', 'Upload',
+    function($scope,$routeParams, $location, Ajax, Upload){
+
+        if(!$scope.$parent.isDisconnectable
+            && (typeof $scope.$parent.passByMain == undefined || $scope.$parent.passByMain == false)
+        ) {
+            location.replace('/');
+            //$location.path('login');
+        }
+
         vm = this;
         vm.showUpdate = false;
         vm.fileOk = false;

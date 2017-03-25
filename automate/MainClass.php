@@ -1,37 +1,19 @@
 <?php
 
-namespace bin\controllers;
-
-use bin\http\Http;
 use PHPMailer\PHPMailer\PHPMailer;
 
-abstract class Controller {
+abstract class MainClass {
 
-    /**
-    * @var Object Http request
-    *
-    */
-    protected $request;
-
-    /**
-    * All HTTP header concerning server
-    * @var object $server
-    */
-    protected $server;
-
-    /**
-    * Intance of phpmailer
-    */
     protected $phpmailer;
 
     public function __construct()
     {
-        $this->_instanceDir();
+        //Log::user("Erreur envois email confirm, mail: {mail}", ['mail' => "ici"]);
         $this->_instancePhpMailer();
-
-        $this->request = Http::getHttp();
-        $this->server = Http::getServer();
+        $this->_instanceDir();
     }
+
+    abstract protected function execute(array $args) : void;
 
     private function _instancePhpMailer()
     : void
@@ -52,12 +34,6 @@ abstract class Controller {
     : void
     {
         $oldmask = umask(0);
-        if(!is_dir(FILETMPDIR)) {
-            mkdir(FILETMPDIR, 0777, true);
-        }
-        if(!is_dir(USERDIR)) {
-            mkdir(USERDIR, 0777, true);
-        }
         if(!is_dir(LOGTMPDIR)) {
             mkdir(LOGTMPDIR, 0777, true);
         }

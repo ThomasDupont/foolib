@@ -64,6 +64,7 @@
         <li><a href="#/profil" class="btn">Page de profil</a></li>
         <li ng-show='isDisconnectable'><a  ng-click='disconnect();' class='btn' id='disconnect'>Déconnection</a> Connecté en tant que: {{ userName }}</li>
         <img src="{{pprofil}}" alt="" width=100 height=100>
+        <img id="loader" style="display:none;" src="var/loader.gif" alt="" width=500 height=500>
       </ul>
       <le-nom controller ='m' callback='m.test(value)' date="m.dateSuper"></le-nom>
     </nav>
@@ -80,6 +81,7 @@
     <script src="JS/controllers/ContactController.js"></script>
     <script src="JS/controllers/LoginController.js"></script>
     <script src="JS/controllers/ProfilController.js"></script>
+    <script src="JS/controllers/LinkController.js"></script>
     <script src="JS/models/drop.js"></script>
     <script src="JS/directives/directive.js"></script>
     <script src="JS/factory/ajax.js"></script>

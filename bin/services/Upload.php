@@ -52,7 +52,7 @@ final class Upload {
         self::$_node = new Node();
     }
 
-    private static function _createTmpFile (string $file, string $filename)
+    private static function _createTmpFile (string $file, string $filename, string $type)
     : array
     {
         self::_getInstance();
@@ -65,7 +65,7 @@ final class Upload {
         Imagick::changeImageFormat($path, 'png');
 
         $ext = pathinfo($path)['extension'];
-        if(in_array($ext, self::$_fileTypes)){
+        if(in_array($ext, self::$_fileTypes) && $type == 'profil'){
 
             $result = Imagick::createCropThumbernail($path);
 
@@ -83,11 +83,11 @@ final class Upload {
     * @param $file (base64 file)
     * @param $filename
     */
-    public static function checkFile (string $file, string $filename)
+    public static function checkFile (string $file, string $filename, string $type)
     : self
     {
 
-        self::$_fileInfo = $file = self::_createTmpFile($file, $filename);
+        self::$_fileInfo = $file = self::_createTmpFile($file, $filename, $type);
 
         if(($length = $file['size']) > MAX_FILE_SIZE) {
             self::$_checkFile = ['success' => false, 'message' => "La taille du fichier est trop grande $length pour ".MAX_FILE_SIZE." autorisé"];

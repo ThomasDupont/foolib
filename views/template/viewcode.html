@@ -1,4 +1,4 @@
-<form ng-submit="updateCodeValidation(c.code.currentcode.codes, c.code.currentcode.id, c.code.currentcode.name)">
+<form ng-submit="updateCodeValidation(c.code.currentcode, c.code.currentcode.id, c.code.currentcode.name)">
     <h1>{{ c.code.currentcode.name }}</h2>
     <div ng-repeat="code in c.code.currentcode.codes">
 
@@ -9,6 +9,7 @@
     <input type="submit" value"Update">
 </form>
 <div ng-repeat="f in c.code.currentcode.file track by $index">
+    <button ng-click="suprFile(c.code.currentcode.file, $index, c.code.currentcode.id)" class="btn btn-primary">supr</button>
     <p>Image {{$index}}</p>
     <img alt="" ng-src="{{c.userdir+f.path}}" width=100 height=100>
     <p>Changer de fichier</p>

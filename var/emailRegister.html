@@ -1,0 +1,46 @@
+<style>
+	/* Shrink Wrap Layout Pattern CSS */
+	@media only screen and (max-width: 599px) {
+        td[class="hero"] img {
+            width: 100%;
+            height: auto !important;
+        }
+	    td[class="pattern"] td{
+	        width: 100%;
+	    }
+	}
+</style>
+
+<table cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="pattern" width="600">
+            <table cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="hero">
+                        <img src="http://placehold.it/600x200&text=Hero+Image" alt="" style="display: block; border: 0;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" style="font-family: arial,sans-serif; color: #333;">
+                        <h1>Email confirmation</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" style="font-family: arial,sans-serif; font-size: 14px; line-height: 20px !important; color: #666; padding-bottom: 20px;">
+                        Hello {name},<br>
+                        <br>
+                        Welcome on foolib. Before create your snippet, you have to validate your email adress.<br>
+                        Please click on this link <a href="{link}">Validation</a> to validate it.<br>
+                        <br>
+                        If the link doesn't work, please add this link in your browser : {link}.<br>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left">
+                        <a href="#"><img src="http://placehold.it/200x50/333&text=CTA+»" alt="CTA" style="display: block; border: 0;" /></a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

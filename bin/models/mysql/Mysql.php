@@ -35,6 +35,8 @@ class Mysql {
     */
     private static $_result;
 
+    public static $error;
+
     /**
     * @var Boolean
     * Used for connection and registration, false by default
@@ -103,7 +105,6 @@ class Mysql {
     public static function getDBDatas (string $sql, array $params = [])
     : self
     {
-
         $stmt = self::_prepareRequest($sql, $params);
         /* Execute statement */
         self::_executeQuery($stmt);
@@ -206,6 +207,7 @@ class Mysql {
     {
 
         if(($stmt = self::$_mysqli->prepare($sql)) === false) {
+            self::$error = self::$_mysqli->error;
             Log::error(
                 "Wrong SQL: {query} error. {errno} {error}",
                 ['query' => $sql, 'errno' => self::$_mysqli->errno, 'error' => self::$_mysqli->error]
@@ -219,6 +221,7 @@ class Mysql {
                 $param = htmlspecialchars($param); //XSS securisation
                 $type[] = $type_st[gettype($param)];
             }
+
             unset($param);
             $a_params = array();
             $param_type = '';
@@ -240,6 +243,7 @@ class Mysql {
     : bool
     {
         if(!$stmt->execute()) {
+            self::$error = $stmt->error;
             Log::error(
                 "Error to execute SQL query {error}", ['error' => $stmt->error]
             );

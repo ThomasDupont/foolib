@@ -68,18 +68,32 @@ angular.module('routeApp')
         link: function(scope, element, attrs) {
             scope.updateCodeValidation = function(el, id, codename) {
                 scope.current = el;
+                // le callback lance le test des nouveaux fichiers
                 scope.c.code.updateCode(el.codes, id, codename, scope.majFiles);
-            }
-            scope.majFiles = function (promise) {
+            };
+            scope.majFiles = function (mongoId) {
                 var files = document.getElementsByClassName("updateFile");
                 var toSend = [];
                 for(var i=0;i<files.length; i++) {
                     if(typeof(files[i].files[0]) != 'undefined') {
-                        scope.controller.code.updateScreen(files[i].files[0], {position:i, mongoId:promise.data.result[0], type: 'update'}, scope.current.file[i]);
+                        scope.c.code.updateScreen(
+                            files[i].files[0],
+                            {position:i, mongoId:mongoId, type: 'update'},
+                            scope.current.file[i]
+                        );
                     }
                 }
 
-            }
+            };
+            scope.suprCode = function (files, index, id) {
+                var tmp = [];
+                for (var i = 0; i < files.length; i++) {
+                    if(i != index) {
+                        tmp.push(files[i]);
+                    }
+                }
+
+            };
         }
     }
 }).directive("screenshot", function(){
@@ -91,8 +105,15 @@ angular.module('routeApp')
         createScope : false,
         templateUrl: 'views/template/screenshot.html',
         link: function(scope, element, attrs) {
-            window.drop = new dropFile();
-            drop.init();
+            if(window.drop === undefined) {
+                window.drop = new dropFile({
+                    dropArea: 'dropArea',
+                    fileInput: 'file',
+                    supr: 'supr'
+                }, 3);
+                drop.init();
+            }
+
         }
     }
 });

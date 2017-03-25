@@ -11,6 +11,7 @@ namespace bin\models;
 
 use bin\models\mysql\{Mysql, SessionManager};
 use bin\models\Node;
+use bin\log\Log;
 
 /**
 * To do the interface with the Mysql sub-service for user management
@@ -43,7 +44,7 @@ class User {
         if(($id = $this->_mysql->setDBDatas(
                 "users",
                 "(login, password, email, API_key, roles, creationDate) VALUE (?, ?, ?, ?, ?, NOW())",
-                [$login, $this->_hashPassword($rpassword), $email, $token, $roles]
+                [$login, $this->_hashPassword($password), $email, $token, $roles]
             ))
         ) {
             SessionManager::setSession($token, $roles, $id);
@@ -64,18 +65,21 @@ class User {
      {
         $this->_mysql->setUser(true);
         $dataSet = $this->_mysql->getDBDatas(
-            "SELECT * FROM users WHERE login = ?",
+            "SELECT login, pp, password, API_key, roles, id, valid FROM users WHERE login = ?",
             [$login]
         )->toObject();
 
+        if(!$dataSet['result']->valid) {
+            return ['success' => false, 'message' => "Votre email n'a pas été validé"];
+        }
         if($dataSet['success']) {
             $result = $dataSet['result'];
-            if(password_verify($password, $result->password)) {
+            if($this->_checkPassword($password, $result->password)) {
               SessionManager::setSession($result->API_key, $result->roles, $result->id);
 
-              return ['success' => true, 'name' => $result->login];
+              return ['success' => true, 'result' => [ 'name' => $result->login, 'pp' => $result->pp]];
             } else {
-              return ['success' => false];
+              return ['success' => false, 'message' => "Erreur d'authentification"];
             }
         }
         return ['success' => false];
@@ -111,7 +115,9 @@ class User {
          return ['success' => false, 'message' => "email ou nom déjà utilisé"];
      }
 
-     public function setPProfil(string $path) {
+     public function setPProfil(string $path)
+     : array
+     {
             //get old path
             $oldPath = $this->_mysql->getDBDatas(
                 "SELECT pp FROM users WHERE id = ?", [SessionManager::getSession()['id']]
@@ -126,10 +132,41 @@ class User {
                  : ['success' => false, 'message' => "Echec de la mise à jour de la photo de profil"];
      }
 
+     public function confirmEmail(string $token)
+     : array
+     {
+         $dbToken = $this->_mysql->getDBDatas(
+             "SELECT emailToken FROM users WHERE emailToken = ?", [$token]
+         )->toObject()['result'];
+         if(empty($dbToken)) {
+             return ['success' => false, 'message' => "Erreur à l'activation du profil"];
+         }
+         if($dbToken->emailToken === $token) {
+             $update = $this->_mysql->updateDBDatas(
+                      "users", "valid = ? WHERE emailToken = ?", [1, $token]
+              );
+              if($update) {
+                  return ['success' => true];
+              }
+            Log::user("Erreur activation du compte, token ok: {token}", ['token' => $token]);
+            return ['success' => false, 'message' => "Erreur à l'activation du profil"];
+
+
+         }
+         return ['success' => false, 'message' => "Erreur à l'activation du profil"];
+     }
+
      private function _hashPassword(string $pwd)
      : string
      {
-         return password_hash($pwd,PASSWORD_DEFAULT);
+         //return password_hash($pwd,PASSWORD_DEFAULT);
+         return hash('sha512', $pwd."NMCAECTMD");
+     }
+
+     private function _checkPassword(string $pwd, string $crypt)
+     : bool
+     {
+         return $this->_hashPassword($pwd) == $crypt;
      }
 
  }

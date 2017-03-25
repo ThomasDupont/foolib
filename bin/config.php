@@ -56,9 +56,22 @@ define("DEBUG", true);
 define("LOG_ERROR_FILE"     , ROOT."tmp/logs/error.log");
 define("LOG_WARNING_FILE"   , ROOT."tmp/logs/warning.log");
 define("LOG_DEBUG_FILE"     , ROOT."tmp/logs/debug.log");
+define("LOG_USER_FILE"     , ROOT."tmp/logs/user.log");
 
 /**
 * @package Imagick
 */
 define("WIDTH", 110);
 define("HEIGHT", 110);
+
+/**
+* @package email
+*/
+define('SMTPHOST', 'smtp.gmail.com');
+define('SMTPPORT', 587);
+define('SMTPAUTH', true);
+//Attention acces impossible lors validation en 2 étape
+define('SMTPUSERNAME', "2.oclick.sarl@gmail.com");
+define('SMTPPASSWORD', "a1z2e3r*");
+define('SMTPSECURE', 'tls');
+define('FOOLIBADRESS', 'contact@foolib.com');

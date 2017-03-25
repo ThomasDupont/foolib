@@ -1,17 +1,20 @@
-angular.module('routeApp').controller('MainController', ['$scope', '$http', '$location', '$sce', 'Ajax', 'Upload',
-    function($scope, $http, $location, $sce, Ajax, Upload){
+angular.module('routeApp').controller('MainController', ['$scope', '$http', '$q', '$timeout', '$location', '$sce', 'Ajax', 'Upload',
+    function($scope, $http, $q, $timeout, $location, $sce, Ajax, Upload){
         $scope.nbSnippets = 0;
         $scope.tree = [];
         $scope.nodes = [];
         $scope.userName = "";
         $scope.userEmail ="";
         $scope.pprofil= "";
+        $scope.isDisconnectable = false;
+        $scope.passByMain = true;
 
         Ajax.csrf().then(function (promise) {
             Ajax.csrfToken = Upload.csrfToken = promise.data;
-            $scope.isDisconnectable = false;
 
-            Ajax.test();
+
+            //$timeout(Ajax.test(), 100);
+
             Ajax.checkUser().then(function (promise) {
 
                 if(promise.data.success) {
@@ -28,12 +31,23 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$lo
                 $scope.isDisconnectable = false;
                 $scope.userName = "";
                 $scope.userEmail ="";
+                $scope.pprofil= "";
+                $scope.passByMain = false;
             } ;
             Upload.getCodes().then(function (promise) {
                 if(promise.data.success) {
                     $scope.tree = promise.data.codes;
                     $scope.nodes = promise.data.nodes;
                     $scope.nbSnippets = $scope.tree.length;
+
+                    var nodeID;
+                    for(var i=0, nodes = $scope.nodes; i<nodes.length; i++) {
+                        if(nodes[i].parentNode_ID == 0) {
+                            nodeId = nodes[i].node_ID;
+                        }
+                    }
+                    $scope.parentNodeID = nodeId;
+
 
                 } else {
                     $location.path('login');

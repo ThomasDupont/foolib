@@ -7,7 +7,11 @@ angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
             return $http.post(APP+"/csrf/set/" , {controller: "CSRF"});
         },
         test : function() {
-            return $http.post(APP+"/"+controller+"/test/" , {test: {action : "ici"}, csrf: this.csrfToken});
+            return $http.post(APP+"/"+controller+"/test/" , {test: {action : "ici"}, csrf: this.csrfToken}).then(
+                function(promise) {
+
+                }
+            );
         },
         contact: function (text) {
             return $http.post(APP+"/"+controller+"/sendcontact/" , {text : text, csrf: this.csrfToken});
@@ -29,6 +33,11 @@ angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
         register: function (log, email, psw) {
             return $http.post(APP+"/"+controller+"/register/" , {login : log, email:email, password: psw, csrf: this.csrfToken});
         },
+        confirmMail: function(token) {
+            return $http.post(APP+"/"+controller+"/confirmemail/",
+                {token: token, csrf: this.csrfToken}
+            );
+        },
         updateProfil: function(pwd, name, email) {
             return $http.post(APP+"/"+controller+"/updateprofil/",
                 {login: name, email: email, password: pwd, csrf: this.csrfToken}
@@ -49,6 +58,9 @@ angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
                     alert("Erreur status "+error.status);
                     break;
             }
+        },
+        sendemail : function(params, type) {
+            return $http.post(APP+"/"+controller+"/sendemail/" , {params, type, csrf: this.csrfToken});
         },
         testError: function() {
             $http.post(APP).then(null, function(error){

@@ -11,6 +11,7 @@
 declare(strict_types = 1);
 
 define("ROOTDIR", __DIR__."/");
+date_default_timezone_set('Etc/UTC');
 session_start();
 
 require_once("bin/config.php");

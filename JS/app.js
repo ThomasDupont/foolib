@@ -20,7 +20,7 @@
                 templateUrl: 'views/login/login.html',
                 controller: 'LoginController'
             })
-            .when('/contact/:msg?', {
+            .when('/contact', {
                 templateUrl: 'views/contact.html',
                 controller: 'ContactController'
             })
@@ -33,6 +33,9 @@
             })
             .when('/home', {
                 templateUrl: 'views/home.html'
+            })
+            .when('/link', {
+                templateUrl: 'views/login/link.html'
             })
             .otherwise({
                 templateUrl: 'views/home.html'

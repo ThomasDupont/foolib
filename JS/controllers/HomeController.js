@@ -1,13 +1,21 @@
-angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$location', 'Ajax', 'Upload',
-    function($scope, $http, $location, Ajax, Upload){
+angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams', '$http', '$location', 'Ajax', 'Upload',
+    function($scope, $routeParams, $http, $location, Ajax, Upload){
 
-        var vm = this;
-        var parent = $scope.$parent.$parent;
+
+        var vm = this,
+            parent = $scope.$parent.$parent;
+        if(!parent.isDisconnectable && (typeof parent.passByMain == undefined || parent.passByMain == false)) {
+            location.replace('/');
+            //$location.path('login');
+        }
         vm.dataLoading = false;
         vm.codeLangage = [];
         vm.codeContent = [];
         vm.wantView = false;
         vm.userdir = USERDIR;
+
+
+
 
         vm.code = {
             currentcode: "",
@@ -36,12 +44,15 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                 Upload.createFile(vm.codeContent, vm.codeTitle, lang, --i, function (promise) {
                     if(promise.data.success) {
                         id = promise.data.result[0];
-                        _this.addNode({
+                        var add = {
                             id: id,
                             name: vm.codeTitle,
                             codes: newObj
-                        });
-                        _this.addScreen(id);
+                        };
+                        _this.addNode(add);
+                        _this.addScreen(add);
+                        _this.code.addCodeBool = !_this.code.addCodeBool;
+                        alert('Votre snippet a été ajouté');
                     }
                     vm.dataLoading = !vm.dataLoading;
                 });
@@ -74,39 +85,46 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$http', '$lo
                 });
             },
             updateCode: function(el, id, name, callback) {
+                var _id = id;
                 Upload.updateCode(el, id, name).then(function (promise) {
-                    console.log(promise);
-                    callback(promise);
+                    //console.log(promise);
+                    callback(_id);
                 });
             },
             viewScreenAdd: false,
-            addScreen: function(mongoId) {
-                var nodeID;
-                for(var i=0, nodes = $scope.$parent.$parent.nodes; i<nodes.length; i++) {
-                    if(nodes[i].parentNode_ID == 0) {
-                        nodeId = nodes[i].node_ID;
-                    }
-                }
+            addScreen: function(current) {
+                current.file = [];
 
                 //var file = document.getElementsByClassName("screenshot");
                 var files = drop.getResultObject();
                 for(var i=0; i<files.length; i++) {
-                    Upload.upload(files[i].data, {pNodeId: nodeId, mongoId:mongoId, type: 'create'} , function (promise) {
-                        console.log(promise);
+                    Upload.upload(files[i].data, {pNodeId: $scope.parentNodeID, mongoId:current.id, type: 'create'} , function (promise) {
+                        if(promise.data.success) {
+                            current.file.push({
+                                path: promise.data.result.path,
+                                id: promise.data.result.nodeId
+                            });
+                        } else {
+                            alert(promise.data.message);
+                        }
                     });
                 }
                 this.viewScreenAdd = false;
             },
             updateScreen: function(file, params, current) {
+                params.pNodeId = $scope.parentNodeID;
                 Upload.upload(file, params , function (promise) {
                     if(promise.data.success) {
-                        current = {
-                            'path': promise.data.result.path,
-                            'id': promise.data.result.nodeId
-                        };
+                        current.path = promise.data.result.path;
+                        current.id = promise.data.result.nodeId;
                     } else {
                         alert(promise.data.message);
                     }
+                });
+            },
+            supprScreen: function(files, id) {
+                Upload.supprScreen(files, id).then(function (promise) {
+
                 });
             }
         };

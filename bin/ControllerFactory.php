@@ -60,7 +60,7 @@ final class ControllerFactory {
         if($test != "false") {
             return SessionManager::getCSRFToken() == $test;
         }
-        $token = crypt(uniqid(), uniqid()."csrftoken");
+        $token = hash('sha512', uniqid()."NMCAECTMD");
         SessionManager::setCSRFToken($token);
         return $token;
     }
