@@ -37,6 +37,9 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                    ).then( function (promise){
                        if(promise.data.success) {
                            onSuccess(promise) ;
+                       } else {
+                           //console.log(promise.data);
+                           //onError(promise.data);
                        }
                    });
                 };
@@ -49,7 +52,7 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                 {csrf: this.csrfToken}
             );
         },
-        createFile: function (content, title, langage, iteration, onSuccess) {
+        createFile: function (content, title, langage, iteration, onSuccess, onError) {
             //var base64 = "data:text/txt;base64,"+btoa(content);
             var base64 = [];
             for(var i=0; i<content.length; i++) {
@@ -63,6 +66,8 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
 
                 if(promise.data.success) {
                     onSuccess(promise) ;
+                } else {
+                    onError(promise.data);
                 }
             });
         },
@@ -76,9 +81,9 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                 {codes: el, id: id, name: name, csrf: this.csrfToken}
             );
         },
-        supprScreen: function(files, id) {
+        supprScreen: function(files, id, oldNodeId) {
             return $http.post(APP+"/"+controller+"/supprscreen/",
-                {files: files, id: id, csrf: this.csrfToken}
+                {files: files, id: id, oldNodeId: oldNodeId, csrf: this.csrfToken}
             );
         }
         /*,

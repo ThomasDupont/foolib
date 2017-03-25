@@ -36,16 +36,27 @@ final class CrudFile {
     }
 
     /**
-    * @param $params, create a txt file with the specified parameter
+    * @param $params, create a snippet with the specified parameter
     * @return default success tab
     * @see Upload & Node
     */
     public static function createFile(array $params)
     : array
     {
+        $userId = SessionManager::getSession()['id'];
+        $dataSet = Mysql::getInstance()->getDBDatas(
+            "SELECT valid FROM users WHERE id = ?",
+            [$userId]
+        )->toObject();
+
+
+        if(!$dataSet['result']->valid) {
+            return ['success' => false, 'message' => "Votre email n'a pas été validé"];
+        }
+
         //* Mongo code
         $body = [];
-        $userId = SessionManager::getSession()['id'];
+
         $body['id'] = md5(uniqid().$userId);
         $body['userId'] = $userId;
         $body['name'] = $params['name'];
@@ -148,6 +159,20 @@ final class CrudFile {
         }
         return ['success' => false, 'message' => "Impossible de récupérer les codes"];
 
+    }
+
+    public static function supprScreen(array $newFiles, string $mongoId)
+    : array
+    {
+        $update = [[
+            'action' => 'update', 'body' => [
+                ['id' => $mongoId, 'userId' => SessionManager::getSession()['id']],
+                [
+                    '$set' => ['file' => $newFiles]
+                ]
+            ]
+        ]];
+        return Mongo::getInstance()->addToBulk($update)->execute('save');
     }
 
     public static function getUniqFile(int $nodeId)

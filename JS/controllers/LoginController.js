@@ -30,7 +30,7 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
                           $scope.$parent.userFolderId = promise.data.result.nodeId;
 
                           Ajax.sendemail({email: $scope.email, login: $scope.username}, 1).then(function (promise) {
-                              document.getElementById('loader').style.display = 'none';
+                               document.getElementById('loader').style.display = 'none';
                                $location.path('home');
                           });
 

@@ -85,14 +85,18 @@ angular.module('routeApp')
                 }
 
             };
-            scope.suprCode = function (files, index, id) {
+            scope.supprScreen = function (files, index, id) {
                 var tmp = [];
+                var oldNodeId = null;
                 for (var i = 0; i < files.length; i++) {
                     if(i != index) {
                         tmp.push(files[i]);
+                    } else {
+                        oldNodeId = files[i].id;
                     }
-                }
 
+                }
+                scope.c.code.supprScreen(tmp, id, oldNodeId);
             };
         }
     }

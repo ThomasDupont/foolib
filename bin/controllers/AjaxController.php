@@ -148,8 +148,7 @@ final class AjaxController extends Controller implements APIInterface {
         $login = $request->params->login;
         $type  = $request->type;
         $emailing = new Emailing($this->phpmailer);
-        $emailing->sendEmail($email, $login, $type);
-        return json_encode();
+        return json_encode($emailing->sendAsyncEmail($email, $login, $type));
     }
 
     private function _CONFIRMEMAIL(\stdClass $request)

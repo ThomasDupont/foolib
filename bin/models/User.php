@@ -69,9 +69,11 @@ class User {
             [$login]
         )->toObject();
 
+        /*
         if(!$dataSet['result']->valid) {
             return ['success' => false, 'message' => "Votre email n'a pas été validé"];
         }
+        */
         if($dataSet['success']) {
             $result = $dataSet['result'];
             if($this->_checkPassword($password, $result->password)) {

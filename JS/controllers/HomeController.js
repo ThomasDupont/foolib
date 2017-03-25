@@ -27,6 +27,10 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                 this.currentcode = code;
             },
             createFile: function () {
+                if(vm.codeContent == "" || vm.codeTitle == "" || lang == "") {
+                    alert("formulaire incomplet");
+                    return false;
+                }
                 vm.dataLoading = true;
                 var lang = [];
                 var newObj = [];
@@ -41,19 +45,24 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                     });
                 }
                 _this = this;
+
                 Upload.createFile(vm.codeContent, vm.codeTitle, lang, --i, function (promise) {
-                    if(promise.data.success) {
-                        id = promise.data.result[0];
-                        var add = {
-                            id: id,
-                            name: vm.codeTitle,
-                            codes: newObj
-                        };
-                        _this.addNode(add);
-                        _this.addScreen(add);
-                        _this.code.addCodeBool = !_this.code.addCodeBool;
-                        alert('Votre snippet a été ajouté');
-                    }
+
+                    id = promise.data.result[0];
+                    var add = {
+                        id: id,
+                        name: vm.codeTitle,
+                        codes: newObj
+                    };
+                    _this.addNode(add);
+                    _this.addScreen(add);
+                    alert('Votre snippet a été ajouté');
+                    _this.addCodeBool = !_this.addCodeBool;
+                    vm.dataLoading = !vm.dataLoading;
+
+                }, function(data) {
+                    alert(data.message);
+                    _this.addCodeBool = !_this.addCodeBool;
                     vm.dataLoading = !vm.dataLoading;
                 });
             },
@@ -122,9 +131,10 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                     }
                 });
             },
-            supprScreen: function(files, id) {
-                Upload.supprScreen(files, id).then(function (promise) {
-
+            supprScreen: function(files, id, oldNodeId) {
+                _this = this;
+                Upload.supprScreen(files, id, oldNodeId).then(function (promise) {
+                    _this.currentcode.file = files;
                 });
             }
         };

@@ -5,6 +5,7 @@ namespace bin\controllers;
 use bin\models\{Cart, Order, Node, User};
 use bin\services\Upload;
 use bin\services\CrudFile;
+use bin\log\Log;
 
 final class CodeController extends Controller implements APIInterface {
 
@@ -20,7 +21,8 @@ final class CodeController extends Controller implements APIInterface {
             '_CREATEFILE',
             '_GETCODES',
             '_SUPPRCODE',
-            '_UPDATECODE'
+            '_UPDATECODE',
+            '_SUPPRSCREEN'
         ];
         return in_array($funct, $functWhiteList) ?
             $this->$funct($this->request) :
@@ -61,6 +63,23 @@ final class CodeController extends Controller implements APIInterface {
         );
     }
 
+    private function _SUPPRSCREEN (\stdClass $request)
+    : string
+    {
+        $mId = $request->id;
+        $result = CrudFile::supprScreen($request->files, $mId);
+        if($result['success']) {
+            $oNode = $request->oldNodeId;
+            $node = new Node();
+            if(!$node->unsetNode($oNode)['success']) {
+                Log::error("Error delete node {old}", ['old' => $oNode]);
+            }
+        } else {
+            Log::user("Error delete node {old}, on Mongo {mongo}", ['old' => $oNode, 'mongo' => $mId]);
+        }
+        return json_encode($result);
+
+    }
     private function _UPDATECODE (\stdClass $request)
     : string
     {

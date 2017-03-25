@@ -29,9 +29,13 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$q'
             $scope.disconnect = function disconnect () {
                 Ajax.disconnect();
                 $scope.isDisconnectable = false;
+                $scope.tree = "";
+
                 $scope.userName = "";
                 $scope.userEmail ="";
                 $scope.pprofil= "";
+                $scope.nodes = "";
+                $scope.nbSnippets = 0;
                 $scope.passByMain = false;
             } ;
             Upload.getCodes().then(function (promise) {

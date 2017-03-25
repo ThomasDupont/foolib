@@ -32,7 +32,7 @@ final class Emailing {
             $insert = [[
                 'action' => 'insert', 'body' => $body
             ]];
-            Mongo::getInstance()->addToBulk($insert)->execute('email');
+            return Mongo::getInstance()->addToBulk($insert)->execute('email');
         }
         Log::user("Erreur génération du lien, mail: {mail}, error: {error}", ['mail' => $email, 'error' => Mysql::getInstance()->error]);
         return ['success' => false, 'message' => "Erreur à la génération du lien"];
