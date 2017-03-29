@@ -4,8 +4,18 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "71790c29a03ef514f38ba25c20a4ec28",
+    "content-hash": "21009155c628e38e3c1facf65c2d6f90",
     "packages": [
+        {
+            "name": "codemirror/CodeMirror",
+            "version": "4.12.0",
+            "source": {
+                "type": "git",
+                "url": "http://github.com/codemirror/CodeMirror.git",
+                "reference": "4.12.0"
+            },
+            "type": "library"
+        },
         {
             "name": "phpmailer/phpmailer",
             "version": "v6.0.0rc4",

@@ -43,6 +43,6 @@ final class Emailing {
     : bool
     {
         $this->_token = hash('sha512', uniqid().$email."NMCAECTMD");
-        return Mysql::getInstance()->updateDBDatas('users', "emailToken = ? WHERE email = ?", [$token, $email]);
+        return Mysql::getInstance()->updateDBDatas('users', "emailToken = ? WHERE email = ?", [$this->_token, $email]);
     }
 }

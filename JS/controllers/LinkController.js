@@ -7,15 +7,17 @@ angular.module('routeApp').controller('LinkController', ['$scope', '$routeParams
         }
         $scope.mailConfirm = function(routeParams) {
             if(routeParams.token !== undefined) {
-                Ajax.confirmMail(routeParams.token).then(function(promise) {
-                    if(promise.data.success) {
-                        $scope.titleOperation = "Votre email a été validé";
-                    } else {
+                //attend la fin de l'ajax de récupération du CSRF
+                setTimeout(function () {
+                    Ajax.confirmMail(routeParams.token).then(function(promise) {
+                        if(promise.data.success) {
+                            $scope.titleOperation = "Votre email a été validé";
+                        } else {
 
-                        $scope.titleOperation = promise.data.message;
-                    }
-                });
-                console.log(routeParams.token);
+                            $scope.titleOperation = promise.data.message;
+                        }
+                    });
+                }, 1000);
             } else {
                 alert("Cette opération n'est pas permise");
                 return false;

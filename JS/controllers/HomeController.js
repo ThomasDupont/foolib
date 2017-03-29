@@ -1,10 +1,10 @@
 angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams', '$http', '$location', 'Ajax', 'Upload',
-    function($scope, $routeParams, $http, $location, Ajax, Upload){
+    function ($scope, $routeParams, $http, $location, Ajax, Upload) {
 
 
         var vm = this,
-            parent = $scope.$parent.$parent;
-        if(!parent.isDisconnectable && (typeof parent.passByMain == undefined || parent.passByMain == false)) {
+                parent = $scope.$parent.$parent;
+        if (!parent.isDisconnectable && (typeof parent.passByMain == undefined || parent.passByMain == false)) {
             location.replace('/');
             //$location.path('login');
         }
@@ -14,20 +14,23 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
         vm.wantView = false;
         vm.userdir = USERDIR;
 
-
-
-
         vm.code = {
             currentcode: "",
             addCodeBool: false,
             nbSnippet: [1],
             addSnippet: false,
-            view: function(code) {
+            view: function (code) {
                 vm.wantView = !vm.wantView;
                 this.currentcode = code;
+                console.log('ici');
+                setTimeout(function() {
+                    var mirror = new codeMirror();
+                    mirror.init();
+                }, 200);
+
             },
             createFile: function () {
-                if(vm.codeContent == "" || vm.codeTitle == "" || lang == "") {
+                if (vm.codeContent == "" || vm.codeTitle == "" || lang == "") {
                     alert("formulaire incomplet");
                     return false;
                 }
@@ -35,7 +38,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                 var lang = [];
                 var newObj = [];
                 var d = new Date();
-                for(var i=0;i<vm.codeLangage.length; i++) {
+                for (var i = 0; i < vm.codeLangage.length; i++) {
                     var tmpLang = vm.codeLangage[i].value;
                     lang.push(tmpLang);
                     newObj.push({
@@ -60,7 +63,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                     _this.addCodeBool = !_this.addCodeBool;
                     vm.dataLoading = !vm.dataLoading;
 
-                }, function(data) {
+                }, function (data) {
                     alert(data.message);
                     _this.addCodeBool = !_this.addCodeBool;
                     vm.dataLoading = !vm.dataLoading;
@@ -71,19 +74,19 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                 this.addSnippet = !this.addSnippet;
                 this.nbSnippet.length = 1;
             },
-            growthNbSnippet: function() {
+            growthNbSnippet: function () {
                 this.nbSnippet.push(1);
             },
             addNode: function (el) {
                 parent.tree.push(el);
                 parent.nbSnippets = parent.tree.length;
             },
-            supprCode : function (id) {
-                Upload.supprCode(id).then(function(promise) {
+            supprCode: function (id) {
+                Upload.supprCode(id).then(function (promise) {
                     vm.tempTree = [];
-                    for(var i = 0;i<parent.tree.length; i++) {
+                    for (var i = 0; i < parent.tree.length; i++) {
                         var current = parent.tree[i];
-                        if(current.id != id) {
+                        if (current.id != id) {
                             vm.tempTree.push(parent.tree[i]);
                         }
                     }
@@ -93,7 +96,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                     parent.nbSnippets = parent.tree.length;
                 });
             },
-            updateCode: function(el, id, name, callback) {
+            updateCode: function (el, id, name, callback) {
                 var _id = id;
                 Upload.updateCode(el, id, name).then(function (promise) {
                     //console.log(promise);
@@ -101,14 +104,14 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                 });
             },
             viewScreenAdd: false,
-            addScreen: function(current) {
+            addScreen: function (current) {
                 current.file = [];
 
                 //var file = document.getElementsByClassName("screenshot");
                 var files = drop.getResultObject();
-                for(var i=0; i<files.length; i++) {
-                    Upload.upload(files[i].data, {pNodeId: $scope.parentNodeID, mongoId:current.id, type: 'create'} , function (promise) {
-                        if(promise.data.success) {
+                for (var i = 0; i < files.length; i++) {
+                    Upload.upload(files[i].data, {pNodeId: $scope.parentNodeID, mongoId: current.id, type: 'create'}, function (promise) {
+                        if (promise.data.success) {
                             current.file.push({
                                 path: promise.data.result.path,
                                 id: promise.data.result.nodeId
@@ -120,10 +123,10 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                 }
                 this.viewScreenAdd = false;
             },
-            updateScreen: function(file, params, current) {
+            updateScreen: function (file, params, current) {
                 params.pNodeId = $scope.parentNodeID;
-                Upload.upload(file, params , function (promise) {
-                    if(promise.data.success) {
+                Upload.upload(file, params, function (promise) {
+                    if (promise.data.success) {
                         current.path = promise.data.result.path;
                         current.id = promise.data.result.nodeId;
                     } else {
@@ -131,7 +134,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                     }
                 });
             },
-            supprScreen: function(files, id, oldNodeId) {
+            supprScreen: function (files, id, oldNodeId) {
                 _this = this;
                 Upload.supprScreen(files, id, oldNodeId).then(function (promise) {
                     _this.currentcode.file = files;
@@ -140,11 +143,11 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
         };
         vm.search = {
             input: "",
-            perform: function() {
+            perform: function () {
                 var find = [];
-                for(var i=0; i<parent.tree.length;i++) {
+                for (var i = 0; i < parent.tree.length; i++) {
                     var name = parent.tree[i].name;
-                    if(name.match(this.input)) {
+                    if (name.match(this.input)) {
                         find.push({
                             name: name,
                             id: parent.tree[i].id,
@@ -157,5 +160,5 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
             },
             result: ""
         };
-      }
+    }
 ]);

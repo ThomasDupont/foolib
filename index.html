@@ -4,7 +4,15 @@
   <head>
     <meta charset="UTF-8">
     <title>foolib</title>
+
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+<!--
+    <link rel="stylesheet" href="/var/css/login.css">
+    -->
+    <link rel="stylesheet" href="/vendor/codemirror/CodeMirror/lib/codemirror.css">
+    <link rel="stylesheet" href="/vendor/codemirror/CodeMirror/theme/midnight.css">
+
+
     <style>
     .container {
         overflow:hidden;
@@ -68,11 +76,14 @@
       </ul>
     </nav>
 
-    <div class="container" ng-view></div>
+    <div class="view" ng-view></div>
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+     <script src="vendor/codemirror/CodeMirror/lib/codemirror.js"></script>
+    <script src="vendor/codemirror/CodeMirror/mode/javascript/javascript.js"></script>
+    <script src="JS/lib/jquery.js"></script>
     <script src="JS/const.js"></script>
     <script src="JS/app.js"></script>
     <script src="JS/controllers/MainController.js"></script>
@@ -82,10 +93,13 @@
     <script src="JS/controllers/ProfilController.js"></script>
     <script src="JS/controllers/LinkController.js"></script>
     <script src="JS/models/drop.js"></script>
+     <script src="JS/models/style_login.js"></script>
+    <script src="JS/models/codeMirror.js"></script>
     <script src="JS/directives/directive.js"></script>
     <script src="JS/factory/ajax.js"></script>
     <script src="JS/factory/upload.js"></script>
     <script src="JS/lib/linq.hack.min.js"></script>
+
   </body>
 
 </html>

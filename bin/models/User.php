@@ -39,12 +39,15 @@ class User {
      public function register (string $login, string $email, string $password, string $roles = "0111")
      : array
      {
+         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+             return ['success' => false, 'message' => "Le format d'email est mauvais"];
+         }
         $token = md5(uniqid());
         $this->_mysql->setUser(true);
         if(($id = $this->_mysql->setDBDatas(
                 "users",
-                "(login, password, email, API_key, roles, creationDate) VALUE (?, ?, ?, ?, ?, NOW())",
-                [$login, $this->_hashPassword($password), $email, $token, $roles]
+                "(login, password, pp,  email, API_key, roles, emailToken, creationDate) VALUE (?, ?, ?, ?, ?, ?, ?,NOW())",
+                [$login, $this->_hashPassword($password), "default.png", $email, $token, $roles, ""]
             ))
         ) {
             SessionManager::setSession($token, $roles, $id);
@@ -59,12 +62,17 @@ class User {
      /**
      * @param $login
      * @param $pwd
+     * @param $type
      */
-     public function login (string $login, string $password)
+     public function login (string $login, string $password, string $type)
      : array
      {
         $this->_mysql->setUser(true);
-        $dataSet = $this->_mysql->getDBDatas(
+
+        $dataSet = ($type == 'email') ? $this->_mysql->getDBDatas(
+            "SELECT login, pp, password, API_key, roles, id, valid FROM users WHERE email = ?",
+            [$login]
+        )->toObject() : $this->_mysql->getDBDatas(
             "SELECT login, pp, password, API_key, roles, id, valid FROM users WHERE login = ?",
             [$login]
         )->toObject();
@@ -126,7 +134,9 @@ class User {
             )->toObject()['result']->pp;
             $node = new Node();
             //unset old node
-            $node->unsetNode($node->getNodeFromPath($oldPath)['result']->node_ID);
+            if($oldPath != 'default.png') {
+                $node->unsetNode($node->getNodeFromPath($oldPath)['result']->node_ID);
+            }
             //Set new node
             return $this->_mysql->updateDBDatas(
                      "users", "pp = ? WHERE id = ?", [$path, SessionManager::getSession()['id']]

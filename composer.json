@@ -1,8 +1,25 @@
 {
     "require": {
-        "phpmailer/phpmailer": "v6.0.0rc4"
+        "phpmailer/phpmailer": "v6.0.0rc4",
+        "codemirror/CodeMirror": "4.12.0"
     },
     "autoload": {
         "psr-4": {"": "bin/"}
-    }
+    },
+    
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "codemirror/CodeMirror",
+                "version": "4.12.0",
+                "source": {
+                    "url": "https://github.com/codemirror/CodeMirror.git",
+                    "type": "git",
+                    "reference": "4.12.0"
+                }
+
+            }
+        }
+    ]
 }

@@ -47,6 +47,7 @@
          }
 
          self::$_type = "bulk";
+
          return self::$_instance;
      }
 
@@ -65,7 +66,9 @@
          self::$_insertIds = [];
          switch(self::$_type) {
             case "bulk":
+
                 self::$_result = self::$_mongo->executeBulkWrite(MONGODATABASE.'.'.$collection, self::$_bulk);
+
                 return ['success' => true, 'result' => $insertIds];
                 break;
             case "query":

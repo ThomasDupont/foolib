@@ -1,10 +1,8 @@
 <form ng-submit="updateCodeValidation(c.code.currentcode, c.code.currentcode.id, c.code.currentcode.name)">
     <h1>{{ c.code.currentcode.name }}</h2>
-    <div ng-repeat="code in c.code.currentcode.codes">
-
+    <div ng-repeat="code in c.code.currentcode.codes track by $index">
         <p>{{ code.langage }}</p>
-        <pre>{{ code.content }}</pre>
-        <textarea ng-model="code.content"></textarea>
+        <textarea class="codeMirror" ng-model="code.content"></textarea>
     </div>
     <input type="submit" value"Update">
 </form>

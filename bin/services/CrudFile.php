@@ -43,6 +43,7 @@ final class CrudFile {
     public static function createFile(array $params)
     : array
     {
+
         $userId = SessionManager::getSession()['id'];
         $dataSet = Mysql::getInstance()->getDBDatas(
             "SELECT valid FROM users WHERE id = ?",
@@ -63,14 +64,15 @@ final class CrudFile {
         $body['codes'] = [];
         for($i = $params['iteration']; $i>=0; $i--) {
             $body['codes'][] = [
-                'content' => base64_decode($params['file'][$i]),
-                'langage' => $params['langage'][$i],
+                'content' => utf8_encode(base64_decode($params['file'][$i])),
+                'langage' => utf8_encode($params['langage'][$i]),
                 'time' => time()
             ];
         }
         $insert = [[
             'action' => 'insert', 'body' => $body
         ]];
+
         return Mongo::getInstance()->addToBulk($insert)->execute('save');
 
         /*/
@@ -95,6 +97,11 @@ final class CrudFile {
     public static function updateFile(array $codes, string $id, string $name)
     : array
     {
+
+        foreach($codes as &$code) {
+            $code['content'] = utf8_encode($code['content']);
+            $code['langage'] = utf8_encode($code['langage']);
+        }
         //$result = Mongo::getInstance()->createQuery($filter, $options)->execute("save");
         //$element->updateTime = time();
         $update = [[

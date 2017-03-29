@@ -2,9 +2,28 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
     function($scope, $routeParams, $location, Ajax, Upload){
         $scope.showpwd = false;
         $scope.pwdforgetvar = "";
+        $scope.loginStyle = new styleLogin();
+        document.getElementsByTagName('nav')[0].style.display = 'none';
+        $scope.usernameRequired = false;
+        $scope.passwordRequired = false;
+        $scope.emailRequired = false;
+        var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
 
         $scope.login = function () {
-          Ajax.login($scope.username, $scope.password).then(
+            var type = 'login';
+            if($scope.username == "" || typeof($scope.username) == 'undefined') {
+                $scope.usernameRequired = true;
+                return false;
+            } else if ($scope.password == "" || typeof($scope.password) == 'undefined') {
+                $scope.passwordRequired = true;
+                return false;
+            } else {
+                $scope.usernameRequired = false;
+                $scope.passwordRequired = false;
+                type = (testEmail.test($scope.emailRequired)) ? 'email' : 'login';
+            }
+
+          Ajax.login($scope.username, $scope.password, type).then(
               function(promise){
                   if(promise.data.success) {
                       $scope.$parent.isDisconnectable = true;
@@ -18,6 +37,25 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
         }
 
         $scope.register = function () {
+            if($scope.username == "" || typeof($scope.username) == 'undefined') {
+                $scope.usernameRequired = true;
+                return false;
+            } else if ($scope.password == "" || typeof($scope.password) == 'undefined') {
+                $scope.passwordRequired = true;
+                return false;
+            } else if ($scope.email == "" || typeof($scope.email) == 'undefined') {
+                $scope.emailRequired = true;
+                return false;
+            } else {
+                $scope.usernameRequired = false;
+                $scope.passwordRequired = false;
+                $scope.emailRequired = false;
+                if (!testEmail.test($scope.emailRequired)) {
+                    alert("le format de l'email n'est pas bon");
+                    return false;
+                }
+            }
+
           if($scope.password === $scope.passwordConfirm) {
               document.getElementById('loader').style.display = 'block';
               Ajax.register($scope.username, $scope.email, $scope.password).then(

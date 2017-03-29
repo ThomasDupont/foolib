@@ -24,10 +24,6 @@
                 templateUrl: 'views/contact.html',
                 controller: 'ContactController'
             })
-            .when('/register', {
-                templateUrl: 'views/login/register.html',
-                controller: 'LoginController'
-            })
             .when('/profil', {
                 templateUrl: 'views/login/profil.html'
             })

@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  line-height: 1; }
+
+.view {
+  font-family: 'Open Sans',sans-serif;
+  background: url(../img/wallpaper.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover; }
+  .view div {
+    position: absolute;
+    padding: 0 30px 0 30px;
+    top: 20px;
+    right: 20px;
+    height: 40px;
+    line-height: 40px;
+    color: #FFFFFF;
+    font-size: 14px;
+    text-align: center;
+    background: #25C997;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all .3s; }
+  .view div:hover {
+    background: #1DAF82; }
+  .view div:first-child {
+    z-index: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(25, 26, 44, 0.9);
+    cursor: default; }
+  .view div:first-child:hover {
+    background: rgba(25, 26, 44, 0.9); }
+  .view #l_register {
+    display: none; }
+  .view section {
+    position: absolute;
+    top: calc(50% - 228px);
+    left: calc(50% - 150px);
+    padding: 30px 25px 30px 25px;
+    width: 250px;
+    background: #FFFFFF;
+    border-radius: 3px;
+    -moz-box-shadow: 0px 10px 18px 0px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 10px 18px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 10px 18px 0px rgba(0, 0, 0, 0.3); }
+    .view section img {
+      position: relative;
+      margin-left: calc(50% - 35px);
+      margin-bottom: 25px;
+      width: 70px;
+      height: 70px; }
+    .view section span {
+      display: block;
+      position: relative;
+      margin-bottom: 25px;
+      width: 100%;
+      text-align: center;
+      color: #898989; }
+    .view section form {
+      position: relative;
+      width: 250px;
+      text-align: center; }
+      .view section form input {
+        display: inline-block;
+        position: relative;
+        margin-bottom: 15px;
+        padding: 1px 15px 0 15px;
+        width: 220px;
+        height: 45px;
+        color: #25C997;
+        background: #F4F4F4;
+        font-size: 14px;
+        line-height: 45px;
+        border-radius: 3px;
+        border: 1px solid #D9D9D9;
+        -webkit-appearance: none;
+        outline: none; }
+      .view section form input[type=submit] {
+        width: 252px;
+        height: 47px;
+        background: #25C997;
+        color: #FFFFFF;
+        border: none;
+        cursor: pointer;
+        transition: all .2s; }
+      .view section form input[type=submit]:hover {
+        background: #1DAF82; }
+      .view section form span {
+        position: relative;
+        display: block;
+        margin: 12px 0 0 0;
+        color: #898989;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all .2s; }
+      .view section form span:hover {
+        opacity: 0.8; }
+    .view section #login {
+      display: none; }
+    .view section #register input[type=submit] {
+      margin-bottom: 0px; }
+    .view section #forgot_password {
+      display: none; }
+      .view section #forgot_password input[type=submit] {
+        margin-bottom: 0px; }
+    .view section #return_register {
+      position: absolute;
+      padding: 0;
+      top: 15px;
+      left: 15px;
+      width: 36px;
+      height: 36px;
+      background: #F4F4F4;
+      transition: all .3s;
+      cursor: pointer;
+      display: none; }
+      .view section #return_register img {
+        position: absolute;
+        margin: 0;
+        top: 0;
+        left: 0;
+        width: 36px;
+        height: 36px;
+        display: none; }
+  .view #others {
+    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    padding: 30px;
+    width: calc(100% - 60px);
+    text-align: center;
+    cursor: default; }
+    .view #others li {
+      display: inline-block;
+      margin: 0 7px 0 7px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      transition: all .3s;
+      opacity: 0.8; }
+    .view #others li:hover {
+      color: #25C997; }
+    .view #others li:nth-child(3) {
+      cursor: default; }
+    .view #others li:nth-child(3):hover {
+      color: rgba(255, 255, 255, 0.9); }
+
+/*# sourceMappingURL=login.css.map */

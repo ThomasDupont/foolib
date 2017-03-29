@@ -117,15 +117,15 @@ class Node {
         }
         if($isDir) {
             $nodePath.="/";
-            $paramArray = [$nodeId, $nodePath, $name, $langage, SessionManager::getSession()['id']."|"];
+            $paramArray = [$nodeId, $nodePath, $name, SessionManager::getSession()['id']."|"];
             $this->_createDir($nodePath);
         } else {
-            $paramArray = [$nodeId, $nodePath, $name, $langage, SessionManager::getSession()['id']."|"];
+            $paramArray = [$nodeId, $nodePath, $name, SessionManager::getSession()['id']."|"];
         }
 
         $nodeId = $this->_mysql->setDBDatas(
             "nodes",
-            "(parentNode_ID, path, record_name, langage, authUsers, lastModif) VALUE (?,?,?,?,?, NOW())",
+            "(parentNode_ID, path, record_name, authUsers, lastModif) VALUE (?,?,?,?, NOW())",
             $paramArray
         );
 

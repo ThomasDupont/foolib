@@ -7,7 +7,6 @@ var dropFile = function(params, limit) {
 
     // gestionnaires
     this.init = function () {
-        console.log('ici');
         dropArea.addEventListener('drop', this.handleDrop, false);
         dropArea.addEventListener('dragover', this.handleDragOver, false);
         dropArea.getElementsByTagName('button')[0].addEventListener('click', this.selectFile, false);

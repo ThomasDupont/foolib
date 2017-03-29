@@ -16,7 +16,7 @@
      {
         self::$_mongo = new \MongoDB\Driver\Manager("mongodb://".MONGOIP.":".MONGOPORT);
         self::$_bulk = new \MongoDB\Driver\BulkWrite();
-     }
+    }
 
      public static function getInstance()
      : self

@@ -1,4 +1,58 @@
-<div class="col-md-6 col-md-offset-3">
+<!-- Filtre -->
+<div></div>
+
+<!-- Liens affichage de l'inscription et de connexion  -->
+<div ng-click="loginStyle.l_login()" id="l_login">LOGIN</div>
+<div ng-click="loginStyle.l_register()" id="l_register">REGISTER</div>
+
+<!-- Formulaire d'inscription et de connexion -->
+<section>
+    <img alt="" src=""/>
+    <span>Lorem Ipsum Dolor Sit Amet</span>
+
+    <form role="form" ng-submit="register()" id="register">
+        <input ng-model="username" type="text" placeholder="Username"/>
+        <span ng-show="usernameRequired" class="help-block">Username is required</span>
+        <input ng-model="email" type="email" placeholder="Email"/>
+        <span ng-show="emailRequired" class="help-block">Email is required</span>
+        <input ng-model="password" type="password" placeholder="Password"/>
+        <span ng-show="passwordRequired" class="help-block">Password is required</span>
+        <input type="submit" value="REGISTER"/>
+    </form>
+
+    <form role="form" ng-submit="login()" id="login">
+        <input ng-model="username" type="text" placeholder="Username or Email"/>
+        <span ng-show="usernameRequired" class="help-block">Username is required</span>
+        <input ng-model="password" type="password" placeholder="Password"/>
+        <span ng-show="passwordRequired" class="help-block">Password is required</span>
+        <input type="submit" value="LOGIN"/>
+        <span ng-click="loginStyle.l_forgot_password()" id="l_forgot_password">Forgot Password ?</span>
+
+    </form>
+
+    <form role="form" ng-submit="sendNewPwd()" id="forgot_password">
+        <input ng-model="pwdforgetvar" type="text" placeholder="Your email"/>
+        <input type="submit" value="SEND"/>
+    </form>
+
+    <!-- Retour sur connexion -->
+
+    <div ng-click="loginStyle.return_register()" id="return_register">
+        <p>{{ PostDataResponse }}</p>
+        <img src=""/>
+    </div>
+
+</section>
+
+<!-- Autres liens -->
+<ul id="others">
+    <li>Twitter</li>
+    <li>Terms of Services</li>
+    <li>© Copyright 2017</li>
+</ul>
+
+
+<!--<div class="col-md-6 col-md-offset-3">
     <h2>Login</h2>
     <form name="form" ng-submit="login()" role="form">
         <div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
@@ -29,3 +83,4 @@
         <p>-------------------------------------</p>
     </div>
 </div>
+-->

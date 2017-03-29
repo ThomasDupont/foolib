@@ -46,6 +46,8 @@ angular.module('routeApp')
         link: function(scope, element, attrs) {
             scope.wantView = scope.updateCodeVar = false;
             scope.view = function(code) {
+
+                
                 scope.wantView = !scope.wantView;
             };
             scope.updateCode = function () {
@@ -66,6 +68,8 @@ angular.module('routeApp')
         createScope : false,
         templateUrl: 'views/template/viewcode.html',
         link: function(scope, element, attrs) {
+
+
             scope.updateCodeValidation = function(el, id, codename) {
                 scope.current = el;
                 // le callback lance le test des nouveaux fichiers
