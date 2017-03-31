@@ -1,4 +1,0 @@
-
-Warning: require_once(config.php): failed to open stream: No such file or directory in /Users/thomas/Library/Mobile Documents/com~apple~CloudDocs/saveProject/automate/main.php on line 7
-
-Fatal error: require_once(): Failed opening required 'config.php' (include_path='.:/usr/local/pear/share/pear:/usr/local/Cellar/php71/7.1.0_11/share/pear') in /Users/thomas/Library/Mobile Documents/com~apple~CloudDocs/saveProject/automate/main.php on line 7
