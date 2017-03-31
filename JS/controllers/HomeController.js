@@ -1,3 +1,4 @@
+
 angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams', '$http', '$location', 'Ajax', 'Upload',
     function ($scope, $routeParams, $http, $location, Ajax, Upload) {
 
@@ -13,6 +14,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
         vm.codeContent = [];
         vm.wantView = false;
         vm.userdir = USERDIR;
+        vm.mirror = new codeMirror();
 
         vm.code = {
             currentcode: "",
@@ -22,15 +24,20 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
             view: function (code) {
                 vm.wantView = !vm.wantView;
                 this.currentcode = code;
-                console.log('ici');
-                setTimeout(function() {
-                    var mirror = new codeMirror();
-                    mirror.init();
-                }, 200);
+                if(vm.wantView) {
+                    setTimeout(function() {
+                        vm.mirror.init();
+                    }, 200);
+                } else {
+                    vm.mirror.clear();
+                }
+
 
             },
             createFile: function () {
-                if (vm.codeContent == "" || vm.codeTitle == "" || lang == "") {
+                vm.mirror.save();
+
+                if ($("#codeMirror0").val() == "" || vm.codeTitle == "" || lang == "") {
                     alert("formulaire incomplet");
                     return false;
                 }
@@ -39,6 +46,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                 var newObj = [];
                 var d = new Date();
                 for (var i = 0; i < vm.codeLangage.length; i++) {
+                    vm.codeContent.push($("#codeMirror"+i).val());
                     var tmpLang = vm.codeLangage[i].value;
                     lang.push(tmpLang);
                     newObj.push({
@@ -70,12 +78,25 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                 });
             },
             addCode: function () {
+
                 this.addCodeBool = !this.addCodeBool;
+                if(this.addCodeBool) {
+                    setTimeout(function() {
+                        vm.mirror.init();
+                    }, 100);
+                } else {
+                    vm.mirror.clear();
+                }
                 this.addSnippet = !this.addSnippet;
                 this.nbSnippet.length = 1;
             },
             growthNbSnippet: function () {
+
                 this.nbSnippet.push(1);
+                var len = this.nbSnippet.length - 1;
+                setTimeout(function() {
+                    vm.mirror.refresh(document.getElementById("codeMirror"+len));
+                }, 50);
             },
             addNode: function (el) {
                 parent.tree.push(el);

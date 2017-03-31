@@ -65,7 +65,7 @@ final class AjaxController extends Controller implements APIInterface {
     {
         $user = new User();
 
-        return json_encode($user->login((string) $request->login, (string) $request->password));
+        return json_encode($user->login((string) $request->login, (string) $request->password, $request->type));
     }
 
     private function _GETHOME ()
@@ -122,11 +122,12 @@ final class AjaxController extends Controller implements APIInterface {
         return json_encode($node->unsetNode($request->nodeId));
     }
 
-    private function _CHECKUSER ()
+    private function _CHECKUSER (\stdClass $request)
     : string
     {
+        $cookie = $request->crypt ?? "";
         $user = new User();
-        return json_encode($user->checkUser());
+        return json_encode($user->checkUser($cookie));
     }
 
     private function _REGISTER (\stdClass $request)

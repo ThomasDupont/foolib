@@ -33,7 +33,7 @@ class User {
      /**
      * @param $login
      * @param $email
-     * @param $pwd password
+     * @param $password password
      * @param $roles (Admin, Owner folder, Read, Write)
      */
      public function register (string $login, string $email, string $password, string $roles = "0111")
@@ -54,14 +54,18 @@ class User {
 
             //create the users node
             $node = new Node();
-            return $node->initUserFolder();
+            if(($new = $node->initUserFolder()['success'])) {
+                return ['success' => true, 'result' => ['crypt' => $this->createCookie(), 'path' => $new['result']['path'], 'nodeId' => ['result']['nodeId']] ];
+            }
+            return ['success' => false, 'message' => $new['message']];
+
         }
         return ['success' => false, 'message' => "email ou nom déjà utilisé"];
      }
 
      /**
      * @param $login
-     * @param $pwd
+     * @param $password
      * @param $type
      */
      public function login (string $login, string $password, string $type)
@@ -87,7 +91,7 @@ class User {
             if($this->_checkPassword($password, $result->password)) {
               SessionManager::setSession($result->API_key, $result->roles, $result->id);
 
-              return ['success' => true, 'result' => [ 'name' => $result->login, 'pp' => $result->pp]];
+              return ['success' => true, 'result' => [ 'name' => $result->login, 'pp' => $result->pp, 'crypt' => $this->createCookie()]];
             } else {
               return ['success' => false, 'message' => "Erreur d'authentification"];
             }
@@ -102,9 +106,12 @@ class User {
          return ['success' => true];
      }
 
-     public function checkUser ()
+     public function checkUser (string $cookie)
      : array
      {
+         if($cookie != "") {
+             return $this->decryptCookie($cookie);
+         }
          return $this->_mysql->getCurrentUser();
      }
 
@@ -179,6 +186,36 @@ class User {
      : bool
      {
          return $this->_hashPassword($pwd) == $crypt;
+     }
+
+     private function createCookie()
+     : string
+     {
+         $session = SessionManager::getSession();
+         $apiKey = $session['APITOKEN'];
+         $random = uniqid();
+         $public = "NMCAECTMD";
+
+         return hash('sha512', $apiKey.$random.$public)."|".$random."|".$session['id'];
+
+     }
+
+     private function decryptCookie(string $cookie)
+     : array
+     {
+         $tab = explode('|', $cookie);
+         $random = $tab[1];
+         $id = $tab[2];
+         $crypt = $tab[0];
+         $public = "NMCAECTMD";
+         $current = $this->_mysql->getCurrentUser($id);
+         $hash = hash('sha512', $current['apikey'].$random.$public);
+         if($hash === $crypt) {
+             SessionManager::setSession($current['apikey'], "0111", $id);
+             return ['success' => true, 'name' => $current['login'], 'email' => $current['email'], 'pp' => $current['pp']];
+         }
+         return ['success' => false];
+
      }
 
  }

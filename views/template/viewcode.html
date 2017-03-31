@@ -2,7 +2,7 @@
     <h1>{{ c.code.currentcode.name }}</h2>
     <div ng-repeat="code in c.code.currentcode.codes track by $index">
         <p>{{ code.langage }}</p>
-        <textarea class="codeMirror" ng-model="code.content"></textarea>
+        <textarea  id="updateCodeMirror{{$index}}" class="codeMirror" ng-model="code.content"></textarea>
     </div>
     <input type="submit" value"Update">
 </form>

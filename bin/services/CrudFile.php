@@ -97,10 +97,9 @@ final class CrudFile {
     public static function updateFile(array $codes, string $id, string $name)
     : array
     {
-
         foreach($codes as &$code) {
-            $code['content'] = utf8_encode($code['content']);
-            $code['langage'] = utf8_encode($code['langage']);
+            $code->content = utf8_encode($code->content);
+            $code->langage = utf8_encode($code->langage);
         }
         //$result = Mongo::getInstance()->createQuery($filter, $options)->execute("save");
         //$element->updateTime = time();

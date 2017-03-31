@@ -83,18 +83,29 @@ class Mysql {
     /**
     * All sql operation must be authorised
     */
-    public static function getCurrentUser()
+    public static function getCurrentUser(int $id = 0)
     : array
     {
-        $sql = "SELECT * FROM users WHERE API_key = '".SessionManager::getSession()['APITOKEN']."'";
-        $result = self::$_mysqli->query($sql);
-        if($result->num_rows) {
-            $dataSet = $result->fetch_array();
-            $result->close();
-            return ['success' => true, 'name' => $dataSet['login'], 'email' => $dataSet['email'], 'pp' => $dataSet['pp']];
+        if(!$id) {
+            $sql = "SELECT login, email, pp FROM users WHERE API_key = '".SessionManager::getSession()['APITOKEN']."'";
+            $result = self::$_mysqli->query($sql);
+            if($result->num_rows) {
+                $dataSet = $result->fetch_array();
+                $result->close();
+                return ['success' => true, 'name' => $dataSet['login'], 'email' => $dataSet['email'], 'pp' => $dataSet['pp']];
+            } else {
+                $result->close();
+                return ['success' => false];
+            }
         } else {
-            $result->close();
-            return ['success' => false];
+            $sql = "SELECT API_key, pp, email, login FROM users WHERE id = ?";
+            $stmt = self::$_mysqli->prepare($sql);
+            $stmt->bind_param("s", $id);
+            $stmt->execute();
+            $stmt->bind_result($apikey, $pp, $email, $login);
+            $stmt->fetch();
+            $stmt->close();
+            return ['success' => true, 'apikey' => $apikey, 'pp' => $pp, 'email' => $email, 'login' => $login];
         }
 
     }

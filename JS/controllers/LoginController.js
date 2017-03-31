@@ -8,6 +8,7 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
         $scope.passwordRequired = false;
         $scope.emailRequired = false;
         var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+        $scope.$parent.viewClass = 'login';
 
         $scope.login = function () {
             var type = 'login';
@@ -29,12 +30,16 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
                       $scope.$parent.isDisconnectable = true;
                       $scope.$parent.userName = promise.data.result.name;
                       $scope.$parent.pprofil = USERDIR+promise.data.result.pp;
+                      $scope.$parent.crypt = promise.data.result.crypt;
+                      localStorage.setItem(STORAGE, promise.data.result.crypt);
+                      $scope.$parent.viewClass = 'container';
+
                       location.replace('/');
                   } else {
                       $scope.PostDataResponse = promise.data.message;
                   }
               }) ;
-        }
+        };
 
         $scope.register = function () {
             if($scope.username == "" || typeof($scope.username) == 'undefined') {
@@ -66,9 +71,11 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
                           $scope.$parent.userEmail = $scope.email;
                           $scope.$parent.userFolder = promise.data.result.path;
                           $scope.$parent.userFolderId = promise.data.result.nodeId;
-
+                          $scope.$parent.crypt = promise.data.result.crypt;
+                          localStorage.setItem(STORAGE, promise.data.result.crypt);
                           Ajax.sendemail({email: $scope.email, login: $scope.username}, 1).then(function (promise) {
                                document.getElementById('loader').style.display = 'none';
+                               $scope.$parent.viewClass = 'container';
                                $location.path('home');
                           });
 

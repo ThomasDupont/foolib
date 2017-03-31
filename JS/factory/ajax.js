@@ -20,7 +20,7 @@ angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
             return $http.post(APP+"/"+controller+"/gethome/" , { csrf: this.csrfToken});
         },
         checkUser: function (text) {
-            return $http.post(APP+"/"+controller+"/checkuser/" , { csrf: this.csrfToken});
+            return $http.post(APP+"/"+controller+"/checkuser/" , {crypt: text, csrf: this.csrfToken});
         },
         disconnect: function () {
             return $http.post(APP+"/"+controller+"/disconnect/" , { csrf: this.csrfToken}).then(function (promise) {

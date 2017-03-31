@@ -8,6 +8,9 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$q'
         $scope.pprofil= "";
         $scope.isDisconnectable = false;
         $scope.passByMain = true;
+        $scope.viewClass = 'container';
+        $scope.crypt = localStorage.getItem(STORAGE) || null;
+        
 
         Ajax.csrf().then(function (promise) {
             Ajax.csrfToken = Upload.csrfToken = promise.data;
@@ -15,7 +18,7 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$q'
 
             //$timeout(Ajax.test(), 100);
 
-            Ajax.checkUser().then(function (promise) {
+            Ajax.checkUser($scope.crypt).then(function (promise) {
 
                 if(promise.data.success) {
                     $scope.isDisconnectable = true;
@@ -30,13 +33,15 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$q'
                 Ajax.disconnect();
                 $scope.isDisconnectable = false;
                 $scope.tree = "";
-
+                localStorage.removeItem(STORAGE);
+                $scope.crypt = null;
                 $scope.userName = "";
                 $scope.userEmail ="";
                 $scope.pprofil= "";
                 $scope.nodes = "";
                 $scope.nbSnippets = 0;
                 $scope.passByMain = false;
+                $scope.viewClass = 'login';
             } ;
             Upload.getCodes().then(function (promise) {
                 if(promise.data.success) {
@@ -46,7 +51,7 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$q'
 
                     var nodeID;
                     for(var i=0, nodes = $scope.nodes; i<nodes.length; i++) {
-                        if(nodes[i].parentNode_ID == 0) {
+                        if(nodes[i].parentNode_ID === 0) {
                             nodeId = nodes[i].node_ID;
                         }
                     }

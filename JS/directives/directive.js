@@ -9,6 +9,7 @@ angular.module('routeApp')
         createScope : false,
         templateUrl: 'views/template/code.html',
         link: function(scope, element, attrs){
+
             scope.optionList = [{
                   id: 1,
                   label: 'php',
@@ -47,7 +48,7 @@ angular.module('routeApp')
             scope.wantView = scope.updateCodeVar = false;
             scope.view = function(code) {
 
-                
+
                 scope.wantView = !scope.wantView;
             };
             scope.updateCode = function () {
@@ -71,6 +72,11 @@ angular.module('routeApp')
 
 
             scope.updateCodeValidation = function(el, id, codename) {
+                scope.c.mirror.save();
+                for (var i = 0; i < el.codes.length; i++) {
+                    el.codes[i].content = $('#updateCodeMirror'+i).val();
+                    console.log(el.codes[i].content);
+                }
                 scope.current = el;
                 // le callback lance le test des nouveaux fichiers
                 scope.c.code.updateCode(el.codes, id, codename, scope.majFiles);
@@ -87,7 +93,10 @@ angular.module('routeApp')
                         );
                     }
                 }
-
+/*
+                scope.c.wantView = !scope.c.wantView;
+                scope.c.mirror.clear();
+*/
             };
             scope.supprScreen = function (files, index, id) {
                 var tmp = [];
