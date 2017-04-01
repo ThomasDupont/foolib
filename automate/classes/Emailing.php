@@ -100,6 +100,6 @@ final class Emailing extends MainClass {
     private function _generateLink(string $token)
     : string
     {
-        return "http://localhost:8080/#/link?type=confirm&token=".$token;
+        return DOMAIN."#/link?type=confirm&token=".$token;
     }
 }
