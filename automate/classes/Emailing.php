@@ -12,6 +12,8 @@ final class Emailing extends MainClass {
     : void
     {
         $results = Mongo::getInstance()->createQuery([])->execute("email");
+        $insert = [];
+        $delete = [];
         foreach($results as $result) {
             $send = $this->sendEmail($result->email, $result->login, $result->action, $result->token);
             if($send) {
@@ -23,18 +25,25 @@ final class Emailing extends MainClass {
                     'token' => $result->token,
                     'date' => time()
                 ];
-                $insert = [[
+                $insert[] = [
                     'action' => 'insert', 'body' => $body
-                ]];
-                Mongo::getInstance()->addToBulk($insert)->execute('emailHistory');
-                $delete = [[
+                ];
+
+                $delete[] = [
                     'action' => 'delete', 'body' => [
                         '_id' => $result->_id
                     ]
-                ]];
-                Mongo::getInstance()->setNewBulk()->addToBulk($delete)->execute('email');
+                ];
+
             }
         }
+        if(!empty($insert)) {
+            Mongo::getInstance()->addToBulk($insert)->execute('emailHistory');
+        }
+        if(!empty($insert)) {
+            Mongo::getInstance()->setNewBulk()->addToBulk($delete)->execute('email');
+        }
+
     }
 
 
