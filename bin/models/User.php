@@ -54,8 +54,9 @@ class User {
 
             //create the users node
             $node = new Node();
-            if(($new = $node->initUserFolder()['success'])) {
-                return ['success' => true, 'result' => ['crypt' => $this->createCookie(), 'path' => $new['result']['path'], 'nodeId' => ['result']['nodeId']] ];
+            $new = $node->initUserFolder();
+            if($new['success']) {
+                return ['success' => true, 'result' => ['crypt' => $this->createCookie(), 'path' => $new['result']['path'], 'nodeId' => $new['result']['nodeId']] ];
             }
             return ['success' => false, 'message' => $new['message']];
 

@@ -15,6 +15,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
         vm.wantView = false;
         vm.userdir = USERDIR;
         vm.mirror = new codeMirror();
+        vm.mirrorTheme = "midnight";
 
         vm.code = {
             currentcode: "",
@@ -27,12 +28,15 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                 if(vm.wantView) {
                     setTimeout(function() {
                         vm.mirror.init();
-                    }, 200);
+                    }, 100);
                 } else {
                     vm.mirror.clear();
                 }
 
 
+            },
+            changeMirrorTheme: function() {
+                vm.mirror.updateTheme(vm.mirrorTheme);
             },
             createFile: function () {
                 vm.mirror.save();

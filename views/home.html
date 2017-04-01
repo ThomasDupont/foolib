@@ -6,6 +6,12 @@
         <input ng-model="c.search.input" ng-change="c.search.perform()" placeholder="rechercher" type="search" name="search" id="search" class="form-control" />
     </div>
     <br>
+    <div class="form-group">
+        <label for="choseTheme">Chose your theme: </label>
+        <select name="repeatSelect" id="repeatSelect" ng-model="c.mirrorTheme" ng-change="c.code.changeMirrorTheme()">
+            <option ng-repeat="option in c.mirror.themeList" value="{{option}}">{{option}}</option>
+        </select>
+    </div>
     <ul class="list-group-item" ng-repeat="codes in c.search.result">
         <li class="list-group-item">
             <span ng-repeat="lg in codes.codes track by $index">{{lg.langage}}/</span>

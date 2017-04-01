@@ -7,9 +7,16 @@ var codeMirror = function() {
      // codemirror instance
         var priv = {};
         priv.theme = "midnight";
-        priv.themeList = [
+        this.themeList = [
             "midnight",
-            "minokai"
+            "minokai",
+            "blackboard",
+            "cobalt",
+            "eclipse",
+            "mbo",
+            "neat",
+            "elegant",
+            "neo"
         ];
         priv.editor = [];
         this.init = function()
@@ -19,12 +26,24 @@ var codeMirror = function() {
 
         this.updateTheme = function(t)
         {
-            if(t.indexOf(priv.themeList) < -1) {
-                priv.theme = t;
-                priv.addByClass('codeMirror');
-            } else {
-                alert('thème non reconnu');
+            this.clear();
+
+            for (var i = 0; i < this.themeList.length; i++) {
+                if(this.themeList[i] == t) {
+                    if(document.getElementById('mirror'+t) == null) {
+                        var head  = document.getElementsByTagName('head')[0];
+                        var link  = document.createElement('link');
+                        link.rel  = 'stylesheet';
+                        link.type = 'text/css';
+                        link.href = '/vendor/codemirror/CodeMirror/theme/'+t+'.css';
+                        link.id   = 'mirror'+t;
+                        head.appendChild(link);
+                    }
+                    priv.theme = t;
+                    priv.addByClass('codeMirror');
+                }
             }
+
         };
 
         priv.addByClass = function(_class)

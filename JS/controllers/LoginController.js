@@ -21,7 +21,7 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
             } else {
                 $scope.usernameRequired = false;
                 $scope.passwordRequired = false;
-                type = (testEmail.test($scope.emailRequired)) ? 'email' : 'login';
+                type = (testEmail.test($scope.username)) ? 'email' : 'login';
             }
 
           Ajax.login($scope.username, $scope.password, type).then(
@@ -55,13 +55,13 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
                 $scope.usernameRequired = false;
                 $scope.passwordRequired = false;
                 $scope.emailRequired = false;
-                if (!testEmail.test($scope.emailRequired)) {
+                if (!testEmail.test($scope.email)) {
                     alert("le format de l'email n'est pas bon");
                     return false;
                 }
             }
 
-          if($scope.password === $scope.passwordConfirm) {
+          //if($scope.password === $scope.passwordConfirm) {
               document.getElementById('loader').style.display = 'block';
               Ajax.register($scope.username, $scope.email, $scope.password).then(
                   function(promise){
@@ -76,6 +76,7 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
                           Ajax.sendemail({email: $scope.email, login: $scope.username}, 1).then(function (promise) {
                                document.getElementById('loader').style.display = 'none';
                                $scope.$parent.viewClass = 'container';
+                               document.getElementsByTagName('nav')[0].style.display = 'block';
                                $location.path('home');
                           });
 
@@ -83,9 +84,9 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
                           $scope.PostDataResponse = "Erreur à la création du compte";
                       }
                   });
-          } else {
-              $scope.PostDataResponse = "Les mots de passe ne correspondent pas";
-          }
+         // } else {
+        //      $scope.PostDataResponse = "Les mots de passe ne correspondent pas";
+         // }
 
       };
       $scope.pwdForgot = function () {
