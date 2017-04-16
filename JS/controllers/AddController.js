@@ -57,6 +57,7 @@ angular.module('routeApp').controller('AddController', ['$scope', '$routeParams'
                     var add = {
                         id: id,
                         name: vm.codeTitle,
+                        description: vm.codeDesc,
                         codes: newObj
                     };
                     _this.addNode(add);
