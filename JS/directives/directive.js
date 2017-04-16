@@ -10,7 +10,9 @@ angular.module('routeApp')
         templateUrl: 'views/template/code.html',
         link: function(scope, element, attrs){
 
-            scope.optionList = [{
+            scope.controller.codeLangage[scope.iteration] = "php";
+
+            /*scope.optionList = [{
                   id: 1,
                   label: 'php',
                   value: "php"
@@ -31,6 +33,7 @@ angular.module('routeApp')
                   label: 'objective-c',
                   value: "objc"
             }];
+            */
         }
     };
 }).directive("listcode", function(){

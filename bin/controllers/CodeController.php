@@ -41,7 +41,8 @@ final class CodeController extends Controller implements APIInterface {
             'iteration' => (int) $request->iteration,
             'name'    => $request->filename,
             'file'    => $request->file,
-            'langage' => $request->langage
+            'langage' => $request->langage,
+            'description' => $request->description
         ];
 
         return json_encode(

@@ -9,7 +9,7 @@ var codeMirror = function() {
         priv.theme = "midnight";
         this.themeList = [
             "midnight",
-            "minokai",
+            "monokai",
             "blackboard",
             "cobalt",
             "eclipse",

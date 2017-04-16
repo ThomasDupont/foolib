@@ -4,7 +4,7 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
 
 
         var vm = this,
-                parent = $scope.$parent.$parent;
+            parent = $scope.$parent.$parent;
         if (!parent.isDisconnectable && (typeof parent.passByMain == undefined || parent.passByMain == false)) {
             location.replace('/');
             //$location.path('login');
@@ -16,95 +16,84 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
         vm.userdir = USERDIR;
         vm.mirror = new codeMirror();
         vm.mirrorTheme = "midnight";
+        $scope.$parent.viewClass = 'main';
+        vm.style_general = $scope.$parent.style_general;
+        vm.listSnippet = [];
+        vm.wantView = false;
+        setTimeout(function() {
+            vm.mirror.init();
+        }, 100);
 
         vm.code = {
             currentcode: "",
             addCodeBool: false,
             nbSnippet: [1],
             addSnippet: false,
-            view: function (code) {
-                vm.wantView = !vm.wantView;
+            langage: [],
+            langArr: [],
+            langValue: "HTML",
+            view: function (code, e) {
+                console.log(code);
+                document.getElementById('results').style.display = "none";
+                if(e != null) {
+                    vm.style_general.liste_ul_li(e);
+                }
+                //this.langage = code.langArr;
+                vm.wantView = true;
+                vm.mirror.clear();
+                //vm.wantView = !vm.wantView;
                 this.currentcode = code;
-                if(vm.wantView) {
+                //if(vm.wantView) {
                     setTimeout(function() {
                         vm.mirror.init();
                     }, 100);
-                } else {
-                    vm.mirror.clear();
+                //} else {
+                    //vm.mirror.clear();
+                //}
+
+            },
+            viewListeCode: function(e) {
+                vm.wantView = false;
+
+                vm.style_general.popup_languages_ul_li(e);
+                var snippets = [];
+                //affichage des code selectionnés lorsqu'ils contiennent le langage
+                for (var i = 0; i < $scope.$parent.tree.length; i++) {
+                    var langArr = [];
+                    var continu = false;
+                    var codes = $scope.$parent.tree[i];
+                    for (var j = 0; j < codes.codes.length; j++) {
+                        langArr.push(codes.codes[j].langage);
+                        if(!continu) {
+                            var lang = codes.codes[j].langage;
+                            var langValue = "";
+                            for (var k = 0; k <  $scope.$parent.optionList.length; k++) {
+
+                               if($scope.$parent.optionList[k].label == vm.style_general.selectLang) {
+
+                                   langValue = $scope.$parent.optionList[k].value;
+                               }
+                            }
+
+                            if(langValue == lang) {
+                                //creation tableau de langue
+
+                                snippets.push(codes);
+                                continu = true;
+                            }
+                        }
+                    }
+
+                    codes.langArr = langArr;
                 }
-
-
+                this.langValue = vm.style_general.selectLang;
+                vm.listSnippet = snippets;
+                if(snippets.length != 0) {
+                    this.view(snippets[0], null);
+                }
             },
             changeMirrorTheme: function() {
                 vm.mirror.updateTheme(vm.mirrorTheme);
-            },
-            createFile: function () {
-                vm.mirror.save();
-
-                if ($("#codeMirror0").val() == "" || vm.codeTitle == "" || lang == "") {
-                    alert("formulaire incomplet");
-                    return false;
-                }
-                vm.dataLoading = true;
-                var lang = [];
-                var newObj = [];
-                var d = new Date();
-                for (var i = 0; i < vm.codeLangage.length; i++) {
-                    vm.codeContent.push($("#codeMirror"+i).val());
-                    var tmpLang = vm.codeLangage[i].value;
-                    lang.push(tmpLang);
-                    newObj.push({
-                        langage: tmpLang,
-                        time: d.getTime(),
-                        content: vm.codeContent[i]
-                    });
-                }
-                _this = this;
-
-                Upload.createFile(vm.codeContent, vm.codeTitle, lang, --i, function (promise) {
-
-                    id = promise.data.result[0];
-                    var add = {
-                        id: id,
-                        name: vm.codeTitle,
-                        codes: newObj
-                    };
-                    _this.addNode(add);
-                    _this.addScreen(add);
-                    alert('Votre snippet a été ajouté');
-                    _this.addCodeBool = !_this.addCodeBool;
-                    vm.dataLoading = !vm.dataLoading;
-
-                }, function (data) {
-                    alert(data.message);
-                    _this.addCodeBool = !_this.addCodeBool;
-                    vm.dataLoading = !vm.dataLoading;
-                });
-            },
-            addCode: function () {
-
-                this.addCodeBool = !this.addCodeBool;
-                if(this.addCodeBool) {
-                    setTimeout(function() {
-                        vm.mirror.init();
-                    }, 100);
-                } else {
-                    vm.mirror.clear();
-                }
-                this.addSnippet = !this.addSnippet;
-                this.nbSnippet.length = 1;
-            },
-            growthNbSnippet: function () {
-
-                this.nbSnippet.push(1);
-                var len = this.nbSnippet.length - 1;
-                setTimeout(function() {
-                    vm.mirror.refresh(document.getElementById("codeMirror"+len));
-                }, 50);
-            },
-            addNode: function (el) {
-                parent.tree.push(el);
-                parent.nbSnippets = parent.tree.length;
             },
             supprCode: function (id) {
                 Upload.supprCode(id).then(function (promise) {
@@ -128,26 +117,6 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                     callback(_id);
                 });
             },
-            viewScreenAdd: false,
-            addScreen: function (current) {
-                current.file = [];
-
-                //var file = document.getElementsByClassName("screenshot");
-                var files = drop.getResultObject();
-                for (var i = 0; i < files.length; i++) {
-                    Upload.upload(files[i].data, {pNodeId: $scope.parentNodeID, mongoId: current.id, type: 'create'}, function (promise) {
-                        if (promise.data.success) {
-                            current.file.push({
-                                path: promise.data.result.path,
-                                id: promise.data.result.nodeId
-                            });
-                        } else {
-                            alert(promise.data.message);
-                        }
-                    });
-                }
-                this.viewScreenAdd = false;
-            },
             updateScreen: function (file, params, current) {
                 params.pNodeId = $scope.parentNodeID;
                 Upload.upload(file, params, function (promise) {
@@ -166,10 +135,17 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
                 });
             }
         };
+
+        //search bar
         vm.search = {
             input: "",
             perform: function () {
                 var find = [];
+                if(this.input.length > 1) {
+                    document.getElementById('results').style.display = "block";
+                } else {
+                    document.getElementById('results').style.display = "none";
+                }
                 for (var i = 0; i < parent.tree.length; i++) {
                     var name = parent.tree[i].name;
                     if (name.match(this.input)) {
@@ -185,5 +161,50 @@ angular.module('routeApp').controller('HomeController', ['$scope', '$routeParams
             },
             result: ""
         };
+
+
+        //profil
+        //vm.showUpdate = false;
+        vm.fileOk = false;
+        $scope.fileNameChanged = function() {
+           vm.fileOk = true;
+        }
+        vm.genericModel = "";
+        vm.updateProfil = {
+            /*show: function () {
+                vm.showUpdate = !vm.showUpdate;
+            },*/
+            update: function() {
+                if(vm.fileOk) {
+                    var file = document.getElementsByClassName('fileUploadPPup');
+                    var nodeID;
+                    for(var i=0, nodes = $scope.$parent.$parent.nodes; i<nodes.length; i++) {
+                        if(nodes[i].parentNode_ID == 0) {
+                            nodeId = nodes[i].node_ID;
+                        }
+                    }
+
+                    Upload.upload(file[0].files[0], {pNodeId:nodeId, type: 'profil'}, function (promise) {
+                        vm.fileOk = false;
+                        $scope.$parent.$parent.pprofil = USERDIR+promise.data.result.path;
+                    });
+                }
+                Ajax.updateProfil(
+                    this.modifPasswordOld,
+                    this.modifPasswordNew,
+                    $scope.$parent.userName,
+                    $scope.$parent.userEmail
+                ).then(function (promise) {
+                    if(promise.data.success) {
+                        vm.showUpdate = !vm.showUpdate;
+                    } else {
+                        alert(promise.data.message);
+                    }
+                });
+
+            },
+            modifPasswordOld : "aaaa",
+            modifPasswordNew : "bbbb"
+        }
     }
 ]);

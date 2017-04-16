@@ -61,6 +61,7 @@ final class CrudFile {
         $body['id'] = md5(uniqid().$userId);
         $body['userId'] = $userId;
         $body['name'] = $params['name'];
+        $body['description'] = $params['description'];
         $body['codes'] = [];
         for($i = $params['iteration']; $i>=0; $i--) {
             $body['codes'][] = [

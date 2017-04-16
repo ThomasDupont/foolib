@@ -1,0 +1,22 @@
+<div ng-controller="AddController as c">
+    <header id="header_add">
+        <a href="#/home"><h1>Foolib.</h1></a>
+        <h4>Add a Snippet</h4>
+    </header>
+    <form>
+        <div id="info_project">
+            <h2>Informations</h2>
+            <input ng-model="c.codeTitle" type="text" placeholder="Title *"/>
+            <textarea ng-model="c.codeDesc" type="text" placeholder="Description"></textarea>
+        </div>
+
+        <div id="content_project">
+            <code style="opacity:0" ng-repeat="t in c.code.nbSnippet track by $index" iteration="$index" controller="c"></code>
+            <ul>
+                <li ng-click="c.code.growthNbSnippet()">MORE</li>
+                <li ng-click="c.code.createFile()">VALIDATE</li>
+            </ul>
+        </div>
+    </form>
+    <screenshot ng-show="c.code.viewScreenAdd"></screenshot>
+</div>

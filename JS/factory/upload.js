@@ -52,7 +52,7 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
                 {csrf: this.csrfToken}
             );
         },
-        createFile: function (content, title, langage, iteration, onSuccess, onError) {
+        createFile: function (content, title, description, langage, iteration, onSuccess, onError) {
             //var base64 = "data:text/txt;base64,"+btoa(content);
             var base64 = [];
             for(var i=0; i<content.length; i++) {
@@ -61,7 +61,7 @@ angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
 
             $http.post(
                 APP+"/"+controller+"/createfile/",
-                {file : base64, filename: title, langage: langage, iteration: iteration, csrf: this.csrfToken}
+                {file : base64, filename: title, description: description, langage: langage, iteration: iteration, csrf: this.csrfToken}
             ).then( function(promise) {
 
                 if(promise.data.success) {

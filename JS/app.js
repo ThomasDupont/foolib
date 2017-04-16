@@ -30,6 +30,9 @@
             .when('/home', {
                 templateUrl: 'views/home.html'
             })
+            .when('/add', {
+                templateUrl: 'views/add.html'
+            })
             .when('/link', {
                 templateUrl: 'views/login/link.html'
             })

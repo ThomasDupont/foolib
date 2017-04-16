@@ -38,9 +38,9 @@ angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
                 {token: token, csrf: this.csrfToken}
             );
         },
-        updateProfil: function(pwd, name, email) {
+        updateProfil: function(pwdOld, pwdNew, name, email) {
             return $http.post(APP+"/"+controller+"/updateprofil/",
-                {login: name, email: email, password: pwd, csrf: this.csrfToken}
+                {login: name, email: email, passwordOld: pwdOld, passwordNew: pwdNew, csrf: this.csrfToken}
             );
         },
         onError: function(error) {

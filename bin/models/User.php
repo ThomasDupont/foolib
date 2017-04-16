@@ -119,13 +119,17 @@ class User {
      public function updateProfil(\stdClass $request)
      : array
      {
-         if(empty($request->password)) {
+
+        /**
+        *    @TODO Check ancien mot de passe
+        */
+         if(empty($request->passwordNew)) {
              return ['success' => false, 'message' => "Le mot de passe est vide"];
          }
          if($this->_mysql->updateDBDatas(
                  "users",
                  "login = ?, password = ?, email = ? WHERE id = ?",
-                 [$request->login, $this->_hashPassword($request->password), $request->email, SessionManager::getSession()['id']]
+                 [$request->login, $this->_hashPassword($request->passwordNew), $request->email, SessionManager::getSession()['id']]
              )
          ) {
              return ['success' => true];

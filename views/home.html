@@ -1,65 +1,74 @@
 <div ng-controller="HomeController as c">
 
-    <h2>Recherche</h2>
-
-    <div class="form-group">
-        <input ng-model="c.search.input" ng-change="c.search.perform()" placeholder="rechercher" type="search" name="search" id="search" class="form-control" />
-    </div>
-    <br>
-    <div class="form-group">
-        <label for="choseTheme">Chose your theme: </label>
-        <select name="repeatSelect" id="repeatSelect" ng-model="c.mirrorTheme" ng-change="c.code.changeMirrorTheme()">
-            <option ng-repeat="option in c.mirror.themeList" value="{{option}}">{{option}}</option>
-        </select>
-    </div>
-    <ul class="list-group-item" ng-repeat="codes in c.search.result">
-        <li class="list-group-item">
-            <span ng-repeat="lg in codes.codes track by $index">{{lg.langage}}/</span>
-            <h3>{{codes.name}}</h3>
-            <ul ng-repeat="code in codes.codes track by $index" class="list-group">
-                <li class="list-group-item">
-                    <button class="btn" ng-click="controller.code.supprCode(codeid)">Supr</button>
-                    <span>{{code.langage}}</span>
-                </li>
-            </ul>
-            <button ng-click="c.code.view(codes)" class="btn btn-default">voir</button>
-
-        </li>
-    </ul>
-    <h2>Ajouter un snippet</h2>
-
-    <button ng-click="c.code.addCode()" class="btn btn-primary">Ajout</button>
-    <div ng-show="c.code.addCodeBool">
-        <div class="container">
-            <div role="form">
-                <div class="form-group">
-                    <label for="folderName">Title of your Snippet</label>
-                    <input type="text" name="codeTitle" id="codeTitle" class="form-control" ng-model="c.codeTitle" />
-                </div>
-                <code ng-repeat="t in c.code.nbSnippet track by $index" iteration="$index" controller="c"></code>
-                <div class="form-actions">
-                    <button ng-show="c.code.addSnippet" ng-click="c.code.growthNbSnippet()" class="btn btn-secondary">...</button>
-                </div>
-                <div class="form-actions">
-                    <button ng-click="c.code.createFile()" class="btn btn-primary">Ajouter un code</button>
-                    <img ng-show="c.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                </div>
-            </div>
-
-            <button ng-click="c.code.viewScreenAdd = !c.code.viewScreenAdd" class="btn btn-secondary">Ajout screenshot</button>
-            <screenshot ng-show="c.code.viewScreenAdd"></screenshot>
-        </div>
-
-    </div>
-    <h2>Liste Snippet</h2>
-
-    <div class="col-md-4 col-xs-4 col-sm-4 col-lg-4">
-        <ul ng-show="$parent.tree.length > 0" class="list-group">
-            <listcode ng-repeat="f in $parent.tree track by $index" codes="f" codeid="f.id" codename="f.name" controller="c"></listcode>
+    <!-- Liste de gauche -->
+    <div id="liste">
+        <h1 ng-click="c.style_general.l_select_language()" id="l_select_language">{{c.code.langValue}}</h1>
+        <ul>
+            <li ng-click="c.code.view(item, $event)" ng-repeat="item in c.listSnippet">{{item.name}}<div></div></li>
         </ul>
     </div>
-    <div class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
+
+    <!-- Menu -->
+    <header>
+
+        <!-- Recherches -->
+        <div id="search">
+            <input ng-model="c.search.input" ng-change="c.search.perform()" type="search" placeholder="Search..." value=""/>
+            <img src="../var/img/icons/search.png" alt=""/>
+        </div>
+        <div id="results">
+            <ul>
+                <li ng-click="c.code.view(code, $event)" ng-repeat="code in c.search.result">{{code.name}}</li>
+            </ul>
+        </div>
+
+        <!-- Liens vers add snippet et profil -->
+        <a href="#/add"><div id="l_post">Add a Snippet</div></a>
+        <img ng-click="c.style_general.l_profile()" id="l_profile" src="" alt=""/>
+    </header>
+
+    <!-- Content -->
+    <section id="aff_language">
+        <ul>
+            <li ng-repeat="lang in c.code.langage" ng-click="c.style_general.aff_language_ul_li($event)">{{lang}}</li>
+        </ul>
+    </section>
+
+    <!-- Popup du profil -->
+    <div ng-click="c.style_general.popup_filtre($event)" id="popup_filtre"></div>
+    <div id="popup_profile">
+        <div ng-click="c.style_general.close_edit_profile($event)" id="close_edit_profile">
+            <img src="../var/img/icons/back.png"/>
+        </div>
+        <div ng-click="c.style_general.l_edit_profile($event)" id="l_edit_profile">
+            <img src="../var/img/icons/edit.png"/>
+        </div>
+        <img id="pp_profile" src=""/>
+        <div id="base_profile">
+            <h2>{{$parent.userName}}</h2>
+            <span>{{$parent.nbSnippets}} Codes</span>
+            <div id="disconnect" ng-click="$parent.disconnect()">DISCONNECT</div>
+        </div>
+        <form ng-submit="p.updateProfil.update()" role="form">
+            <input ng-model="$parent.userName" type="text" placeholder="Username" value=""/>
+            <input ng-model="$parent.userEmail" type="email" placeholder="Email" value=""/>
+            <input ng-model="p.updateProfil.modifPasswordOld" type="password" placeholder="Current Password" value=""/>
+            <input ng-model="p.updateProfil.modifPasswordNew" type="password" placeholder="New Password" value=""/>
+            <input type="submit" value="VALIDATE"/>
+        </form>
+    </div>
+
+    <!-- Popup selection du langage -->
+    <div id="popup_languages">
+        <h2>LANGUAGE</h2>
+        <ul>
+            <li ng-click="c.code.viewListeCode($event)" ng-repeat="item in $parent.optionList">{{item.label}}</li>
+        </ul>
+    </div>
+
+    <div id="list_snippet" class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
         <viewcode ng-show="c.wantView" controller="c"></viewcode>
     </div>
+
 
 </div>

@@ -10,7 +10,24 @@ angular.module('routeApp').controller('MainController', ['$scope', '$http', '$q'
         $scope.passByMain = true;
         $scope.viewClass = 'container';
         $scope.crypt = localStorage.getItem(STORAGE) || null;
-        
+        $scope.style_general = new style_general();
+        $scope.optionList = [{
+                  label: 'PHP',
+                  value: "php"
+            }, {
+                  label: 'JavaScript',
+                  value: "javascript"
+            }, {
+                  label: 'HTML',
+                  value: "html"
+            }, {
+                  label: 'CSS',
+                  value: "css"
+            }, {
+                  label: 'Objective C',
+                  value: "objc"
+            }];
+
 
         Ajax.csrf().then(function (promise) {
             Ajax.csrfToken = Upload.csrfToken = promise.data;

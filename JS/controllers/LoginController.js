@@ -3,7 +3,7 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
         $scope.showpwd = false;
         $scope.pwdforgetvar = "";
         $scope.loginStyle = new styleLogin();
-        document.getElementsByTagName('nav')[0].style.display = 'none';
+        //document.getElementsByTagName('nav')[0].style.display = 'none';
         $scope.usernameRequired = false;
         $scope.passwordRequired = false;
         $scope.emailRequired = false;
@@ -62,7 +62,7 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
             }
 
           //if($scope.password === $scope.passwordConfirm) {
-              document.getElementById('loader').style.display = 'block';
+              //document.getElementById('loader').style.display = 'block';
               Ajax.register($scope.username, $scope.email, $scope.password).then(
                   function(promise){
                       if(promise.data.success) {
@@ -74,9 +74,9 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
                           $scope.$parent.crypt = promise.data.result.crypt;
                           localStorage.setItem(STORAGE, promise.data.result.crypt);
                           Ajax.sendemail({email: $scope.email, login: $scope.username}, 1).then(function (promise) {
-                               document.getElementById('loader').style.display = 'none';
+                               //document.getElementById('loader').style.display = 'none';
                                $scope.$parent.viewClass = 'container';
-                               document.getElementsByTagName('nav')[0].style.display = 'block';
+                               //document.getElementsByTagName('nav')[0].style.display = 'block';
                                $location.path('home');
                           });
 

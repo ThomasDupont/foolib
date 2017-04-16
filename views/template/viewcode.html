@@ -1,5 +1,16 @@
+<form  ng-submit="updateCodeValidation(c.code.currentcode, c.code.currentcode.id, c.code.currentcode.name)" id="list_snippet">
+    <h1>{{ c.code.currentcode.name }}</h1>
+    <p><span>Description :</span> {{ c.code.currentcode.description }}</p>
+    <div ng-repeat="code in c.code.currentcode.codes track by $index">
+        <span class="tag">{{ code.langage }}</span>
+        <textarea id="updateCodeMirror{{$index}}" class="codeMirror" ng-model="code.content"></textarea>
+    </div>
+    <input type="submit" value="Update">
+</form>
+
+<!--
 <form ng-submit="updateCodeValidation(c.code.currentcode, c.code.currentcode.id, c.code.currentcode.name)">
-    <h1>{{ c.code.currentcode.name }}</h2>
+    <h1>{{ c.code.currentcode.name }}</h1>
     <div ng-repeat="code in c.code.currentcode.codes track by $index">
         <p>{{ code.langage }}</p>
         <textarea  id="updateCodeMirror{{$index}}" class="codeMirror" ng-model="code.content"></textarea>
@@ -13,3 +24,4 @@
     <p>Changer de fichier</p>
     <input type="file" class="updateFile">
 </div>
+-->
