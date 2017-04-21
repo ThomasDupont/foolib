@@ -1,14 +1,22 @@
-angular.module('routeApp').controller('LoginController', ['$scope', '$routeParams', '$location', 'Ajax', 'Upload',
-    function($scope, $routeParams, $location, Ajax, Upload){
+angular.module('foolib').controller('LoginController', [
+    '$scope',
+    '$routeParams',
+    '$location',
+    'Ajax',
+    'Upload',
+    'mainFactory',
+    function($scope, $routeParams, $location, Ajax, Upload, mainFactory){
         $scope.showpwd = false;
         $scope.pwdforgetvar = "";
         $scope.loginStyle = new styleLogin();
-        //document.getElementsByTagName('nav')[0].style.display = 'none';
         $scope.usernameRequired = false;
         $scope.passwordRequired = false;
         $scope.emailRequired = false;
         var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
-        $scope.$parent.viewClass = 'login';
+        mainFactory.viewClass = 'login';
+        Ajax.csrf().then(function (promise) {
+            Ajax.csrfToken = Upload.csrfToken = promise.data;
+        });
 
         $scope.login = function () {
             var type = 'login';
@@ -24,21 +32,22 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
                 type = (testEmail.test($scope.username)) ? 'email' : 'login';
             }
 
-          Ajax.login($scope.username, $scope.password, type).then(
-              function(promise){
-                  if(promise.data.success) {
-                      $scope.$parent.isDisconnectable = true;
-                      $scope.$parent.userName = promise.data.result.name;
-                      $scope.$parent.pprofil = USERDIR+promise.data.result.pp;
-                      $scope.$parent.crypt = promise.data.result.crypt;
-                      localStorage.setItem(STORAGE, promise.data.result.crypt);
-                      $scope.$parent.viewClass = 'container';
+            Ajax.login($scope.username, $scope.password, type).then(
+                  function(promise){
+                      if(promise.data.success) {
+                          mainFactory.isDisconnectable = true;
+                          mainFactory.userName = promise.data.result.name;
+                          mainFactory.pprofil = USERDIR+promise.data.result.pp;
+                          mainFactory.crypt = promise.data.result.crypt;
+                          localStorage.setItem(STORAGE, promise.data.result.crypt);
+                          mainFactory.viewClass = 'main';
 
-                      location.replace('/');
-                  } else {
-                      $scope.PostDataResponse = promise.data.message;
+                          location.replace('/');
+                      } else {
+                          $scope.PostDataResponse = promise.data.message;
+                      }
                   }
-              }) ;
+              );
         };
 
         $scope.register = function () {
@@ -51,49 +60,56 @@ angular.module('routeApp').controller('LoginController', ['$scope', '$routeParam
             } else if ($scope.email == "" || typeof($scope.email) == 'undefined') {
                 $scope.emailRequired = true;
                 return false;
+            } else if($scope.password.length < 6) {
+                alert('The password is too short (6 chars minimum)');
+                return false;
             } else {
                 $scope.usernameRequired = false;
                 $scope.passwordRequired = false;
                 $scope.emailRequired = false;
                 if (!testEmail.test($scope.email)) {
-                    alert("le format de l'email n'est pas bon");
+                    alert("The email format is not good");
                     return false;
                 }
             }
 
-          //if($scope.password === $scope.passwordConfirm) {
-              //document.getElementById('loader').style.display = 'block';
               Ajax.register($scope.username, $scope.email, $scope.password).then(
                   function(promise){
                       if(promise.data.success) {
-                          $scope.$parent.isDisconnectable = true;
-                          $scope.$parent.userName = $scope.username;
-                          $scope.$parent.userEmail = $scope.email;
-                          $scope.$parent.userFolder = promise.data.result.path;
-                          $scope.$parent.userFolderId = promise.data.result.nodeId;
-                          $scope.$parent.crypt = promise.data.result.crypt;
+                          mainFactory.isDisconnectable = true;
+                          mainFactory.userName = $scope.username;
+                          mainFactory.userEmail = $scope.email;
+                          mainFactory.userFolder = promise.data.result.path;
+                          mainFactory.userFolderId = promise.data.result.nodeId;
+                          mainFactory.crypt = promise.data.result.crypt;
                           localStorage.setItem(STORAGE, promise.data.result.crypt);
                           Ajax.sendemail({email: $scope.email, login: $scope.username}, 1).then(function (promise) {
-                               //document.getElementById('loader').style.display = 'none';
-                               $scope.$parent.viewClass = 'container';
-                               //document.getElementsByTagName('nav')[0].style.display = 'block';
+                               mainFactory.viewClass = 'main';
                                $location.path('home');
                           });
 
                       } else {
-                          $scope.PostDataResponse = "Erreur à la création du compte";
+                          $scope.PostDataResponse = "An error occured with the account setting";
                       }
-                  });
-         // } else {
-        //      $scope.PostDataResponse = "Les mots de passe ne correspondent pas";
-         // }
+                  }
+              );
 
       };
       $scope.pwdForgot = function () {
           $scope.showpwd = !$scope.showpwd;
       };
       $scope.sendNewPwd = function() {
-          console.log($scope.pwdforgetvar);
+          if (!testEmail.test($scope.pwdforgetvar)) {
+              alert("The email format is not good");
+              return false;
+          }
+          Ajax.sendemail({email: $scope.pwdforgetvar, login:"#"}, 2).then(function (promise) {
+              if(promise.data.success) {
+                  alert('A email is sending to you');
+              } else {
+                  alert('An error occured: '+promise.data.message);
+              }
+          });
       }
 
   }

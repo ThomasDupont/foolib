@@ -2,8 +2,8 @@
 
 var styleLogin = function() {
 
-    this.l_login = function () {
-        $(this).css('display','none');
+    this.l_login = function (e) {
+        $(e.target).css('display','none');
         $("#l_register").css('display','block');
         $("#login").fadeIn();
         $("#register").css('display','none');
@@ -12,8 +12,8 @@ var styleLogin = function() {
         $("section").css('top','calc(50% - 228px)');
     };
     // Affichage Inscription
-    this.l_register = function () {
-        $(this).css('display','none');
+    this.l_register = function (e) {
+        $(e.target).css('display','none');
         $("#l_login").css('display','block');
         $("#register").fadeIn();
         $("#login").css('display','none');

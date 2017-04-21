@@ -14,7 +14,7 @@
         <!-- Recherches -->
         <div id="search">
             <input ng-model="c.search.input" ng-change="c.search.perform()" type="search" placeholder="Search..." value=""/>
-            <img src="../var/img/icons/search.png" alt=""/>
+            <img src="var/img/icons/search.png" alt=""/>
         </div>
         <div id="results">
             <ul>
@@ -24,36 +24,30 @@
 
         <!-- Liens vers add snippet et profil -->
         <a href="#/add"><div id="l_post">Add a Snippet</div></a>
-        <img ng-click="c.style_general.l_profile()" id="l_profile" src="" alt=""/>
+        <img ng-click="c.style_general.l_profile()" id="l_profile" src="{{c.mainFactory.pprofil}}" alt=""/>
     </header>
-
-    <!-- Content -->
-    <section id="aff_language">
-        <ul>
-            <li ng-repeat="lang in c.code.langage" ng-click="c.style_general.aff_language_ul_li($event)">{{lang}}</li>
-        </ul>
-    </section>
 
     <!-- Popup du profil -->
     <div ng-click="c.style_general.popup_filtre($event)" id="popup_filtre"></div>
     <div id="popup_profile">
         <div ng-click="c.style_general.close_edit_profile($event)" id="close_edit_profile">
-            <img src="../var/img/icons/back.png"/>
+            <img src="var/img/icons/back.png"/>
         </div>
-        <div ng-click="c.style_general.l_edit_profile($event)" id="l_edit_profile">
-            <img src="../var/img/icons/edit.png"/>
+        <div ng-click="c.updateProfil.viewModif($event)" id="l_edit_profile">
+            <img src="var/img/icons/edit.png"/>
         </div>
-        <img id="pp_profile" src=""/>
+        <img id="pp_profile" src="{{c.mainFactory.pprofil}}"/>
+        <img ng-click="c.updateProfil.selectPP()" id="pp_profile_edit" src="var/img/pp_edit.png"/>
         <div id="base_profile">
-            <h2>{{$parent.userName}}</h2>
-            <span>{{$parent.nbSnippets}} Codes</span>
-            <div id="disconnect" ng-click="$parent.disconnect()">DISCONNECT</div>
+            <h2>{{c.mainFactory.userName}}</h2>
+            <span>{{c.mainFactory.nbSnippets}} Codes</span>
+            <div id="disconnect" ng-click="c.mainFactory.disconnect()">DISCONNECT</div>
         </div>
-        <form ng-submit="p.updateProfil.update()" role="form">
-            <input ng-model="$parent.userName" type="text" placeholder="Username" value=""/>
-            <input ng-model="$parent.userEmail" type="email" placeholder="Email" value=""/>
-            <input ng-model="p.updateProfil.modifPasswordOld" type="password" placeholder="Current Password" value=""/>
-            <input ng-model="p.updateProfil.modifPasswordNew" type="password" placeholder="New Password" value=""/>
+        <form ng-submit="c.updateProfil.update()" role="form">
+            <input ng-model="c.mainFactory.userName" type="text" placeholder="Username" value=""/>
+            <input ng-model="c.mainFactory.userEmail" type="email" placeholder="Email" value=""/>
+            <input ng-model="c.updateProfil.modifPasswordOld" type="password" placeholder="Current Password" value=""/>
+            <input ng-model="c.updateProfil.modifPasswordNew" type="password" placeholder="New Password" value=""/>
             <input type="submit" value="VALIDATE"/>
         </form>
     </div>
@@ -62,13 +56,13 @@
     <div id="popup_languages">
         <h2>LANGUAGE</h2>
         <ul>
-            <li ng-click="c.code.viewListeCode($event)" ng-repeat="item in $parent.optionList">{{item.label}}</li>
+            <li ng-click="c.code.viewListeCode($event)" ng-repeat="item in c.listlang">{{item.label}}</li>
         </ul>
     </div>
 
     <div id="list_snippet" class="col-md-8 col-xs-8 col-sm-8 col-lg-8">
         <viewcode ng-show="c.wantView" controller="c"></viewcode>
     </div>
-
+    <input onchange="angular.element(this).scope().fileNameChanged()" type="file" style="display:none;" id="fileUploadPPup" class="fileUploadPPup"/>
 
 </div>

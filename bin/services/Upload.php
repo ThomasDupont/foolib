@@ -90,12 +90,12 @@ final class Upload {
         self::$_fileInfo = $file = self::_createTmpFile($file, $filename, $type);
 
         if(($length = $file['size']) > MAX_FILE_SIZE) {
-            self::$_checkFile = ['success' => false, 'message' => "La taille du fichier est trop grande $length pour ".MAX_FILE_SIZE." autorisé"];
+            self::$_checkFile = ['success' => false, 'message' => "The size of the file is too big $length for ".MAX_FILE_SIZE." authorized"];
         } else if(
             !in_array($file['ext'], self::$_fileTypes)
             && !preg_match("/(".implode(')|(',self::$_fileTypes).")/", mime_content_type($file['tmp_path']))
           ) {
-            self::$_checkFile = ['success' => false, 'message' => "Type de fichier ".mime_content_type($file['tmp_path'])." non autorisé"];
+            self::$_checkFile = ['success' => false, 'message' => "file type ".mime_content_type($file['tmp_path'])." not authorized"];
         }
 
         self::$_checkFile = ['success' => true];

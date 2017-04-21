@@ -29,20 +29,20 @@ final class CodeController extends Controller implements APIInterface {
             json_encode(['success' => false, 'message' => "not authorized $funct"]);
     }
 
-    private function _CREATEFILE (\stdClass $request)
+    private function _CREATEFILE ()
     : string
     {
-        if(!is_array($request->langage)) {
+        if(!is_array($this->request->langage)) {
             return json_encode(
                 ['success' => false, 'message' => "the langage parameter is not an array"]
             );
         }
         $params = [
-            'iteration' => (int) $request->iteration,
-            'name'    => $request->filename,
-            'file'    => $request->file,
-            'langage' => $request->langage,
-            'description' => $request->description
+            //'iteration' => (int) $this->request->iteration,
+            'name'    => $this->request->filename,
+            'file'    => $this->request->file,
+            'langage' => $this->request->langage,
+            'description' => $this->request->description
         ];
 
         return json_encode(
@@ -50,27 +50,27 @@ final class CodeController extends Controller implements APIInterface {
         );
     }
 
-    private function _GETCODES (\stdClass $request)
+    private function _GETCODES ()
     : string
     {
         return json_encode(CrudFile::getFiles());
     }
 
-    private function _SUPPRCODE (\stdClass $request)
+    private function _SUPPRCODE ()
     : string
     {
         return json_encode(
-            CrudFile::deleteFile($request->id)
+            CrudFile::deleteFile($this->request->id)
         );
     }
 
-    private function _SUPPRSCREEN (\stdClass $request)
+    private function _SUPPRSCREEN ()
     : string
     {
-        $mId = $request->id;
-        $result = CrudFile::supprScreen($request->files, $mId);
+        $mId = $this->request->id;
+        $result = CrudFile::supprScreen($this->request->files, $mId);
         if($result['success']) {
-            $oNode = $request->oldNodeId;
+            $oNode = $this->request->oldNodeId;
             $node = new Node();
             if(!$node->unsetNode($oNode)['success']) {
                 Log::error("Error delete node {old}", ['old' => $oNode]);
@@ -81,11 +81,15 @@ final class CodeController extends Controller implements APIInterface {
         return json_encode($result);
 
     }
-    private function _UPDATECODE (\stdClass $request)
+    private function _UPDATECODE ()
     : string
     {
         return json_encode(
-            CrudFile::updateFile($request->codes, $request->id, $request->name)
+            CrudFile::updateFile(
+                $this->request->codes,
+                $this->request->id,
+                $this->request->name
+            )
         );
     }
 }

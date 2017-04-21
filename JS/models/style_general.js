@@ -25,14 +25,17 @@ var style_general = function() {
         $("#base_profile").css('display','none');
         $("#popup_profile").children('form').fadeIn();
         $("#close_edit_profile").fadeIn();
+        $("#close_edit_profile").children('img').fadeIn();
         $("#popup_profile").css('top','calc(50% - 246px)');
     };
 
     this.close_edit_profile = function(e) {
+        $('#pp_profile_edit').css('display', 'none');
         $(e.target).fadeOut();
         $("#base_profile").fadeIn();
         $("#popup_profile").children('form').css('display','none');
         $("#l_edit_profile").fadeIn();
+        $("#l_edit_profile").children('img').fadeIn();
         $("#popup_profile").css('top','calc(50% - 162px)');
     };
 

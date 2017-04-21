@@ -11,6 +11,8 @@ final class Emailing {
     private $_phpmailer;
     private $_token;
 
+    const EMAILTYPE = [1,2];
+
     public function __construct(PHPMailer $phpmailer)
     {
         $this->_phpmailer = $phpmailer;
@@ -19,8 +21,10 @@ final class Emailing {
     public function sendAsyncEmail(string $email, string $login, int $action)
     : array
     {
-
-        if($this->_generateToken($email)) {
+        if(!in_array($action, self::EMAILTYPE)) {
+            return ['success' => false, 'message' => "Email type error"];
+        }
+        if($this->_generateToken($email, $action)) {
             $body = [
                 'id' => uniqid(),
                 'email' => $email,
@@ -35,14 +39,23 @@ final class Emailing {
             return Mongo::getInstance()->addToBulk($insert)->execute('email');
         }
         Log::user("Erreur génération du lien, mail: {mail}, error: {error}", ['mail' => $email, 'error' => Mysql::getInstance()->error]);
-        return ['success' => false, 'message' => "Erreur à la génération du lien"];
+        return ['success' => false, 'message' => "Link generation error"];
 
     }
 
-    private function _generateToken(string $email)
+    private function _generateToken(string $email, int $type)
     : bool
     {
         $this->_token = hash('sha512', uniqid().$email."NMCAECTMD");
-        return Mysql::getInstance()->updateDBDatas('users', "emailToken = ? WHERE email = ?", [$this->_token, $email]);
+        switch ($type) {
+            case 1:
+                return Mysql::getInstance()->updateDBDatas('users', "emailToken = ? WHERE email = ?", [$this->_token, $email]);
+                break;
+            case 2:
+                return Mysql::getInstance()->updateDBDatas('users', "forgotpwd = ? WHERE email = ?", [$this->_token, $email]);
+                break;
+
+        }
+
     }
 }

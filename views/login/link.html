@@ -1,3 +1,14 @@
-<div class="container" ng-controller="LinkController">
-    <h1>{{titleOperation}}</h1>
+
+<header>
+    <img src="var/img/logo/logo.png"/>
+</header>
+<div ng-show="newpwd">
+    <h1>Reset your password</h1>
+    <span>Strong passwords include numbers, letters, and punctuation marks.</span>
+    <form ng-submit="sendNewPwd()">
+        <input ng-model="newpwdstr1" type="password" placeholder="New password"/>
+        <input ng-model="newpwdstr2" type="password" placeholder="Repeat your new password"/>
+        <input type="submit" value="SUBMIT"/>
+    </form>
 </div>
+<h1>{{titleOperation}}</h1>

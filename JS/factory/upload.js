@@ -1,4 +1,4 @@
-angular.module('routeApp').factory('Upload', function($http, $location, $sce) {
+angular.module('foolib').factory('Upload', function($http, $location, $sce) {
     var controller = "code";
     return {
         csrfToken: "",

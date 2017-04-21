@@ -2,12 +2,12 @@
 <div></div>
 
 <!-- Liens affichage de l'inscription et de connexion  -->
-<div ng-click="loginStyle.l_login()" id="l_login">LOGIN</div>
-<div ng-click="loginStyle.l_register()" id="l_register">REGISTER</div>
+<div ng-click="loginStyle.l_login($event)" id="l_login">LOGIN</div>
+<div ng-click="loginStyle.l_register($event)" id="l_register">REGISTER</div>
 
 <!-- Formulaire d'inscription et de connexion -->
 <section>
-    <img alt="" src=""/>
+    <img alt="" src="var/img/logo/logo.png"/>
     <span>Lorem Ipsum Dolor Sit Amet</span>
 
     <form role="form" ng-submit="register()" id="register">

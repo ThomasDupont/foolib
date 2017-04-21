@@ -1,4 +1,4 @@
-angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
+angular.module('foolib').factory('Ajax', function($http, $location, $sce, $q) {
     var controller = "ajax";
 
     return {
@@ -36,6 +36,11 @@ angular.module('routeApp').factory('Ajax', function($http, $location, $sce) {
         confirmMail: function(token) {
             return $http.post(APP+"/"+controller+"/confirmemail/",
                 {token: token, csrf: this.csrfToken}
+            );
+        },
+        sendNewPwd: function(newp, token) {
+            return $http.post(APP+"/"+controller+"/setnewpassword/",
+                {token: token, newpwd: newp, csrf: this.csrfToken}
             );
         },
         updateProfil: function(pwdOld, pwdNew, name, email) {

@@ -29,16 +29,16 @@ final class ControllerFactory {
         $type = $http->getHttp()->controller ?? "";
         switch($type) {
             case "ajax":
-                if(!self::_checkCSRF($http)) return json_encode(['success' => false, 'message' => "CSRF token invalide"]);
+                if(!self::_checkCSRF($http)) return json_encode(['success' => false, 'message' => "CSRF token not valid"]);
                 $exec = new AjaxController($http);
                 break;
             case "upload":
-                if(!self::_checkCSRF($http)) return json_encode(['success' => false, 'message' => "CSRF token invalide"]);
+                if(!self::_checkCSRF($http)) return json_encode(['success' => false, 'message' => "CSRF token not valid"]);
                 $exec = new UploadController($http);
                 break;
             case "code":
 
-                if(!self::_checkCSRF($http)) return json_encode(['success' => false, 'message' => "CSRF token invalide"]);
+                if(!self::_checkCSRF($http)) return json_encode(['success' => false, 'message' => "CSRF token not valid"]);
 
                 $exec = new CodeController($http);
                 break;
@@ -46,9 +46,10 @@ final class ControllerFactory {
                 return self::_CSRFToken();
                 break;
             default:
+                Log::debug("Controller exception : Pas de controlleur {class} trouvé", ['class' => $type]);
                 return json_encode([
                     'success' => false,
-                    'message' => Log::debug("Controller exception : Pas de controlleur {class} trouvé", ['class' => $type])
+                    'message' => "wrong parameters sent"
                 ]);
         }
         return $exec->execute();

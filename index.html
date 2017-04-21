@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="routeApp">
+<html ng-app="foolib">
 
   <head>
     <meta charset="UTF-8">
@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="/var/css/login.css">
     <link rel="stylesheet" href="/var/css/style.css">
+    <link rel="stylesheet" href="/var/css/terms.css">
     <link rel="stylesheet" href="/vendor/codemirror/CodeMirror/lib/codemirror.css">
     <link rel="stylesheet" id="mirrormidnight" href="/vendor/codemirror/CodeMirror/theme/midnight.css">
 
@@ -66,8 +67,8 @@
   </head>
 
   <body ng-controller="MainController as m">
-      
-    <div ng-class="viewClass" ng-view></div>
+
+    <div ng-class="m.mainFactory.viewClass" ng-view></div>
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
@@ -82,7 +83,7 @@
     <script src="JS/controllers/HomeController.js"></script>
     <script src="JS/controllers/ContactController.js"></script>
     <script src="JS/controllers/LoginController.js"></script>
-    <script src="JS/controllers/ProfilController.js"></script>
+    <script src="JS/controllers/TermsController.js"></script>
     <script src="JS/controllers/LinkController.js"></script>
     <script src="JS/controllers/AddController.js"></script>
     <script src="JS/models/drop.js"></script>
@@ -91,8 +92,8 @@
     <script src="JS/models/codeMirror.js"></script>
     <script src="JS/directives/directive.js"></script>
     <script src="JS/factory/ajax.js"></script>
+    <script src="JS/factory/mainFactory.js"></script>
     <script src="JS/factory/upload.js"></script>
-    <script src="JS/lib/linq.hack.min.js"></script>
 
   </body>
 

@@ -5,6 +5,7 @@ $gris_fonce_plus : #898989;
 $gris_fonce : #D9D9D9;
 $gris_clair : #F4F4F4;
 $filtre : rgba(25, 26, 44, 0.9);
+$noir : #000000;
 
 * {
     margin: 0;
@@ -190,7 +191,7 @@ $filtre : rgba(25, 26, 44, 0.9);
         position:fixed;
         bottom:0;
         padding:30px;
-        width:calc(100% - 60px);
+        width:100%;
         text-align:center;
         cursor: default;
 
@@ -215,6 +216,82 @@ $filtre : rgba(25, 26, 44, 0.9);
 
         li:nth-child(3):hover {
             color: rgba(255,255,255,0.9);
+        }
+    }
+}
+
+.link {
+    position:fixed;
+    width:100%;
+    height:100vh;
+    font-family: 'Open Sans',sans-serif;
+    background: $gris_clair;
+
+    header {
+        position:fixed;
+        width:100%;
+        height:70px;
+        background:$blanc;
+        border-bottom:1px solid $gris_fonce;
+
+        img {
+            position:absolute;
+            top:15px;
+            left:calc(50% - 20px);
+            width:40px;
+        }
+    }
+
+    div {
+        padding:120px 5% 70px 5%;
+
+        h1 {
+            margin-bottom:14px;
+            font-weight:normal;
+            color: $noir;
+        }
+
+        span {
+            display:block;
+            margin-bottom:32px;
+            color: $gris_fonce_plus;
+        }
+
+        form {
+            position:relative;
+            width:350px;
+            text-align:left;
+
+            input {
+                display:inline-block;
+                position:relative;
+                margin-bottom:15px;
+                padding:1px 15px 0 15px;
+                width:100%;
+                height:45px;
+                color: $vert_clair;
+                background: $blanc;
+                font-size:14px;
+                line-height:45px;
+                border-radius:3px;
+                border:1px solid $gris_fonce;
+                -webkit-appearance:none;
+                outline:none;
+            }
+
+            input[type=submit] {
+                width:150px;
+                height:47px;
+                background: $vert_clair;
+                color: $blanc;
+                border:none;
+                cursor:pointer;
+                transition:all .2s;
+            }
+
+            input[type=submit]:hover {
+                background: $vert_fonce;
+            }
         }
     }
 }

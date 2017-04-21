@@ -1,33 +1,70 @@
-angular.module('routeApp').controller('LinkController', ['$scope', '$routeParams', '$http', '$location', 'Ajax', 'Upload',
-    function($scope, $routeParams, $http, $location, Ajax, Upload){
+angular.module('foolib').controller('LinkController', [
+    '$scope',
+    '$routeParams',
+    '$http',
+    '$location',
+    'Ajax',
+    'Upload',
+    'mainFactory',
+    function($scope, $routeParams, $http, $location, Ajax, Upload, mainFactory){
         //?type=confirm&token=token
+
+        mainFactory.viewClass = "container link";
+        $scope.newpwd = false;
+        $scope.newpwdstr = "";
         if($routeParams.type === undefined) {
-            alert("Cette opération n'est pas permise");
+            alert("You couldn't access to this page");
+            $location.path('login');
             return false;
+        }
+
+        $scope.csrf = function() {
+            return Ajax.csrf();
         }
         $scope.mailConfirm = function(routeParams) {
             if(routeParams.token !== undefined) {
-                //attend la fin de l'ajax de récupération du CSRF
-                setTimeout(function () {
+                $scope.csrf().then(function (promise) {
+                    Ajax.csrfToken = Upload.csrfToken = promise.data;
                     Ajax.confirmMail(routeParams.token).then(function(promise) {
                         if(promise.data.success) {
-                            $scope.titleOperation = "Votre email a été validé";
+                            $scope.titleOperation = "Your email has been validated";
                         } else {
-
                             $scope.titleOperation = promise.data.message;
                         }
                     });
-                }, 1000);
+                });
             } else {
-                alert("Cette opération n'est pas permise");
+                alert("This operation is not permit");
                 return false;
             }
         };
         $scope.pwdForget = function(routeParams) {
+            $scope.csrf().then(function (promise) {
+                Ajax.csrfToken = Upload.csrfToken = promise.data;
+            });
             if(routeParams.token !== undefined) {
-                //action
+                $scope.newpwd = true;
+                $scope.sendNewPwd = function() {
+                    if($scope.newpwdstr1 != $scope.newpwdstr2) {
+                        alert("The passwords doesn't match each other");
+                        return false;
+                    }
+                    if($scope.newpwdstr1.length < 6) {
+                        alert("The passwords is too short (6 chars minimum)");
+                        return false;
+                    }
+
+                    Ajax.sendNewPwd($scope.newpwdstr1,routeParams.token).then(function (promise) {
+                        if(promise.data.success) {
+                            alert("You password is now up to date");
+                            //$location.path('login');
+                        } else {
+                            alert('On error occured with your new password: '+ promise.data.message)
+                        }
+                    });
+                };
             } else {
-                alert("Cette opération n'est pas permise");
+                alert("This operation is not permit");
                 return false;
             }
         }
@@ -39,7 +76,8 @@ angular.module('routeApp').controller('LinkController', ['$scope', '$routeParams
                 $scope.pwdForget($routeParams);
                 break;
             default:
-                alert("Vous ne pouvez pas acceder à cette page");
+                alert("You couldn't access to this page");
+                $location.path('login');
                 break;
         }
     }

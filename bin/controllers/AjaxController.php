@@ -41,31 +41,38 @@ final class AjaxController extends Controller implements APIInterface {
           '_UPDATEPROFIL',
           '_SENDEMAIL',
           '_CONFIRMEMAIL',
+          '_SETNEWPASSWORD',
           '_TEST'
         ];
         return in_array($funct, $functWhiteList) ?
             $this->$funct($this->request) :
             json_encode(['success' => false, 'message' => "not authorized $funct"]);
     }
-    private function _TEST (\stdClass $request)
+    private function _TEST ()
     : string
     {
         $email = new Emailing($this->phpmailer);
         return json_encode($email->sendEmail('dupont.thomas70@gmail.com', 'thomas', 1));
     }
 
-    private function _SENDCONTACT (\stdClass $request)
+    private function _SENDCONTACT ()
     : string
     {
-        return $request->text;
+        return $this->request->text;
     }
 
-    private function _LOGIN (\stdClass $request)
+    private function _LOGIN ()
     : string
     {
         $user = new User();
 
-        return json_encode($user->login((string) $request->login, (string) $request->password, $request->type));
+        return json_encode(
+            $user->login(
+                (string) $this->request->login,
+                (string) $this->request->password,
+                $this->request->type
+            )
+        );
     }
 
     private function _GETHOME ()
@@ -75,13 +82,18 @@ final class AjaxController extends Controller implements APIInterface {
         return json_encode($node->getNodes());
     }
 
-    private function _UPLOAD (\stdClass $request)
+    private function _UPLOAD ()
     : string
     {
-        $new = Upload::checkFile($request->file, $request->filename, $request->params->type)->moveFile($request->params->pNodeId);
-        $request->params->path = $new['result']['path'];
-        $request->params->fileId = $new['result']['nodeId'];
-        switch ($request->params->type) {
+        $new = Upload::checkFile(
+            $this->request->file,
+            $this->request->filename,
+            $this->request->params->type
+        )->moveFile($this->request->params->pNodeId);
+
+        $this->request->params->path = $new['result']['path'];
+        $this->request->params->fileId = $new['result']['nodeId'];
+        switch ($this->request->params->type) {
             case 'profil':
                 $user = new User();
                 if($new['success']) {
@@ -89,14 +101,14 @@ final class AjaxController extends Controller implements APIInterface {
                 }
                 break;
             case 'create':
-                $request->params->type = '$addToSet';
-                if(!CrudFile::updateDocumentWithScreenshot($request->params)['success']){
-                    return ['success' => false, 'message' => "erreur query"];
+                $this->request->params->type = '$addToSet';
+                if(!CrudFile::updateDocumentWithScreenshot($this->request->params)['success']){
+                    return ['success' => false, 'message' => "query error"];
                 }
                 break;
             case 'update':
-                if(!CrudFile::updateScreenshot($request->params)['success']){
-                    return ['success' => false, 'message' => "erreur query"];
+                if(!CrudFile::updateScreenshot($this->request->params)['success']){
+                    return ['success' => false, 'message' => "query error"];
                 }
                 break;
             default:
@@ -108,56 +120,68 @@ final class AjaxController extends Controller implements APIInterface {
 
 
 
-    private function _CREATEFOLDER (\stdClass $request)
+    private function _CREATEFOLDER ()
     : string
     {
         $node = new Node();
-        return json_encode($node->setNode($request->nodeId, $request->name, true));
+        return json_encode($node->setNode($this->request->nodeId, $this->request->name, true));
     }
 
-    private function _DELETENODE (\stdClass $request)
+    private function _DELETENODE ()
     : string
     {
         $node = new Node();
-        return json_encode($node->unsetNode($request->nodeId));
+        return json_encode($node->unsetNode($this->request->nodeId));
     }
 
-    private function _CHECKUSER (\stdClass $request)
+    private function _CHECKUSER ()
     : string
     {
-        $cookie = $request->crypt ?? "";
+        $cookie = $this->request->crypt ?? "";
         $user = new User();
         return json_encode($user->checkUser($cookie));
     }
 
-    private function _REGISTER (\stdClass $request)
+    private function _REGISTER ()
     : string
     {
         $user = new User();
         $createUser = $user->register(
-            (string) $request->login,
-            (string) $request->email,
-            (string) $request->password
+            (string) $this->request->login,
+            (string) $this->request->email,
+            (string) $this->request->password
         );
         return $createUser['success'] ? json_encode($createUser) : "Cet utilisateur éxiste déjà";
     }
 
-    private function _SENDEMAIL(\stdClass $request)
+    private function _SENDEMAIL()
     : string
     {
-        $email = $request->params->email;
-        $login = $request->params->login;
-        $type  = $request->type;
+        $email = $this->request->params->email;
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return json_encode(['success' => false, 'message' => "The email format is bad"]);
+        }
+        $login = $this->request->params->login ?? "";
+        $type  = $this->request->type ?? 0;
         $emailing = new Emailing($this->phpmailer);
         return json_encode($emailing->sendAsyncEmail($email, $login, $type));
     }
 
-    private function _CONFIRMEMAIL(\stdClass $request)
+    private function _CONFIRMEMAIL()
     : string
     {
-        $token = $request->token;
+        $token = $this->request->token;
         $user = new User();
         return json_encode($user->confirmEmail($token));
+    }
+
+    private function _SETNEWPASSWORD()
+    : string
+    {
+        $token = $this->request->token;
+        $password = $this->request->newpwd;
+        $user = new User();
+        return json_encode($user->createNewPassword($token, $password));
     }
 
     private function _DISCONNECT ()
@@ -167,10 +191,10 @@ final class AjaxController extends Controller implements APIInterface {
         return json_encode($user->disconnect());
     }
 
-    private function _UPDATEPROFIL (\stdClass $request)
+    private function _UPDATEPROFIL ()
     : string
     {
         $user = new User();
-        return json_encode($user->updateProfil($request));
+        return json_encode($user->updateProfil($this->request, $this->phpmailer));
     }
 }

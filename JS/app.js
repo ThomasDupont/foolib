@@ -10,7 +10,7 @@
 (function () {
   'use strict';
 
-    angular.module('routeApp', [
+    angular.module('foolib', [
         'ngRoute',
         'ngSanitize',
     ]).config(['$routeProvider',
@@ -20,21 +20,19 @@
                 templateUrl: 'views/login/login.html',
                 controller: 'LoginController'
             })
-            .when('/contact', {
-                templateUrl: 'views/contact.html',
-                controller: 'ContactController'
-            })
-            .when('/profil', {
-                templateUrl: 'views/login/profil.html'
-            })
             .when('/home', {
                 templateUrl: 'views/home.html'
             })
             .when('/add', {
                 templateUrl: 'views/add.html'
             })
+            .when('/terms', {
+                templateUrl: 'views/terms.html',
+                controller: 'TermsController'
+            })
             .when('/link', {
-                templateUrl: 'views/login/link.html'
+                templateUrl: 'views/login/link.html',
+                controller: 'LinkController'
             })
             .otherwise({
                 templateUrl: 'views/home.html'

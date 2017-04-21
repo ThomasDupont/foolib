@@ -1,5 +1,4 @@
-angular.module('routeApp')
-.directive("code", function(){
+angular.module('foolib').directive("code", function(){
     return {
         restrict: 'E',
         scope: {
@@ -9,31 +8,7 @@ angular.module('routeApp')
         createScope : false,
         templateUrl: 'views/template/code.html',
         link: function(scope, element, attrs){
-
             scope.controller.codeLangage[scope.iteration] = "php";
-
-            /*scope.optionList = [{
-                  id: 1,
-                  label: 'php',
-                  value: "php"
-            }, {
-                  id: 2,
-                  label: 'javascript',
-                  value: "javascript"
-            }, {
-                  id: 3,
-                  label: 'html',
-                  value: "html"
-            }, {
-                  id: 4,
-                  label: 'css',
-                  value: "css"
-            }, {
-                  id: 5,
-                  label: 'objective-c',
-                  value: "objc"
-            }];
-            */
         }
     };
 }).directive("listcode", function(){
@@ -50,8 +25,6 @@ angular.module('routeApp')
         link: function(scope, element, attrs) {
             scope.wantView = scope.updateCodeVar = false;
             scope.view = function(code) {
-
-
                 scope.wantView = !scope.wantView;
             };
             scope.updateCode = function () {
@@ -72,13 +45,15 @@ angular.module('routeApp')
         createScope : false,
         templateUrl: 'views/template/viewcode.html',
         link: function(scope, element, attrs) {
-
-
+            /**
+            * @param {object} el, list of code for the current snippet
+            * @param {string} id, id of the current snippet
+            * @param {string} name, name of the current snippet
+            */
             scope.updateCodeValidation = function(el, id, codename) {
                 scope.c.mirror.save();
                 for (var i = 0; i < el.codes.length; i++) {
                     el.codes[i].content = $('#updateCodeMirror'+i).val();
-                    console.log(el.codes[i].content);
                 }
                 scope.current = el;
                 // le callback lance le test des nouveaux fichiers
@@ -96,10 +71,6 @@ angular.module('routeApp')
                         );
                     }
                 }
-/*
-                scope.c.wantView = !scope.c.wantView;
-                scope.c.mirror.clear();
-*/
             };
             scope.supprScreen = function (files, index, id) {
                 var tmp = [];

@@ -1,4 +1,4 @@
-angular.module('routeApp').controller('ContactController', ['$scope', '$routeParams', '$http', 'Ajax',
+angular.module('foolib').controller('ContactController', ['$scope', '$routeParams', '$http', 'Ajax',
     function($scope, $routeParams, Ajax){
 
         $scope.message = "Bienvenue sur la page de contact";

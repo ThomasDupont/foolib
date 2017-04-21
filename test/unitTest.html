@@ -59,6 +59,7 @@
                     console.log(r);
                 }, 'text');
             },
+
             emptypar: function () {
                 testObject.$.post('../app.php', {}, function(r) {
                     console.log('%cTest API {}', 'color: GREEN');
@@ -66,13 +67,13 @@
                 }, 'text');
             },
             nullpar: function () {
-                testObject.$.post('../app.php', {action:null, controller:null}, function(r) {
+                testObject.$.post('../app.php/null/null/', {}, function(r) {
                     console.log('%cTest API {action:null, controller:null}', 'color: GREEN');
                     console.log(r);
                 }, 'text');
             },
             testpar: function () {
-                testObject.$.post('../app.php', {action:'test', controller:'test'}, function(r) {
+                testObject.$.post('../app.php/test/test/', {}, function(r) {
                     console.log('%cTest API {action:test, controller:test}', 'color: GREEN');
                     console.log(r);
                 }, 'text');
@@ -83,121 +84,166 @@
                     console.log(r);
                 }, 'text');
             },
-            jsonnull: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:null, controller:null}), function(r) {
-                    console.log('%cTest API JSON.stringify({action:null, controller:null})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
-            jsontest: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:'test', controller:'test'}), function(r) {
-                    console.log('%cTest API JSON.stringify({action:test, controller:test})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
             ajaxtest: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:'test', controller:'Ajax'}), function(r) {
+                testObject.$.post('../app.php/ajax/test/', JSON.stringify({}), function(r) {
                     console.log('%cTest API JSON.stringify({action:test, controller:Ajax})', 'color: GREEN');
                     console.log(r);
                 }, 'text');
             },
+            addCodeDisconnect: function() {
+                testObject.$.post('../app.php/code/createfile/', JSON.stringify({
+                    file : "test", filename: "test", description: "description", langage: "langage"
+                }), function(r) {
+                    console.log('%cTest API /code/createfile/', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
             disconnect: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:'DISCONNECT', controller:'Ajax'}), function(r) {
+                testObject.$.post('../app.php/ajax/disconnect/', JSON.stringify({}), function(r) {
                     console.log('%cTest API JSON.stringify({action:DISCONNECT, controller:Ajax})', 'color: GREEN');
                     console.log(r);
                 }, 'text');
             },
-            logintrue: function () {
-                testObject.$.post('../app.php', JSON.stringify({login : true, password: "a", action:'LOGIN', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({login : true, password: "a", action:LOGIN, controller:Ajax})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
-            loginfalse: function () {
-                testObject.$.post('../app.php', JSON.stringify({login : false, password: "a", action:'LOGIN', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({login : false, password: "a", action:LOGIN, controller:Ajax})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
-            loginnull: function () {
-                testObject.$.post('../app.php', JSON.stringify({login : null, password: "a", action:'LOGIN', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({login : null, password: "a", action:LOGIN, controller:Ajax})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
-            passwordtrue: function () {
-                testObject.$.post('../app.php', JSON.stringify({login : "a", password: true, action:'LOGIN', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({login : "a", password: true, action:LOGIN, controller:Ajax})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
-            passwordfalse: function () {
-                testObject.$.post('../app.php', JSON.stringify({login : "a", password: false, action:'LOGIN', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({login : "a", password: false, action:LOGIN, controller:Ajax})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
-            passwordnull: function () {
-                testObject.$.post('../app.php', JSON.stringify({login : "a", password: null, action:'LOGIN', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({login : "a", password: null, action:LOGIN, controller:Ajax})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
-            gethome: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:'GETHOME', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({action:GETHOME, controller:Ajax})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
-            checkuser: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:'CHECKUSER', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({action:CHECKUSER, controller:Ajax})', 'color: GREEN');
-                    console.log(r);
-                }, 'text');
-            },
             csrf: function () {
-                testObject.$.post('../app.php', JSON.stringify({controller:'CSRF'}), function(r) {
-                    console.log('%cTest API JSON.stringify({login : "test", password: "azer", action:LOGIN, controller:Ajax})', 'color: GREEN');
+                testObject.$.post('../app.php/csrf/', JSON.stringify({}), function(r) {
+                    console.log('%cTest API /csrf/', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            csrfSet: function () {
+                testObject.$.post('../app.php/csrf/set/', JSON.stringify({}), function(r) {
+                    console.log('%cTest API /csrf/set/', 'color: GREEN');
                     window.csrf = r;
                     console.log(r);
                 }, 'text');
             },
-            goodlogin: function () {
-                testObject.$.post('../app.php', JSON.stringify({login : "test", password: "azer", action:'LOGIN', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({login : "test", password: "azer", action:LOGIN, controller:Ajax})', 'color: GREEN');
+            loginwocsrf: function () {
+                testObject.$.post('../app.php/ajax/login/', JSON.stringify({login : "test", password: "a", type: "login"}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : test, password: "a"})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            logintrue: function () {
+                testObject.$.post('../app.php/ajax/login/', JSON.stringify({login : true, password: "a", type: "login", csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : true, password: "a", csrf})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            loginfalse: function () {
+                testObject.$.post('../app.php/ajax/login/', JSON.stringify({login : false, password: "a", type: "login", csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : false, password: "a", csrf})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            loginnull: function () {
+                testObject.$.post('../app.php/ajax/login/', JSON.stringify({login : null, password: "a", type: "login", csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : null, password: "a", csrf})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            addCodeGoodDisconnect: function() {
+                testObject.$.post('../app.php/code/createfile/', JSON.stringify({
+                    file : ["test"], filename: ['name'], description: ['lolo not login'], langage: ['JavaScript'], csrf: window.csrf
+                }), function(r) {
+                    console.log('%cTest API /code/createfile/ Good csrf, not log in', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            passwordtrue: function () {
+                testObject.$.post('../app.php/ajax/login/', JSON.stringify({login : "a", password: true, type: "login", csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "a", password: true, csrf})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            passwordfalse: function () {
+                testObject.$.post('../app.php/ajax/login/', JSON.stringify({login : "a", password: false, type: "login", csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "a", password: false, csrf})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            passwordnull: function () {
+                testObject.$.post('../app.php/ajax/login/', JSON.stringify({login : "a", password: null, type: "login", csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "a", password: null, csrf})', 'color: GREEN');
                     console.log(r);
                 }, 'text');
             },
             gethome: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:'GETHOME', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({action:GETHOME, controller:Ajax})', 'color: GREEN');
+                testObject.$.post('../app.php/code/getcodes/', JSON.stringify({csrf: window.csrf}), function(r) {
+                    console.log('%cTest API code/getcodes/', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            checkuser: function () {
+                testObject.$.post('../app.php/ajax/checkuser/', JSON.stringify({csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({csrf})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+
+            goodlogin: function () {
+                testObject.$.post('../app.php/ajax/login/', JSON.stringify({login : "setni", password: "azer", type: "login", csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({login : "test", password: "azer", csrf})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            gethome: function () {
+                testObject.$.post('../app.php/code/getcodes/', JSON.stringify({csrf: window.csrf}), function(r) {
+                    console.log('%cTest API code/getcodes/ csrf', 'color: GREEN');
                     console.log(r);
                 }, 'text');
             },
             recheckuser: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:'CHECKUSER', controller:'Ajax'}), function(r) {
-                    console.log('%cTest API JSON.stringify({action:CHECKUSER, controller:Ajax})', 'color: GREEN');
+                testObject.$.post('../app.php/ajax/checkuser/', JSON.stringify({csrf: window.csrf}), function(r) {
+                    console.log('%cTest API ajax/checkuser/ csrf', 'color: GREEN');
                     console.log(r);
                 }, 'text');
             },
-            logincsrf: function () {
-                testObject.$.post('../app.php', JSON.stringify({login : "test", password: "azer", action:'LOGIN', controller:'Ajax', csrf: window.csrf}), function(r) {
-                    console.log('%cTest API JSON.stringify({login : "test", password: "azer", action:LOGIN, controller:Ajax})', 'color: GREEN');
+            addCodeWrong1: function() {
+                testObject.$.post('../app.php/code/createfile/', JSON.stringify({
+                    file : "test", filename: "test", description: "description", langage: "langage", csrf: window.csrf
+                }), function(r) {
+                    console.log('%cTest API /code/createfile/ Wrong1', 'color: GREEN');
                     console.log(r);
                 }, 'text');
             },
-            gethomecsrf: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:'GETHOME', controller:'Ajax', csrf: window.csrf}), function(r) {
-                    console.log('%cTest API JSON.stringify({action:GETHOME, controller:Ajax})', 'color: GREEN');
+            addCodeWrong2: function() {
+                testObject.$.post('../app.php/code/createfile/', JSON.stringify({
+                    file : "test", filename: ['name'], description: ['lolo'], langage: "", csrf: window.csrf
+                }), function(r) {
+                    console.log('%cTest API /code/createfile/ Wrong2', 'color: GREEN');
                     console.log(r);
                 }, 'text');
             },
-            checkusercsrf: function () {
-                testObject.$.post('../app.php', JSON.stringify({action:'CHECKUSER', controller:'Ajax', csrf: window.csrf}), function(r) {
-                    console.log('%cTest API JSON.stringify({action:CHECKUSER, controller:Ajax})', 'color: GREEN');
+            addCodeWrong3: function() {
+                testObject.$.post('../app.php/code/createfile/', JSON.stringify({
+                    file : ["test"], filename: ['name'], description: ['lolo wrong'], langage: ['JavaScript', 'php'], csrf: window.csrf
+                }), function(r) {
+                    console.log('%cTest API /code/createfile/ Wrong3', 'color: GREEN');
                     console.log(r);
                 }, 'text');
-            }
+            },
+            addCodeGood: function() {
+                testObject.$.post('../app.php/code/createfile/', JSON.stringify({
+                    file : ["test"], filename: ['name'], description: ['lolo good'], langage: ['JavaScript'], csrf: window.csrf
+                }), function(r) {
+                    console.log('%cTest API /code/createfile/ Good csrf', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            addCodeGoodwoCsrf: function() {
+                testObject.$.post('../app.php/code/createfile/', JSON.stringify({
+                    file : ["test"], filename: ['name'], description: ['lolo'], langage: ['JavaScript']
+                }), function(r) {
+                    console.log('%cTest API /code/createfile/ Good', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
+            disconnect2: function () {
+                testObject.$.post('../app.php/ajax/disconnect/', JSON.stringify({csrf: window.csrf}), function(r) {
+                    console.log('%cTest API JSON.stringify({action:DISCONNECT, controller:Ajax})', 'color: GREEN');
+                    console.log(r);
+                }, 'text');
+            },
         }
     );
 //});

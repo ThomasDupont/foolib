@@ -50,23 +50,25 @@ final class Emailing extends MainClass {
     public function sendEmail(string $email, string $login, int $action, string $token)
     : bool
     {
+        $link = $this->_generateLink($token, $action);
         switch ($action) {
             case 1:
                 $body = $this->_getRegisterTemplate();
                 $subject = "Confirmation of your email";
+                //$link = 'http://example.com';
+                $body = str_replace(['{name}','{link}'] , [$login, $link], $body);
                 break;
             case 2:
                 $body = $this->_getPwdForgetTemplate();
                 $subject = "Generation of a new password";
+                $body = str_replace(['{link}'] , [$link], $body);
                 break;
             default:
                 throw new Error("not reconize action $action, emailing service", 500);
                 break;
         }
 
-        $link = $this->_generateLink($token);
-        //$link = 'http://example.com';
-        $body = str_replace(['{name}','{link}'] , [$login, $link], $body);
+
         // Expéditeur
         $this->phpmailer->SetFrom(FOOLIBADRESS, 'contact foolib');
         // Destinataire
@@ -94,12 +96,19 @@ final class Emailing extends MainClass {
     private function _getPwdForgetTemplate()
     : string
     {
-        return "";
+        return file_get_contents( ROOTDIR."../var/emailForgot.html");;
     }
 
-    private function _generateLink(string $token)
+    private function _generateLink(string $token, int $type)
     : string
     {
-        return DOMAIN."#/link?type=confirm&token=".$token;
+        switch ($type) {
+            case 1:
+                return DOMAIN."#/link?type=confirm&token=".$token;
+                break;
+            case 2:
+                return DOMAIN."#/link?type=forget&token=".$token;
+                break;
+        }
     }
 }

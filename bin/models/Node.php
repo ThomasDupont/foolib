@@ -103,7 +103,7 @@ class Node {
     {
         //check if the file or the folder still exist
         if($this->isNode($nodeId, $name)) {
-            return ['success' => false, 'message' => "Ce noeud existe déja"];
+            return ['success' => false, 'message' => "This node still exist"];
         }
         //Delete the forbidden chars
         $this->_cleanNodeName($name);
@@ -130,7 +130,7 @@ class Node {
         );
 
         return $nodeId ? ['success' => true, 'result' => ['path' => $nodePath, 'nodeId' => $nodeId]]
-            : ['success' => false, 'message' => "erreur à la création du node"];
+            : ['success' => false, 'message' => "This node still exist"];
     }
 
     public function isNode(int $nodeId, string $name)
@@ -241,7 +241,7 @@ class Node {
     : array
     {
         if($nodeId < 1) {
-            return ['success' => false, 'message' => "Non permis de supprimer root"];
+            return ['success' => false, 'message' => "Not permit to delete root"];
         }
         $nodeInfo = $this->getNode($nodeId);
 

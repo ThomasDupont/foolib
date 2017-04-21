@@ -69,8 +69,13 @@ final class Http {
     {
         $parse = explode("/", $uri);
         $lenght = count($parse);
-        static::$_request->controller = $parse[$lenght-3];
-        static::$_request->action = $parse[$lenght-2];
+        if($lenght-3 < 0) {
+            static::$_request->controller = static::$_request->action = "";
+        } else {
+            static::$_request->controller = $parse[$lenght-3];
+            static::$_request->action = $parse[$lenght-2];
+        }
+
         return static::$_instance;
     }
 

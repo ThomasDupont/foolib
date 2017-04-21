@@ -9,14 +9,6 @@
 </form>
 
 <!--
-<form ng-submit="updateCodeValidation(c.code.currentcode, c.code.currentcode.id, c.code.currentcode.name)">
-    <h1>{{ c.code.currentcode.name }}</h1>
-    <div ng-repeat="code in c.code.currentcode.codes track by $index">
-        <p>{{ code.langage }}</p>
-        <textarea  id="updateCodeMirror{{$index}}" class="codeMirror" ng-model="code.content"></textarea>
-    </div>
-    <input type="submit" value"Update">
-</form>
 <div ng-repeat="f in c.code.currentcode.file track by $index">
     <button ng-click="supprScreen(c.code.currentcode.file, $index, c.code.currentcode.id)" class="btn btn-primary">supr</button>
     <p>Image {{$index}}</p>
