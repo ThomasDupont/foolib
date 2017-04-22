@@ -30,14 +30,18 @@
     <!-- Popup du profil -->
     <div ng-click="c.style_general.popup_filtre($event)" id="popup_filtre"></div>
     <div id="popup_profile">
-        <div ng-click="c.style_general.close_edit_profile($event)" id="close_edit_profile">
+        <div ng-click="c.updateProfil.closeModif($event)" id="close_edit_profile">
             <img src="var/img/icons/back.png"/>
         </div>
         <div ng-click="c.updateProfil.viewModif($event)" id="l_edit_profile">
             <img src="var/img/icons/edit.png"/>
         </div>
         <img id="pp_profile" src="{{c.mainFactory.pprofil}}"/>
+
+
         <img ng-click="c.updateProfil.selectPP()" id="pp_profile_edit" src="var/img/pp_edit.png"/>
+
+
         <div id="base_profile">
             <h2>{{c.mainFactory.userName}}</h2>
             <span>{{c.mainFactory.nbSnippets}} Codes</span>

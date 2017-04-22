@@ -171,7 +171,7 @@ body {
                     padding:0 25px 0 25px;
                     top:0;
                     left:0;
-                    width:230px;
+                    width:220px;
                     height:63px;
                     line-height:64px;
                     font-weight:normal;
@@ -198,7 +198,7 @@ body {
                     li {
                         position:relative;
                         padding:0 25px 0 25px;
-                        width:calc(100% - 50px);
+                        width:100%;
                         height:64px;
                         line-height:64px;
                         font-size:14px;
@@ -231,44 +231,6 @@ body {
                         div {
                             display:block;
                         }
-                    }
-                }
-            }
-
-            // Content de la page
-            #aff_language {
-                z-index:1;
-                position:fixed;
-                padding:20px 30px 20px 30px;
-                top:64px;
-                left:220px;
-                width:calc(100% - 280px);
-                height:calc(100vh - 104px);
-                overflow:hidden;
-
-                ul {
-                    position:relative;
-                    width:100%;
-                    text-align:right;
-
-                    li {
-                        display:inline-block;
-                        margin:0 7px 20px 0;
-                        padding:10px 15px 10px 15px;
-                        background: $gris_clair;
-                        color: $gris_fonce_plus;
-                        border-radius:3px;
-                        border:1px solid $gris_fonce;
-                        transition: all .3s;
-                        cursor:pointer;
-                    }
-
-                    li:hover {
-                        background: $blanc;
-                    }
-
-                    li:first-child {
-                        background: $blanc;
                     }
                 }
             }
@@ -588,6 +550,7 @@ body {
                 width:calc(100% - 430px);
 
                 section {
+                    position:relative;
                     margin-bottom:23px;
 
                     select {
@@ -625,21 +588,6 @@ body {
                         color: $noir;
                     }
 
-                    textarea {
-                        display:inline-block;
-                        position:relative;
-                        margin-top:23px;
-                        padding:15px;
-                        width:100%;
-                        height:200px;
-                        background: $blanc;
-                        font-size:14px;
-                        border-radius:3px;
-                        border:1px solid $gris_fonce;
-                        -webkit-appearance:none;
-                        outline:none;
-                        resize:none;
-                    }
                     div {
                         border-radius:4px;
                         border:none;
@@ -714,10 +662,11 @@ body {
                     display: block;
                     position:relative;
                     width:100%;
-                    margin-bottom:50px;
+                    margin-bottom:30px;
                     line-height:16px;
 
                     span {
+                        margin-top:20px;
                         font-weight:bold;
                     }
                 }

@@ -49,6 +49,7 @@ final class Emailing {
         $this->_token = hash('sha512', uniqid().$email."NMCAECTMD");
         switch ($type) {
             case 1:
+                //@TODO faille de sécurité, possibilité de désactiver le compte de qqun avec sont email
                 return Mysql::getInstance()->updateDBDatas('users', "emailToken = ? WHERE email = ?", [$this->_token, $email]);
                 break;
             case 2:

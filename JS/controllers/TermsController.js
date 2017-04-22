@@ -3,5 +3,6 @@ angular.module('foolib').controller('TermsController', ['$scope', '$location', '
         var vm = this;
         vm.mainFactory = mainFactory;
         vm.mainFactory.viewClass = "terms";
+        $("#spn_hol").fadeOut(1000);
     }
 ]);

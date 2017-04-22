@@ -145,19 +145,26 @@ final class AjaxController extends Controller implements APIInterface {
     private function _REGISTER ()
     : string
     {
+        if(
+            !isset($this->request->login) ||
+            !isset($this->request->email) ||
+            !isset($this->request->password)
+        ) {
+            return json_encode(['success' => false, 'message' => "One or other fields are missing"]);
+        }
         $user = new User();
         $createUser = $user->register(
             (string) $this->request->login,
             (string) $this->request->email,
             (string) $this->request->password
         );
-        return $createUser['success'] ? json_encode($createUser) : "Cet utilisateur éxiste déjà";
+        return $createUser['success'] ? json_encode($createUser) : $createUser['message'];
     }
 
     private function _SENDEMAIL()
     : string
     {
-        $email = $this->request->params->email;
+        $email = $this->request->params->email ?? "wrong";
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return json_encode(['success' => false, 'message' => "The email format is bad"]);
         }

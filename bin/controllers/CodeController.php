@@ -84,6 +84,13 @@ final class CodeController extends Controller implements APIInterface {
     private function _UPDATECODE ()
     : string
     {
+        if(
+            !isset($this->request->codes) ||
+            !isset($this->request->id) ||
+            !isset($this->request->name)
+        ) {
+            return json_encode(['success' => false, 'message' => "One or other fields are missing"]);
+        }
         return json_encode(
             CrudFile::updateFile(
                 $this->request->codes,

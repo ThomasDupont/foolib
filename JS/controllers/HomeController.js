@@ -178,6 +178,11 @@ angular.module('foolib').controller('HomeController', [
                 }
                 vm.genericModel = "";
                 vm.updateProfil = {
+                    closeModif: function(e) {
+                        this.disabled = !this.disabled;
+                        $('#pp_profile_edit').css('display', 'none');
+                        vm.style_general.close_edit_profile(e);
+                    },
                     viewModif: function(e) {
                         this.disabled = !this.disabled;
                         $('#pp_profile_edit').css('display', 'block');
@@ -218,6 +223,7 @@ angular.module('foolib').controller('HomeController', [
                     },
                     disabled:true,
                     selectPP: function () {
+                        console.log(this.disabled);
                         this.disabled || document.getElementById('fileUploadPPup').click();
                     },
                     modifPasswordOld : "",

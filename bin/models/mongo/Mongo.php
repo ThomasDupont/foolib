@@ -27,6 +27,13 @@
          return self::$_instance;
      }
 
+     public function setNewBulk()
+     : self
+     {
+         self::$_bulk = new \MongoDB\Driver\BulkWrite();
+         return self::$_instance;
+     }
+
      public static function addToBulk(array $params)
      : self
      {
@@ -34,7 +41,7 @@
              switch ($value['action']) {
                 case 'insert':
                     self::$_bulk->insert($value['body']);
-                    self::$_insertIds[] = $value['body']['id'];
+                    self::$_insertIds[] = $value['body']['id'] ?? md5(uniqid());
                     break;
                 case 'update':
                     self::$_bulk->update($value['body'][0], $value['body'][1]);
@@ -66,8 +73,13 @@
          self::$_insertIds = [];
          switch(self::$_type) {
             case "bulk":
-
-                self::$_result = self::$_mongo->executeBulkWrite(MONGODATABASE.'.'.$collection, self::$_bulk);
+                try {
+                    self::$_result = self::$_mongo->executeBulkWrite(MONGODATABASE.'.'.$collection, self::$_bulk);
+                } catch(\MongoDB\Driver\Exception\BulkWriteException $e) {
+                    return ['success' => false, 'message' => $e->getMessage()];
+                } catch(\MongoDB\Driver\Exception\RuntimeException $e) {
+                    return ['success' => false, 'message' => $e->getMessage()];
+                }
 
                 return ['success' => true, 'result' => $insertIds];
                 break;

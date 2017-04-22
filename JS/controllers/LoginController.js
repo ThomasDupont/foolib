@@ -16,6 +16,7 @@ angular.module('foolib').controller('LoginController', [
         mainFactory.viewClass = 'login';
         Ajax.csrf().then(function (promise) {
             Ajax.csrfToken = Upload.csrfToken = promise.data;
+            $("#spn_hol").fadeOut(1000);
         });
 
         $scope.login = function () {

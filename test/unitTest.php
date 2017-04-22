@@ -4,7 +4,7 @@
 * @test CONNECT, CREATE, INSERT, SELECT, DROP
 */
 if(isset($_POST['DATABASE'])) {
-    $mysqli = new mysqli("127.0.0.1", "root", "root", "angular", 8889);
+    $mysqli = new mysqli("127.0.0.1", "root", "root", "foolib", 8889);
     /* Vérifie la connexion */
     if (mysqli_connect_errno()) {
         printf("Échec de la connexion : %s\n", mysqli_connect_error());

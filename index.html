@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/var/css/login.css">
     <link rel="stylesheet" href="/var/css/style.css">
     <link rel="stylesheet" href="/var/css/terms.css">
+    <link rel="stylesheet" href="/var/css/preloader.css">
     <link rel="stylesheet" href="/vendor/codemirror/CodeMirror/lib/codemirror.css">
     <link rel="stylesheet" id="mirrormidnight" href="/vendor/codemirror/CodeMirror/theme/midnight.css">
 
@@ -68,6 +69,13 @@
 
   <body ng-controller="MainController as m">
 
+      <div id="spn_hol">
+            <div class="spinner">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+        </div>
     <div ng-class="m.mainFactory.viewClass" ng-view></div>
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>

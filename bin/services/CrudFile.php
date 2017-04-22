@@ -51,16 +51,22 @@ final class CrudFile {
             "SELECT valid FROM users WHERE id = ?",
             [$userId]
         )->toObject();
-
+        $name = $params['name'];
+        $lang = $params['langage'];
+        $description = $params['description'];
+        $content = $params['file'];
 
         if(!$dataSet['result']->valid) {
             return ['success' => false, 'message' => "Your email has not been activated"];
         }
         if(
-            !is_string($params['description']) ||
-            !is_string($params['name']) ||
-            !is_array($params['langage']) ||
-            !is_array($params['content'])
+            !is_string($description) ||
+            !is_string($name) ||
+            !is_array($lang) ||
+            !is_array($content) ||
+            empty($name) ||
+            empty($lang) ||
+            empty($content)
         ) {
             return ['success' => false, 'message' => "The request is wrong"];
         }
@@ -69,18 +75,18 @@ final class CrudFile {
 
         $body['id'] = md5(uniqid().$userId);
         $body['userId'] = $userId;
-        $body['name'] = $params['name'];
-        $body['description'] = $params['description'];
+        $body['name'] = $name;
+        $body['description'] = $description;
         $body['codes'] = [];
 
-        if(($len = count($params['langage'])) != count($params['file'])) {
+        if(($len = count($lang)) != count($content)) {
             return ['success' => false, 'message' => "The langage length doesn't match with the content length"];
         }
 
         for($i = 0; $i < $len; $i++) {
             $body['codes'][] = [
-                'content' => utf8_encode(base64_decode($params['file'][$i])),
-                'langage' => utf8_encode($params['langage'][$i]),
+                'content' => utf8_encode(base64_decode($content[$i])),
+                'langage' => utf8_encode($lang[$i]),
                 'time' => time()
             ];
         }
@@ -109,13 +115,31 @@ final class CrudFile {
     public static function updateFile(array $codes, string $id, string $name)
     : array
     {
+
         if(!isset(SessionManager::getSession()['id'])) {
             return ['success' => false, 'message' => "You are not login"];
         }
+        if(
+            empty($id) ||
+            empty($name)
+        ) {
+            return ['success' => false, 'message' => "The request is wrong"];
+        }
+
+
         foreach($codes as &$code) {
+            if(
+                empty($code->content) ||
+                empty($code->langage) ||
+                !is_string($code->langage) ||
+                !is_string($code->content)
+            ) {
+                return ['success' => false, 'message' => "The request is wrong"];
+            }
             $code->content = utf8_encode($code->content);
             $code->langage = utf8_encode($code->langage);
         }
+        unset($code);
         $update = [[
             'action' => 'update', 'body' => [
                 ['id' => $id, 'userId' => SessionManager::getSession()['id']],
@@ -131,6 +155,9 @@ final class CrudFile {
     public static function updateDocumentWithScreenshot (\stdClass $params)
     : array
     {
+        if(!isset(SessionManager::getSession()['id'])) {
+            return ['success' => false, 'message' => "You are not login"];
+        }
         $update = [[
             'action' => 'update', 'body' => [
                 ['id' => $params->mongoId, 'userId' => SessionManager::getSession()['id']],
@@ -146,6 +173,9 @@ final class CrudFile {
     public static function updateScreenshot(\stdClass $params)
     : array
     {
+        if(!isset(SessionManager::getSession()['id'])) {
+            return ['success' => false, 'message' => "You are not login"];
+        }
         $update = [[
             'action' => 'update', 'body' => [
                 ['id' => $params->mongoId, 'userId' => SessionManager::getSession()['id']],
@@ -163,8 +193,11 @@ final class CrudFile {
     public static function getFiles()
     : array
     {
+        if(!isset(SessionManager::getSession()['id'])) {
+            return ['success' => false, 'message' => "You are not login"];
+        }
         $filter = [
-            'userId' => SessionManager::getSession()['id'] ?? 0
+            'userId' => SessionManager::getSession()['id']
         ];
         //Tri par ordre décroissant
         $options = [
@@ -183,6 +216,9 @@ final class CrudFile {
     public static function supprScreen(array $newFiles, string $mongoId)
     : array
     {
+        if(!isset(SessionManager::getSession()['id'])) {
+            return ['success' => false, 'message' => "You are not login"];
+        }
         $update = [[
             'action' => 'update', 'body' => [
                 ['id' => $mongoId, 'userId' => SessionManager::getSession()['id']],

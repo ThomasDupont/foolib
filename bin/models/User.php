@@ -41,7 +41,7 @@ class User {
      : array
      {
          if(strlen($password) < 6) {
-            return ['success' => false, 'message' => "Your new password is too short"];
+            return ['success' => false, 'message' => "Your password is too short"];
         }
         else if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return ['success' => false, 'message' => "The email format is bad"];

@@ -19,7 +19,9 @@ angular.module('foolib').controller('LinkController', [
         }
 
         $scope.csrf = function() {
+            $("#spn_hol").fadeOut(1000);
             return Ajax.csrf();
+
         }
         $scope.mailConfirm = function(routeParams) {
             if(routeParams.token !== undefined) {

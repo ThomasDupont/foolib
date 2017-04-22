@@ -18,6 +18,7 @@ angular.module('foolib').factory('mainFactory',
                 return $q(function(resolve, reject) {
                     Ajax.csrf().then(function (promise) {
                         Ajax.csrfToken = Upload.csrfToken = promise.data;
+                        $("#spn_hol").fadeOut(1000);
                             factory.checkUser();
                             Upload.getCodes().then(function (promise) {
                                 if(promise.data.success) {
