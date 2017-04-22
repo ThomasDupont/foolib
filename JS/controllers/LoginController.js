@@ -111,6 +111,9 @@ angular.module('foolib').controller('LoginController', [
                   alert('An error occured: '+promise.data.message);
               }
           });
+      };
+      $scope.gotToTerms = function() {
+          $location.path('terms');
       }
 
   }
