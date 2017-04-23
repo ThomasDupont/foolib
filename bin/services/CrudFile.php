@@ -75,8 +75,8 @@ final class CrudFile {
 
         $body['id'] = md5(uniqid().$userId);
         $body['userId'] = $userId;
-        $body['name'] = $name;
-        $body['description'] = $description;
+        $body['name'] = utf8_encode($name);
+        $body['description'] = utf8_encode($description);
         $body['codes'] = [];
 
         if(($len = count($lang)) != count($content)) {
@@ -143,7 +143,7 @@ final class CrudFile {
         $update = [[
             'action' => 'update', 'body' => [
                 ['id' => $id, 'userId' => SessionManager::getSession()['id']],
-                ['$set' => ['name' => $name, 'codes' => $codes]]
+                ['$set' => ['name' => utf8_encode($name), 'codes' => $codes]]
             ]
         ]];
         return Mongo::getInstance()->addToBulk($update)->execute('save');
