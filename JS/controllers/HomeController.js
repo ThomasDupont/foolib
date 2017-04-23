@@ -112,7 +112,7 @@ angular.module('foolib').controller('HomeController', [
                                 }
                             }
                             delete mainFactory.tree;
-                            pmainFactory.tree = vm.tempTree;
+                            mainFactory.tree = vm.tempTree;
                             delete vm.tempTree;
                             mainFactory.nbSnippets = mainFactory.tree.length;
                         });

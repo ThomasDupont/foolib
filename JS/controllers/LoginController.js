@@ -41,7 +41,7 @@ angular.module('foolib').controller('LoginController', [
                           mainFactory.pprofil = USERDIR+promise.data.result.pp;
                           mainFactory.crypt = promise.data.result.crypt;
                           localStorage.setItem(STORAGE, promise.data.result.crypt);
-                          mainFactory.viewClass = 'main';
+
 
                           location.replace('/');
                       } else {
@@ -85,8 +85,8 @@ angular.module('foolib').controller('LoginController', [
                           mainFactory.crypt = promise.data.result.crypt;
                           localStorage.setItem(STORAGE, promise.data.result.crypt);
                           Ajax.sendemail({email: $scope.email, login: $scope.username}, 1).then(function (promise) {
-                               mainFactory.viewClass = 'main';
-                               $location.path('home');
+                               
+                               $location.path('/');
                           });
 
                       } else {

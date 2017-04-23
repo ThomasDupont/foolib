@@ -9,7 +9,6 @@ angular.module('foolib').controller('AddController', ['$scope', '$routeParams', 
             vm.codeContent = [];
             vm.codeTitle = "";
             vm.codeDesc = "";
-            //document.getElementsByTagName('nav')[0].style.display = 'none';
             mainFactory.viewClass = 'main';
             vm.mirror = new codeMirror();
             vm.mirrorTheme = "midnight";
@@ -94,14 +93,12 @@ angular.module('foolib').controller('AddController', ['$scope', '$routeParams', 
                         'content': ""
                     });
                     var len = this.nbSnippet.length - 1;
-                    setTimeout(function() {
+                    mainFactory.triggerFunction(true, function() {
                         vm.mirror.refresh(document.getElementById("codeMirror"+len));
-                    }, 50);
+                    }, $scope);
                 },
                 decreaseNbSnippet: function(it) {
                     this.nbSnippet.splice(it, 1);
-                    console.log(this.nbSnippet);
-                    //this.nbSnippet = neu;
                 },
                 addNode: function (el) {
                     mainFactory.tree.push(el);

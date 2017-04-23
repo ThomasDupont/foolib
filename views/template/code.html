@@ -6,6 +6,6 @@
         <option value="php">PHP</option>
         <option value="objc">Objective C</option>
     </select>
-    <button ng-click="controller.code.decreaseNbSnippet(iteration)">CLOSE</button>
+    <button ng-show="controller.code.nbSnippet.length > 1" ng-click="controller.code.decreaseNbSnippet(iteration)">CLOSE</button>
     <textarea class="codeMirror" name="codeContent" id="codeMirror{{iteration}}" class="form-control" ng-model="controller.code.nbSnippet[iteration].content"></textarea>
 </section>
