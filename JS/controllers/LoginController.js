@@ -85,7 +85,7 @@ angular.module('foolib').controller('LoginController', [
                           mainFactory.crypt = promise.data.result.crypt;
                           localStorage.setItem(STORAGE, promise.data.result.crypt);
                           Ajax.sendemail({email: $scope.email, login: $scope.username}, 1).then(function (promise) {
-                               
+                               alert('A validation email is sending to you').
                                $location.path('/');
                           });
 

@@ -31,6 +31,7 @@ angular.module('foolib').controller('LinkController', [
                         if(promise.data.success) {
                             $scope.titleOperation = "Your email has been validated";
                         } else {
+                            console.log(promise.data.message);
                             $scope.titleOperation = promise.data.message;
                         }
                     });
