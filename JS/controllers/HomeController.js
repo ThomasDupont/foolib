@@ -52,7 +52,7 @@ angular.module('foolib').controller('HomeController', [
                         var i = i || 0;
                         vm.listSnippet = this.manageListCode(LISTLANG[i].label);
                         i++;
-                        if(typeof LISTLANG[i].label != 'undefined' && vm.listSnippet.length == 0) {
+                        if(typeof LISTLANG[i] != 'undefined' && vm.listSnippet.length == 0) {
                             this.showCodeInLoadPage(i);
                         } else if (vm.listSnippet.length != 0) {
                             this.view(vm.listSnippet[0], null);

@@ -43,6 +43,10 @@ class Mysql {
     */
     public static $_user = false;
 
+    /**
+     * Set to true to use query with out user control
+     * @param bool $bool
+     */
     public static function setUser(bool $bool)
     : void
     {
@@ -216,7 +220,6 @@ class Mysql {
     private static function _prepareRequest (string $sql, array $a_bind_params)
     : \mysqli_stmt
     {
-
         if(($stmt = self::$_mysqli->prepare($sql)) === false) {
             self::$error = self::$_mysqli->error;
             Log::error(

@@ -5,6 +5,7 @@ namespace bin\services;
 use PHPMailer\PHPMailer\PHPMailer;
 use bin\models\mysql\Mysql;
 use bin\models\mongo\Mongo;
+use bin\log\Log;
 
 final class Emailing {
 
@@ -38,7 +39,7 @@ final class Emailing {
             ]];
             return Mongo::getInstance()->addToBulk($insert)->execute('email');
         }
-        Log::user("Erreur génération du lien, mail: {mail}, error: {error}", ['mail' => $email, 'error' => Mysql::getInstance()->error]);
+        Log::user("Erreur génération du lien, mail: {mail}, error: {error}", ['mail' => $email, 'error' => Mysql::getInstance()::$error]);
         return ['success' => false, 'message' => "Link generation error"];
 
     }
@@ -53,6 +54,7 @@ final class Emailing {
                 return Mysql::getInstance()->updateDBDatas('users', "emailToken = ? WHERE email = ?", [$this->_token, $email]);
                 break;
             case 2:
+                Mysql::getInstance()->setUser(true);
                 return Mysql::getInstance()->updateDBDatas('users', "forgotpwd = ? WHERE email = ?", [$this->_token, $email]);
                 break;
 

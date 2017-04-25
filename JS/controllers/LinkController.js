@@ -59,7 +59,7 @@ angular.module('foolib').controller('LinkController', [
                     Ajax.sendNewPwd($scope.newpwdstr1,routeParams.token).then(function (promise) {
                         if(promise.data.success) {
                             alert("You password is now up to date");
-                            //$location.path('login');
+                            $location.path('login');
                         } else {
                             alert('On error occured with your new password: '+ promise.data.message)
                         }

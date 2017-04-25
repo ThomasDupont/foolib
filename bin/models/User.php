@@ -212,16 +212,24 @@ class User {
         if(strlen($password) < 6) {
             return ['success' => false, 'message' => "Your new password is too short"];
         }
-        $dbToken =$this->_mysql->getDBDatas(
-            "SELECT emailToken FROM users WHERE forgotpwd = ?", [$token]
+        $this->_mysql->setUser(true);
+        $dbToken = $this->_mysql->getDBDatas(
+            "SELECT forgotpwd FROM users WHERE forgotpwd = ?", [$token]
         )->toObject()['result'];
-        if(empty($dbToken) || empty($token)) {
+        if(!isset($dbToken->forgotpwd)) {
+            return ['success' => false, 'message' => "The token is not recognize"];
+        }
+        if(
+            empty($dbToken->forgotpwd) ||
+            empty($token) ||
+            $dbToken->forgotpwd != $token
+        ) {
             return ['success' => false, 'message' => "The token is not recognize"];
         }
 
         if($this->_mysql->updateDBDatas(
                 "users",
-                "password = ? WHERE forgotpwd = ?",
+                "password = ?, forgotpwd = '' WHERE forgotpwd = ?",
                 [$this->_hashPassword($password), $token]
             )
         ) {
