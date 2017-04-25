@@ -12,6 +12,7 @@ angular.module('foolib').controller('AddController', ['$scope', '$routeParams', 
             mainFactory.viewClass = 'main';
             vm.mirror = new codeMirror();
             vm.mirrorTheme = "midnight";
+            vm.listlang = LISTLANG;
             mainFactory.triggerFunction(true, function (){
                 vm.mirror.init();
             }, $scope);
@@ -27,7 +28,7 @@ angular.module('foolib').controller('AddController', ['$scope', '$routeParams', 
                 createFile: function () {
                     vm.mirror.save();
 
-                    if ($("#codeMirror0").val() == "" || vm.codeTitle == "" || lang == "" || vm.codeDesc == "") {
+                    if ($("#codeMirror0").val() == "" || vm.codeTitle == "" || lang == "") {
                         alert("incomplete form");
                         return false;
                     }

@@ -1,10 +1,17 @@
 <section class="snippet">
     <select class="form-control" ng-model="controller.code.nbSnippet[iteration].lang">
+        <option ng-repeat="item in controller.listlang" value="{{item.value}}">{{item.label}}</option>
+        <!--
         <option value="html">HTML</option>
         <option value="css">CSS</option>
         <option value="javascript">JavaScript</option>
         <option value="php">PHP</option>
         <option value="objc">Objective C</option>
+        <option value="java">Java</option>
+        <option value="c#">C#</option>
+        <option value="python">Python</option>
+        <option value="ruby">Ruby</option>
+    -->
     </select>
     <button ng-show="controller.code.nbSnippet.length > 1" ng-click="controller.code.decreaseNbSnippet(iteration)">CLOSE</button>
     <textarea class="codeMirror" name="codeContent" id="codeMirror{{iteration}}" class="form-control" ng-model="controller.code.nbSnippet[iteration].content"></textarea>

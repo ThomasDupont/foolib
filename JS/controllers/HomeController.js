@@ -156,9 +156,11 @@ angular.module('foolib').controller('HomeController', [
                         }
                         for (var i = 0; i < mainFactory.tree.length; i++) {
                             var name = mainFactory.tree[i].name;
+                            var description = mainFactory.tree[i].description;
                             if (name.match(this.input)) {
                                 find.push({
                                     name: name,
+                                    description: description,
                                     id: mainFactory.tree[i].id,
                                     codes: mainFactory.tree[i].codes,
                                     time: mainFactory.tree[i].time
