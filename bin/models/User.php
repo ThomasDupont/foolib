@@ -172,7 +172,7 @@ class User {
             )->toObject()['result']->pp;
             $node = new Node();
             //unset old node
-            if($oldPath != 'default.png') {
+            if($oldPath != '../var/img/default.png') {
                 $node->unsetNode($node->getNodeFromPath($oldPath)['result']->node_ID);
             }
             //Set new node

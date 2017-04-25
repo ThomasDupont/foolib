@@ -90,6 +90,7 @@ angular.module('foolib').controller('LoginController', [
                           });
 
                       } else {
+                          alert(promise.data.message);
                           $scope.PostDataResponse = "An error occured with the account setting";
                       }
                   }
