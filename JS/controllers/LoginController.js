@@ -92,7 +92,7 @@ angular.module('foolib').controller('LoginController', [
                           });
 
                       } else {
-                          alert(promise.data.message);
+                          alert("Your credentials aren't recognize");
                           $scope.PostDataResponse = "An error occured with the account setting";
                       }
                   }
