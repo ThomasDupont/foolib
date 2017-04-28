@@ -2,11 +2,17 @@
 
  namespace bin\models\mongo;
 
+/**
+ * Mongodb Manager
+ */
  final class Mongo {
 
      private static $_instance;
      private static $_mongo;
      private static $_bulk;
+     /**
+      * @var string type of operation
+      */
      private static $_type;
      private static $_query;
      private static $_result;
@@ -26,14 +32,21 @@
          }
          return self::$_instance;
      }
-
+     /**
+      * create a new bulk for a new opération
+      * @return self
+      */
      public function setNewBulk()
      : self
      {
          self::$_bulk = new \MongoDB\Driver\BulkWrite();
          return self::$_instance;
      }
-
+     /**
+      * Add by loop the data inside the bulk
+      * @param  array $params list of data
+      * @return self
+      */
      public static function addToBulk(array $params)
      : self
      {
@@ -58,6 +71,13 @@
          return self::$_instance;
      }
 
+     /**
+      * create a MongoDb query
+      * @param  array  $filter  the query parameter
+      * @param  array $options the options
+      * @see MongoDB driver query php documentation
+      * @return self
+      */
      public static function createQuery(array $filter, array $options = [])
      : self
      {
@@ -66,6 +86,11 @@
          return self::$_instance;
      }
 
+     /**
+      * Execute the operation inside Mongo
+      * @param  string $collection collection name
+      * @return array  success with result or not
+      */
      public static function execute (string $collection)
      : array
      {

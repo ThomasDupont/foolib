@@ -10,9 +10,7 @@
 namespace bin\controllers;
 
 use bin\models\{Node, User};
-use bin\services\Upload;
-use bin\services\Emailing;
-use bin\services\CrudFile;
+use bin\services\{Upload, Emailing, CrudFile};
 
 /**
 * @pattern Command, VMC

@@ -225,7 +225,6 @@ angular.module('foolib').controller('HomeController', [
                     },
                     disabled:true,
                     selectPP: function () {
-                        console.log(this.disabled);
                         this.disabled || document.getElementById('fileUploadPPup').click();
                     },
                     modifPasswordOld : "",
