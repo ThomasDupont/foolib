@@ -45,7 +45,7 @@ angular.module('foolib').controller('LoginController', [
 
                           location.replace('/');
                       } else {
-                          alert(promise.data.message);
+                          alert("Your credentials aren't recognize");
                           $scope.PostDataResponse = promise.data.message;
 
                       }
@@ -92,7 +92,7 @@ angular.module('foolib').controller('LoginController', [
                           });
 
                       } else {
-                          alert("Your credentials aren't recognize");
+                          alert("An error occured with the account setting");
                           $scope.PostDataResponse = "An error occured with the account setting";
                       }
                   }
