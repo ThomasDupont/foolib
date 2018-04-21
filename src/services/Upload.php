@@ -50,7 +50,7 @@ final class Upload
         self::$fileTypes = explode(',', FILE_TYPES);
         self::$node = new Node();
     }
-    
+
     /**
     * @param $file (base64 file)
     * @param $filename
