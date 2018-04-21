@@ -94,4 +94,5 @@ var dropFile = function(params, limit) {
             document.getElementById("info"+i).innerHTML = droppedFiles[i].data.name;
         }
     };
-}
+};
+

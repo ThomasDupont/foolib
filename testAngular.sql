@@ -46,6 +46,7 @@ CREATE TABLE `users` (
   `API_key` varchar(32) NOT NULL,
   `valid` tinyint(1) NOT NULL DEFAULT '0',
   `emailToken` text NOT NULL,
+  `forgotpwd` text NOT NULL,
   `roles` varchar(32) NOT NULL,
   `creationDate` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -2,12 +2,6 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
     var controller = "code";
     return {
         csrfToken: "",
-        test: function (vm) {
-            //vm.injectNewFile = 'Salut';
-            $http.post("http://localhost:8080/test").then(function(promise) {
-                console.log(promise);
-            });
-        },
 
         upload: function (file, params, onSuccess) {
 
@@ -34,12 +28,9 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
                     $http.post(
                        APP+"/ajax/upload/",
                        {file : reader.result, filename: filename, params: params, csrf: csrf}
-                   ).then( function (promise){
-                       if(promise.data.success) {
-                           onSuccess(promise) ;
-                       } else {
-                           //console.log(promise.data);
-                           //onError(promise.data);
+                   ).then(function (result){
+                       if(result.data.success) {
+                           onSuccess(result) ;
                        }
                    });
                 };
@@ -86,19 +77,5 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
                 {files: files, id: id, oldNodeId: oldNodeId, csrf: this.csrfToken}
             );
         }
-        /*,
-
-        deleteNode : function (nodeId) {
-            return $http.post(
-                APP+"/"+controller+"/deletenode/",
-                {nodeId: nodeId, csrf: this.csrfToken}
-            );
-        },
-        createFolder : function (nodeId, name) {
-            return $http.post(
-                APP+"/"+controller+"/createfolder/",
-                {nodeId: nodeId, name: name, csrf: this.csrfToken}
-            );
-        }*/
     };
 });

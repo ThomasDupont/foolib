@@ -1,18 +1,25 @@
-angular.module('foolib').controller('AddController', ['$scope', '$routeParams', '$http', '$location', 'Ajax', 'Upload', 'mainFactory',
+angular.module('foolib').controller('AddController', [
+    '$scope',
+    '$routeParams',
+    '$http',
+    '$location',
+    'Ajax',
+    'Upload',
+    'mainFactory',
     function ($scope, $routeParams, $http, $location, Ajax, Upload, mainFactory) {
 
         var vm = this;
         vm.mainFactory = mainFactory;
         vm.mainFactory.init().then(function (promise) {
-            vm.dataLoading = false;
-            vm.codeLangage = [];
-            vm.codeContent = [];
-            vm.codeTitle = "";
-            vm.codeDesc = "";
-            mainFactory.viewClass = 'main';
-            vm.mirror = new codeMirror();
-            vm.mirrorTheme = "midnight";
-            vm.listlang = LISTLANG;
+            vm.dataLoading          = false;
+            vm.codeLangage          = [];
+            vm.codeContent          = [];
+            vm.codeTitle            = "";
+            vm.codeDesc             = "";
+            mainFactory.viewClass   = 'main';
+            vm.mirror               = new codeMirror();
+            vm.mirrorTheme          = "midnight";
+            vm.listlang             = LISTLANG;
             mainFactory.triggerFunction(true, function (){
                 vm.mirror.init();
             }, $scope);
@@ -33,9 +40,9 @@ angular.module('foolib').controller('AddController', ['$scope', '$routeParams', 
                         return false;
                     }
                     vm.dataLoading = true;
-                    var lang = [];
-                    var newObj = [];
-                    var d = new Date();
+                    var lang       = [];
+                    var newObj     = [];
+                    var d          = new Date();
 
                     for (var i = 0; i < this.nbSnippet.length; i++) {
                         var codeContent = $("#codeMirror"+i).val();

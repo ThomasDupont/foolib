@@ -6,14 +6,16 @@ angular.module('foolib').controller('LoginController', [
     'Upload',
     'mainFactory',
     function($scope, $routeParams, $location, Ajax, Upload, mainFactory){
-        $scope.showpwd = false;
-        $scope.pwdforgetvar = "";
-        $scope.loginStyle = new styleLogin();
+        $scope.showpwd          = false;
+        $scope.pwdforgetvar     = "";
+        $scope.loginStyle       = new styleLogin();
         $scope.usernameRequired = false;
         $scope.passwordRequired = false;
-        $scope.emailRequired = false;
-        var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
-        mainFactory.viewClass = 'login';
+        $scope.emailRequired    = false;
+
+        var testEmail           = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
+        mainFactory.viewClass   = 'login';
+
         Ajax.csrf().then(function (promise) {
             Ajax.csrfToken = Upload.csrfToken = promise.data;
             $("#spn_hol").fadeOut(1000);
@@ -37,9 +39,9 @@ angular.module('foolib').controller('LoginController', [
                   function(promise){
                       if(promise.data.success) {
                           mainFactory.isDisconnectable = true;
-                          mainFactory.userName = promise.data.result.name;
-                          mainFactory.pprofil = USERDIR+promise.data.result.pp;
-                          mainFactory.crypt = promise.data.result.crypt;
+                          mainFactory.userName         = promise.data.result.name;
+                          mainFactory.pprofil          = USERDIR+promise.data.result.pp;
+                          mainFactory.crypt            = promise.data.result.crypt;
                           localStorage.setItem(STORAGE, promise.data.result.crypt);
 
 
@@ -80,17 +82,12 @@ angular.module('foolib').controller('LoginController', [
                   function(promise){
                       if(promise.data.success) {
                           mainFactory.isDisconnectable = true;
-                          mainFactory.userName = $scope.username;
-                          mainFactory.userEmail = $scope.email;
-                          mainFactory.userFolder = promise.data.result.path;
-                          mainFactory.userFolderId = promise.data.result.nodeId;
-                          mainFactory.crypt = promise.data.result.crypt;
+                          mainFactory.userName         = $scope.username;
+                          mainFactory.userEmail        = $scope.email;
+                          mainFactory.userFolder       = promise.data.result.path;
+                          mainFactory.userFolderId     = promise.data.result.nodeId;
+                          mainFactory.crypt            = promise.data.result.crypt;
                           localStorage.setItem(STORAGE, promise.data.result.crypt);
-                          Ajax.sendemail({email: $scope.email, login: $scope.username}, 1).then(function (promise) {
-                               alert('A validation email is sending to you');
-                               $location.path('/');
-                          });
-
                       } else {
                           alert("An error occured with the account setting");
                           $scope.PostDataResponse = "An error occured with the account setting";

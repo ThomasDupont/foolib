@@ -1,10 +1,11 @@
 {
     "require": {
         "phpmailer/phpmailer": "v6.0.0rc4",
-        "codemirror/CodeMirror": "4.12.0"
+        "codemirror/CodeMirror": "4.12.0",
+        "vlucas/phpdotenv": "^2.4"
     },
     "autoload": {
-        "psr-4": {"": "bin/"}
+        "psr-4": {"": ""}
     },
     
     "repositories": [

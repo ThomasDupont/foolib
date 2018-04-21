@@ -12,27 +12,27 @@ angular.module('foolib').controller('HomeController', [
         var vm = this;
         vm.mainFactory = mainFactory;
         vm.mainFactory.init().then(function (promise) {
-                vm.dataLoading = false;
-                vm.codeLangage = [];
-                vm.codeContent = [];
-                vm.wantView = false;
-                vm.userdir = USERDIR;
-                vm.mirror = new codeMirror();
-                vm.mirrorTheme = "midnight";
-                mainFactory.viewClass = 'main';
-                vm.style_general = mainFactory.style_general;
-                vm.listSnippet = [];
-                vm.wantView = false;
-                vm.listlang = LISTLANG;
+                vm.dataLoading          = false;
+                vm.codeLangage          = [];
+                vm.codeContent          = [];
+                vm.wantView             = false;
+                vm.userdir              = USERDIR;
+                vm.mirror               = new codeMirror();
+                vm.mirrorTheme          = "midnight";
+                mainFactory.viewClass   = 'main';
+                vm.style_general        = mainFactory.style_general;
+                vm.listSnippet          = [];
+                vm.wantView             = false;
+                vm.listlang             = LISTLANG;
 
                 vm.code = {
                     currentcode: "",
                     addCodeBool: false,
-                    nbSnippet: [1],
-                    addSnippet: false,
-                    langage: [],
-                    langArr: [],
-                    langValue: "HTML",
+                    nbSnippet  : [1],
+                    addSnippet : false,
+                    langage    : [],
+                    langArr    : [],
+                    langValue  : "HTML",
                     view: function (code, e) {
 
                         document.getElementById('results').style.display = "none";
@@ -62,9 +62,9 @@ angular.module('foolib').controller('HomeController', [
                         var snippets = [];
                         //affichage des code selectionnés lorsqu'ils contiennent le langage
                         for (var i = 0; i < mainFactory.tree.length; i++) {
-                            var langArr = [];
-                            var continu = false;
-                            var codes = mainFactory.tree[i];
+                            var langArr = [],
+                                continu = false,
+                                codes   = mainFactory.tree[i];
                             for (var j = 0; j < codes.codes.length; j++) {
                                 langArr.push(codes.codes[j].langage);
                                 if(!continu) {
@@ -149,21 +149,19 @@ angular.module('foolib').controller('HomeController', [
                     input: "",
                     perform: function () {
                         var find = [];
-                        if(this.input.length > 1) {
-                            document.getElementById('results').style.display = "block";
-                        } else {
-                            document.getElementById('results').style.display = "none";
-                        }
+                        document.getElementById('results').style.display = (this.input.length > 1) ?  "block": "none";
+
+                        var re = new RegExp(this.input,"i");
                         for (var i = 0; i < mainFactory.tree.length; i++) {
                             var name = mainFactory.tree[i].name;
                             var description = mainFactory.tree[i].description;
-                            if (name.match(this.input)) {
+                            if (name.match(re)) {
                                 find.push({
-                                    name: name,
-                                    description: description,
-                                    id: mainFactory.tree[i].id,
-                                    codes: mainFactory.tree[i].codes,
-                                    time: mainFactory.tree[i].time
+                                    name        : name,
+                                    description : description,
+                                    id          : mainFactory.tree[i].id,
+                                    codes       : mainFactory.tree[i].codes,
+                                    time        : mainFactory.tree[i].time
                                 });
                             }
                         }

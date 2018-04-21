@@ -14,23 +14,16 @@ define("ROOTDIR", __DIR__."/");
 date_default_timezone_set('Etc/UTC');
 session_start();
 
-require_once("bin/config.php");
-require_once("bin/Autoloader.php");
 require_once __DIR__.'/vendor/autoload.php';
-//phpinfo();
+require_once("src/config.php");
+require_once("src/Autoloader.php");
 
-bin\Autoloader::register();
+src\Autoloader::register();
 if(($post = json_decode(file_get_contents("php://input"))) === null) {
-    exit("Merci de passer un objet JSON");
+    throw new \HttpException('Thanks to pass a json object', 400);
 }
-try {
-    $http = bin\http\Http::getInstance()->setHttp($post)->parseURI($_SERVER['REQUEST_URI']);
-    $response = bin\ControllerFactory::load($http);
-} catch(\Error $e) {
-    $response = json_encode(['success' => false, 'error' => "PHP Engine Exception", 'message' => DEBUG ? $e->getMessage() : "An error occured"]);
-} catch(\Exception $e) {
-    $response = json_encode(['success' => false, 'error' => "PHP Exception", 'message' => DEBUG ? $e->getMessage() : "An error occured"]);
-}
+
+$response = src\ControllerFactory::load(src\http\Http::getInstance()->setHttp($post)->parseURI($_SERVER['REQUEST_URI']));
 echo <<<JSON
 {$response}
 JSON;
