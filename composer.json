@@ -1,6 +1,7 @@
 {
     "require": {
         "php": "<=7.1.12",
+        "ext-mongo": "1.6.14",
         "phpmailer/phpmailer": "v6.0.0rc4",
         "vlucas/phpdotenv": "^2.4"
     },
