@@ -205,12 +205,18 @@ final class CrudFile
             'sort' => ['time' => -1]
         ];
         $result = Mongo::getInstance()->createQuery($filter, $options)->execute("save");
-        $node = new Node();
-        $nodes = $node->getNodes();
-        if ($nodes['success']) {
-            return ['success' => true, 'codes' => $result, 'nodes' => $nodes['result']];
+
+        if (FILESYSTEM) {
+            $node = new Node();
+            $nodes = $node->getNodes();
+            if ($nodes['success']) {
+                return ['success' => true, 'codes' => $result, 'nodes' => $nodes['result']];
+            }
+            return ['success' => false, 'message' => "Impossible to get the codes"];
         }
-        return ['success' => false, 'message' => "Impossible to get the codes"];
+
+        return ['success' => true, 'codes' => $result, 'nodes' => []];
+
     }
 
     /**

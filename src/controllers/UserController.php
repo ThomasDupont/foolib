@@ -40,6 +40,9 @@ final class UserController extends Controller implements APIInterface
 
     public function upload(): string
     {
+        if (!FILESYSTEM) {
+            return json_encode(['success' => true]);
+        }
         $new = Upload::checkFile(
             $this->request->file,
             $this->request->filename,

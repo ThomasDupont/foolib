@@ -79,3 +79,5 @@ define('SMTPUSERNAME', getenv('SMTPUSERNAME'));
 define('SMTPPASSWORD', getenv('SMTPPASSWORD'));
 define('SMTPSECURE', getenv('SMTPSECURE'));
 define('FOOLIBADRESS', getenv('FOOLIBADRESS'));
+
+define('FILESYSTEM', false);

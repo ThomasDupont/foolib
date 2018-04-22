@@ -59,12 +59,16 @@ class User
             SessionManager::setSession($token, $roles, $id);
 
             //create the users node
-            $node = new Node();
-            $new = $node->initUserFolder();
-            if ($new['success']) {
+            if (FILESYSTEM) {
+                $node = new Node();
+                $new = $node->initUserFolder();
+                if (!$new['success']) {
+                    return ['success' => false, 'message' => $new['message']];
+                }
                 return ['success' => true, 'result' => ['crypt' => $this->createCookie(), 'path' => $new['result']['path'], 'nodeId' => $new['result']['nodeId']] ];
             }
-            return ['success' => false, 'message' => $new['message']];
+            return ['success' => true, 'result' => ['crypt' => $this->createCookie(), 'path' => 'no_path', 'nodeId' => 0]];
+
         }
 
         return ['success' => false, 'message' => "The email or name is still using"];

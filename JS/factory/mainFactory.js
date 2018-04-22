@@ -32,6 +32,7 @@ angular.module('foolib').factory('mainFactory',
                                     factory.nodes       = promise.data.nodes;
                                     factory.nbSnippets  = factory.tree.length;
 
+                                    var nodeId = 0;
                                     for(var i=0, nodes = factory.nodes; i<nodes.length; i++) {
                                         if(nodes[i].parentNode_ID === 0) {
                                             nodeId = nodes[i].node_ID;
