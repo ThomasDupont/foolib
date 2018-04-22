@@ -48,16 +48,18 @@ abstract class Controller
      */
     private function instanceDir(): void
     {
-        $oldmask = umask(0);
-        if (!is_dir(FILETMPDIR)) {
-            mkdir(FILETMPDIR, 0777, true);
+        if (FILESYSTEM) {
+            $oldmask = umask(0);
+            if (!is_dir(FILETMPDIR)) {
+                mkdir(FILETMPDIR, 0777, true);
+            }
+            if (!is_dir(USERDIR)) {
+                mkdir(USERDIR, 0777, true);
+            }
+            if (!is_dir(LOGTMPDIR)) {
+                mkdir(LOGTMPDIR, 0777, true);
+            }
+            umask($oldmask);
         }
-        if (!is_dir(USERDIR)) {
-            mkdir(USERDIR, 0777, true);
-        }
-        if (!is_dir(LOGTMPDIR)) {
-            mkdir(LOGTMPDIR, 0777, true);
-        }
-        umask($oldmask);
     }
 }

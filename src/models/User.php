@@ -83,9 +83,9 @@ class User
     {
         $this->mysql->setUser(true);
 
-        $dataSet = ($type == 'email') ? $this->mysql->getDBDatas(
+        $dataSet = ($type === 'email') ? $this->mysql->getDBDatas(
             "SELECT login, pp, password, API_key, roles, id, valid FROM users WHERE email = ?",
-            [$login]
+            [strtolower($login)]    
         )->toObject() : $this->mysql->getDBDatas(
             "SELECT login, pp, password, API_key, roles, id, valid FROM users WHERE login = ?",
             [$login]

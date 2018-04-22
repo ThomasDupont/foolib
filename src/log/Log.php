@@ -28,8 +28,7 @@ final class Log implements LoggerInterface
     {
     }
 
-    private static function _getInstance()
-    : self
+    private static function _getInstance(): self
     {
         if (is_null(self::$_instance)) {
             self::$_instance = new self;
@@ -41,15 +40,14 @@ final class Log implements LoggerInterface
     * @param $message
     * @param $context
     */
-    public static function error(string $message, array $context = [])
-    : LoggerInterface
+    public static function error(string $message, array $context = []): LoggerInterface
     {
         self::_interpolate($message, $context);
         $error = var_export($message, true);
         $date = date('l jS \of F Y h:i:s A');
         $date = var_export($date, true);
 
-        file_put_contents(LOG_ERROR_FILE, "Error Trigger at $date: ".$error."\n", FILE_APPEND);
+        self::putInFile("Error Trigger at $date: ".$error."\n");
         return self::_getInstance();
     }
 
@@ -57,8 +55,7 @@ final class Log implements LoggerInterface
     * @param $message
     * @param $context
     */
-    public static function debug(string $message, array $context = [])
-    : LoggerInterface
+    public static function debug(string $message, array $context = []): LoggerInterface
     {
         if (DEBUG) {
             self::_interpolate($message, $context);
@@ -70,8 +67,7 @@ final class Log implements LoggerInterface
     * @param $message
     * @param $context
     */
-    public static function warning(string $message, array $context = [])
-    : LoggerInterface
+    public static function warning(string $message, array $context = []): LoggerInterface
     {
         self::_interpolate($message, $context);
         return self::_getInstance();
@@ -81,15 +77,14 @@ final class Log implements LoggerInterface
     * @param $message
     * @param $context
     */
-    public static function user(string $message, array $context = [])
-    : LoggerInterface
+    public static function user(string $message, array $context = []): LoggerInterface
     {
         self::_interpolate($message, $context);
         $error = var_export($message, true);
         $date = date('l jS \of F Y h:i:s A');
         $date = var_export($date, true);
 
-        file_put_contents(LOG_USER_FILE, "Error Trigger at $date: ".$error."\n", FILE_APPEND);
+        self::putInFile("Error Trigger at $date: ".$error."\n");
         return self::_getInstance();
     }
 
@@ -98,8 +93,7 @@ final class Log implements LoggerInterface
         return self::$_message;
     }
 
-    private static function _interpolate(string &$message, array $context)
-    : void
+    private static function _interpolate(string &$message, array $context): void
     {
         $replace = [];
         foreach ($context as $index => $type) {
@@ -109,5 +103,12 @@ final class Log implements LoggerInterface
         }
         $message = strtr($message, $replace);
         self::$_message = $message;
+    }
+
+    private static function putInFile(string $message): void
+    {
+        if (FILESYSTEM) {
+            file_put_contents(LOG_USER_FILE, $message, FILE_APPEND);
+        }
     }
 }

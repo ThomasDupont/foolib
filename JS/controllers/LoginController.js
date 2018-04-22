@@ -85,8 +85,10 @@ angular.module('foolib').controller('LoginController', [
                         mainFactory.userFolderId     = promise.data.result.nodeId;
                         mainFactory.crypt            = promise.data.result.crypt;
                         localStorage.setItem(STORAGE, promise.data.result.crypt);
+
+                        window.location.assign('/');
                     } else {
-                        alert("An error occured with the account setting");
+                        alert(promise.data.message);
                         $scope.PostDataResponse = "An error occured with the account setting";
                     }
                 }

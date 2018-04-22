@@ -95,13 +95,17 @@ final class UserController extends Controller implements APIInterface
         $user = new User();
         $createUser = $user->register(
             $this->request->login,
-            $this->request->email,
+            strtolower($this->request->email),
             $this->request->password
         );
 
+        if (!$createUser['success']) {
+            return json_encode($createUser);
+        }
+
         Emailing::sendEmail($this->request->email, $this->request->login, 1);
         Emailing::updateDb('emailToken', $this->request->email);
-        return $createUser['success'] ? json_encode($createUser) : $createUser['message'];
+        return json_encode($createUser);
     }
 
     public function forgotpwdsendemail(): string

@@ -237,7 +237,6 @@ class Mysql
     private static function prepareRequest(string $sql, array $aBindParams): \mysqli_stmt
     {
         $stmt = self::$mysqli->prepare($sql);
-
         if (count($aBindParams)) {
             $typeSt = ["integer" => 'i', "string" => 's', "double" => 'd', "blob" => 'b'];
             $type = "";
