@@ -24,7 +24,7 @@ class Node
     * @var Object Mysqli connect
     *
     */
-    private $_mysql;
+    private $mysql;
 
     /**
     * @var array list of forbidden chars used to create file or folder
@@ -112,7 +112,7 @@ class Node
             return ['success' => false, 'message' => "This node still exist"];
         }
         //Delete the forbidden chars
-        $this->_cleanNodeName($name);
+        $this->cleanNodeName($name);
         // Get tha info of the parent node
         $check = $this->getNode($nodeId);
 
@@ -221,7 +221,7 @@ class Node
         umask($oldmask);
     }
 
-    private function _cleanNodeName(string &$name): void
+    private function cleanNodeName(string &$name): void
     {
         $ext = substr($name, strrpos($name, '.'));
         $name = substr($name, 0, strrpos($name, '.'));
