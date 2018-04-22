@@ -26,7 +26,7 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
                         return false;
                     }
                     $http.post(
-                       APP+"/ajax/upload/",
+                       APP+"/user/upload/",
                        {file : reader.result, filename: filename, params: params, csrf: csrf}
                    ).then(function (result){
                        if(result.data.success) {
@@ -39,7 +39,7 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
 
         getCodes: function() {
             return $http.post(
-                APP+"/"+controller+"/getcodes/",
+                APP+"/"+controller+"/getcodes",
                 {csrf: this.csrfToken}
             );
         },
@@ -51,7 +51,7 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
             }
 
             $http.post(
-                APP+"/"+controller+"/createfile/",
+                APP+"/"+controller+"/createfile",
                 {file : base64, filename: title, description: description, langage: langage, iteration: iteration, csrf: this.csrfToken}
             ).then( function(promise) {
 
@@ -63,17 +63,17 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
             });
         },
         supprCode: function(id) {
-            return $http.post(APP+"/"+controller+"/supprcode/",
+            return $http.post(APP+"/"+controller+"/supprcode",
                 {id: id, csrf: this.csrfToken}
             );
         },
         updateCode: function(el, id, name) {
-            return $http.post(APP+"/"+controller+"/updatecode/",
+            return $http.post(APP+"/"+controller+"/updatecode",
                 {codes: el, id: id, name: name, csrf: this.csrfToken}
             );
         },
         supprScreen: function(files, id, oldNodeId) {
-            return $http.post(APP+"/"+controller+"/supprscreen/",
+            return $http.post(APP+"/"+controller+"/supprscreen",
                 {files: files, id: id, oldNodeId: oldNodeId, csrf: this.csrfToken}
             );
         }

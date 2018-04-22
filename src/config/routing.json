@@ -1,0 +1,82 @@
+{
+  "/v1/csrf/set" : {
+    "verb": "POST",
+    "controller": "csrf",
+    "method": "set"
+  },
+  "/v1/user/login" : {
+    "verb": "POST",
+    "controller": "User",
+    "method": "login"
+  },
+  "/v1/user/upload" : {
+    "verb": "POST",
+    "controller": "User",
+    "method": "upload"
+  },
+  "/v1/user/checkuser" : {
+    "verb": "POST",
+    "controller": "User",
+    "method": "checkuser"
+  },
+  "/v1/user/register" : {
+    "verb": "POST",
+    "controller": "User",
+    "method": "register"
+  },
+  "/v1/user/forgotpwdsendemail" : {
+    "verb": "POST",
+    "controller": "User",
+    "method": "forgotpwdsendemail"
+  },
+  "/v1/user/confirmemail" : {
+    "verb": "POST",
+    "controller": "User",
+    "method": "confirmemail"
+  },
+  "/v1/user/setnewpassword" : {
+    "verb": "POST",
+    "controller": "User",
+    "method": "setnewpassword"
+  },
+  "/v1/user/disconnect" : {
+    "verb": "POST",
+    "controller": "User",
+    "method": "disconnect"
+  },
+  "/v1/user/updateprofil" : {
+    "verb": "POST",
+    "controller": "User",
+    "method": "updateprofil"
+  },
+  "/v1/code/createfile" : {
+    "verb": "POST",
+    "controller": "Code",
+    "method": "createfile"
+  },
+  "/v1/code/getcodes" : {
+    "verb": "POST",
+    "controller": "Code",
+    "method": "getcodes"
+  },
+  "/v1/code/updateprofil" : {
+    "verb": "POST",
+    "controller": "Code",
+    "method": "updateprofil"
+  },
+  "/v1/code/supprcode" : {
+    "verb": "POST",
+    "controller": "Code",
+    "method": "supprcode"
+  },
+  "/v1/code/supprscreen" : {
+    "verb": "POST",
+    "controller": "Code",
+    "method": "supprscreen"
+  },
+  "/v1/code/updatecode" : {
+    "verb": "POST",
+    "controller": "Code",
+    "method": "updatecode"
+  }
+}

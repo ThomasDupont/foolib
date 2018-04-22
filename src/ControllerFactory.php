@@ -10,9 +10,6 @@ namespace src;
  ************************************************************************************************/
 
 use src\http\Http;
-use src\controllers\AjaxController;
-use src\controllers\CodeController;
-use src\log\Log;
 use src\models\mysql\SessionManager;
 
 /**
@@ -27,16 +24,16 @@ final class ControllerFactory
     public static function load(Http $http)
     : string
     {
-        $type = $http->getHttp()->controller ?? "";
+        $type = $http->getHttp()->controller;
         if ($type === 'csrf') {
-            return self::_CSRFToken();
+            return self::CSRFToken();
         }
 
-        if (!self::_checkCSRF($http)) {
+        if (!self::checkCSRF($http)) {
             return json_encode(['success' => false, 'message' => "CSRF token not valid"]);
         }
 
-        $class = "src\controllers\\".ucfirst($type) . 'Controller';
+        $class = 'src\controllers\\' . $type . 'Controller';
         try {
             $exec = (new $class($http))->execute();
         } catch (\Exception $e) {
@@ -46,8 +43,11 @@ final class ControllerFactory
         return $exec;
     }
 
-    private static function _CSRFToken(string $test = "false")
-    : string
+    /**
+     * @param string $test
+     * @return string
+     */
+    private static function CSRFToken(string $test = "false"): string
     {
         if ($test != "false") {
             return SessionManager::getCSRFToken() == $test;
@@ -57,10 +57,13 @@ final class ControllerFactory
         return $token;
     }
 
-    private static function _checkCSRF(Http $http)
-    : bool
+    /**
+     * @param Http $http
+     * @return bool
+     */
+    private static function checkCSRF(Http $http): bool
     {
         $csrf = $http->getHttp()->csrf ?? false;
-        return !(CSRFENABLE  && ((!isset($csrf) || $csrf == "" || !$csrf) || !self::_CSRFToken($csrf))) ;
+        return !(CSRFENABLE  && ((!isset($csrf) || $csrf == "" || !$csrf) || !self::CSRFToken($csrf))) ;
     }
 }

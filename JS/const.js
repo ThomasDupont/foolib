@@ -1,4 +1,4 @@
- const APP = "../app.php";
+ const APP = "../app.php/v1";
  const USERDIR = "PRODUCTION/";
  const STORAGE = "foolib";
  const FILEEXT = ['jpg','jpeg', 'png', 'tiff'];

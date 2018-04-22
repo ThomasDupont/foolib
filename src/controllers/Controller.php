@@ -25,14 +25,27 @@ abstract class Controller
 
         $this->request = Http::getHttp();
         $this->server = Http::getServer();
-
-        if ($this->request->action === 'execute') {
-            throw new \HttpException('wrong_action', 400);
-        }
     }
 
-    private function instanceDir()
-    : void
+    /**
+     * @return string
+     * @throws \HttpException
+     */
+    public function execute(): string
+    {
+        $funct = $this->request->action;
+
+        if ($funct === __FUNCTION__ || !method_exists($this, $funct)) {
+            throw new \HttpException('wrong_action', 400);
+        }
+
+        return $this->$funct();
+    }
+
+    /**
+     *
+     */
+    private function instanceDir(): void
     {
         $oldmask = umask(0);
         if (!is_dir(FILETMPDIR)) {

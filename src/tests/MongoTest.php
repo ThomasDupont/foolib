@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 use src\models\mongo\Mongo;
 
 define("ROOTDIR", __DIR__."/");
-require_once __DIR__.'/../config.php';
+require_once __DIR__ . '/../config.php';
 
 
 final class MongoTest extends TestCase

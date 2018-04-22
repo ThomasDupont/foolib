@@ -24,6 +24,8 @@ final class Http
     */
     public static $server;
 
+    public static $router;
+
     /**
     * @var object $instance
     */
@@ -46,6 +48,7 @@ final class Http
     private static function server(): void
     {
         static::$server = (object) $_SERVER;
+        static::getRouter();
     }
 
 
@@ -63,8 +66,26 @@ final class Http
     * parse the rest parameters
     * @param string $uri
     */
-    public static function parseURI(string $uri): self
+    public static function parseURI(): self
     {
+        $path = static::$server->PATH_INFO;
+        $method = static::$server->REQUEST_METHOD;
+
+        $call = (object) static::$router[$path] ?? false;
+
+        if (!$call) {
+            throw new \HttpException("$path not found", 404);
+        }
+
+        if ($method !== $call->verb) {
+            throw new \HttpException("cannot $method for $path", 400);
+        }
+
+        static::$request->controller = $call->controller;
+        static::$request->action = $call->method;
+
+
+        /*
         $parse = explode("/", $uri);
         $lenght = count($parse);
         if ($lenght-3 < 0) {
@@ -73,7 +94,7 @@ final class Http
             static::$request->controller = $parse[$lenght-3];
             static::$request->action = $parse[$lenght-2];
         }
-
+        */
         return static::$instance;
     }
 
@@ -91,5 +112,10 @@ final class Http
     public static function getServer(): \stdClass
     {
         return static::$server;
+    }
+
+    private static function getRouter(): void
+    {
+        static::$router = (array) json_decode(file_get_contents(__DIR__ . '/../config/routing.json'));
     }
 }

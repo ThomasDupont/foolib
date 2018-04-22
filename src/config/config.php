@@ -7,7 +7,7 @@
  * MIT License
  ************************************************************************************************/
 
-namespace src;
+namespace src\config;
 
 use \Dotenv\Dotenv;
 
@@ -41,7 +41,7 @@ define("MONGOPWD", getenv('MONGOPWD'));
  * @package Autoloader
  */
 define("DS", DIRECTORY_SEPARATOR);
-define("ROOT", dirname(__FILE__).DS."..".DS);
+define("ROOT", dirname(__FILE__).DS."..".DS."..".DS);
 
 /**
  * @package Upload

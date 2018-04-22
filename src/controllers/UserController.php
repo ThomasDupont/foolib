@@ -18,20 +18,14 @@ use src\services\CrudFile;
  * Class AjaxController
  * @package src\controllers
  */
-final class AjaxController extends Controller implements APIInterface
+final class UserController extends Controller implements APIInterface
 {
-    public function execute(): string
-    {
-        $funct = $this->request->action;
-        return $this->$funct($this->request);
-    }
-
-    private function sendcontact(): string
+    public function sendcontact(): string
     {
         return $this->request->text;
     }
 
-    private function login(): string
+    public function login(): string
     {
         $user = new User();
 
@@ -44,7 +38,7 @@ final class AjaxController extends Controller implements APIInterface
         );
     }
 
-    private function upload(): string
+    public function upload(): string
     {
         $new = Upload::checkFile(
             $this->request->file,
@@ -79,14 +73,14 @@ final class AjaxController extends Controller implements APIInterface
         return json_encode($new);
     }
 
-    private function checkuser(): string
+    public function checkuser(): string
     {
         $cookie = $this->request->crypt ?? "";
         $user = new User();
         return json_encode($user->checkUser($cookie));
     }
 
-    private function register(): string
+    public function register(): string
     {
         if (
             !isset($this->request->login) ||
@@ -107,7 +101,7 @@ final class AjaxController extends Controller implements APIInterface
         return $createUser['success'] ? json_encode($createUser) : $createUser['message'];
     }
 
-    private function forgotpwdsendemail(): string
+    public function forgotpwdsendemail(): string
     {
         $email = $this->request->params->email ?? "wrong";
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -121,14 +115,14 @@ final class AjaxController extends Controller implements APIInterface
         ]);
     }
 
-    private function confirmemail(): string
+    public function confirmemail(): string
     {
         $token = $this->request->token;
         $user = new User();
         return json_encode($user->confirmEmail($token));
     }
 
-    private function setnewpassword(): string
+    public function setnewpassword(): string
     {
         $token = $this->request->token;
         $password = $this->request->newpwd;
@@ -136,13 +130,13 @@ final class AjaxController extends Controller implements APIInterface
         return json_encode($user->createNewPassword($token, $password));
     }
 
-    private function disconnect(): string
+    public function disconnect(): string
     {
         $user = new User();
         return json_encode($user->disconnect());
     }
 
-    private function updateprofil(): string
+    public function updateprofil(): string
     {
         $user = new User();
         return json_encode($user->updateProfil($this->request));

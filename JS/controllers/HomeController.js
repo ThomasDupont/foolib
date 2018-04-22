@@ -94,7 +94,6 @@ angular.module('foolib').controller('HomeController', [
                         vm.style_general.popup_languages_ul_li(e);
 
                         vm.listSnippet = this.manageListCode(vm.style_general.selectLang);
-                        console.log(vm.listSnippet);
                         if(vm.listSnippet.length != 0) {
                             this.view(vm.listSnippet[0], null);
                         }
