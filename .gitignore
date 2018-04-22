@@ -6,3 +6,4 @@ src/config/.env
 tmp
 .php_cs.cache
 vendor
+PRODUCTION/*/
