@@ -7,8 +7,6 @@ angular.module('foolib').controller('LinkController', [
     'Upload',
     'mainFactory',
     function($scope, $routeParams, $http, $location, Ajax, Upload, mainFactory){
-        //?type=confirm&token=token
-
         mainFactory.viewClass = "container link";
         $scope.newpwd = false;
         $scope.newpwdstr = "";
@@ -21,7 +19,6 @@ angular.module('foolib').controller('LinkController', [
         $scope.csrf = function() {
             $("#spn_hol").fadeOut(1000);
             return Ajax.csrf();
-
         }
         $scope.mailConfirm = function(routeParams) {
             if(routeParams.token !== undefined) {

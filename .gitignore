@@ -2,7 +2,7 @@
 .DS_Store
 .idea
 .sass-cache
-src/.env
+src/config/.env
 tmp
 .php_cs.cache
 vendor

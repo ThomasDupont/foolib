@@ -7,7 +7,7 @@ angular.module('foolib').directive("code", function(){
         },
         createScope : false,
         templateUrl: 'views/template/code.html',
-        link: function(scope, element, attrs){
+        link: function(scope){
             scope.controller.codeLangage[scope.iteration] = "php";
         }
     };
@@ -22,9 +22,9 @@ angular.module('foolib').directive("code", function(){
         },
         createScope : false,
         templateUrl: 'views/template/listCode.html',
-        link: function(scope, element, attrs) {
+        link: function(scope) {
             scope.wantView = scope.updateCodeVar = false;
-            scope.view = function(code) {
+            scope.view = function() {
                 scope.wantView = !scope.wantView;
             };
             scope.updateCode = function () {
@@ -44,7 +44,7 @@ angular.module('foolib').directive("code", function(){
         },
         createScope : false,
         templateUrl: 'views/template/viewcode.html',
-        link: function(scope, element, attrs) {
+        link: function(scope) {
             /**
             * @param {object} el, list of code for the current snippet
             * @param {string} id, id of the current snippet
@@ -56,12 +56,10 @@ angular.module('foolib').directive("code", function(){
                     el.codes[i].content = $('#updateCodeMirror'+i).val();
                 }
                 scope.current = el;
-                // le callback lance le test des nouveaux fichiers
                 scope.c.code.updateCode(el.codes, id, codename, scope.majFiles);
             };
             scope.majFiles = function (mongoId) {
                 var files = document.getElementsByClassName("updateFile");
-                var toSend = [];
                 for(var i=0;i<files.length; i++) {
                     if(typeof(files[i].files[0]) != 'undefined') {
                         scope.c.code.updateScreen(
@@ -104,7 +102,6 @@ angular.module('foolib').directive("code", function(){
                 }, 3);
                 drop.init();
             }
-
         }
     }
 });

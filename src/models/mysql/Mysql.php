@@ -10,6 +10,7 @@
 namespace src\models\mysql;
 
 use src\log\Log;
+use src\exceptions\HttpException;
 
 /**
  * Class Mysql
@@ -36,6 +37,9 @@ class Mysql
     */
     private static $result;
 
+    /**
+     * @var
+     */
     public static $error;
 
     /**
@@ -67,13 +71,13 @@ class Mysql
         self::$mysqli = mysqli_init();
         try {
             if (!self::$mysqli) {
-                throw new \HttpException(Log::error("mysqli_init failed"), 503);
+                throw new HttpException(Log::error("mysqli_init failed"), 503);
             }
             if (!self::$mysqli->real_connect(SQLIP, SQLUSER, SQLPWD, DATABASE, SQLPORT)) {
-                throw new \HttpException(Log::error("Connect Error ({errno}) {error}", ['errno' => mysqli_connect_errno(), 'error' => mysqli_connect_error()]), 503);
+                throw new HttpException(Log::error("Connect Error ({errno}) {error}", ['errno' => mysqli_connect_errno(), 'error' => mysqli_connect_error()]), 503);
             }
         } catch (\Exception $e) {
-            throw new \HttpException(json_encode(['success' => false, 'message' => $e->getMessage()]), 400);
+            throw new HttpException(json_encode(['success' => false, 'message' => $e->getMessage()]), 400);
         }
     }
 

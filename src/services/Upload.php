@@ -52,17 +52,44 @@ final class Upload
     }
 
     /**
+     * @param string $file
+     * @param string $filename
+     * @param string $type
+     * @return array
+     */
+    private static function createTmpFile (string $file, string $filename, string $type): array
+    {
+        self::getInstance();
+        $contentFile = substr($file, strpos($file, "base64,")+7);
+        $tmpName = md5(uniqid()).".".substr(strrchr($filename, '.'), 1);
+        $path = FILETMPDIR.$tmpName;
+        file_put_contents($path, base64_decode($contentFile));
+        Imagick::changeImageFormat($path, 'png');
+        $ext = pathinfo($path)['extension'];
+        if(in_array($ext, self::$fileTypes) && $type == 'profil'){
+            Imagick::createCropThumbernail($path);
+        }
+        return [
+            'ext' => $ext,
+            'tmp_path' => FILETMPDIR.$tmpName,
+            'name' => $filename,
+            'size' => filesize(FILETMPDIR.$tmpName),
+            'tmp_name' => $tmpName
+        ];
+    }
+
+    /**
     * @param $file (base64 file)
     * @param $filename
     */
     public static function checkFile(string $file, string $filename, string $type): self
     {
-        self::$fileInfo = $file = self::_createTmpFile($file, $filename, $type);
+        self::$fileInfo = $file = self::createTmpFile($file, $filename, $type);
 
         if (($length = $file['size']) > MAX_FILE_SIZE) {
             self::$checkFile = ['success' => false, 'message' => "The size of the file is too big $length for ".MAX_FILE_SIZE." authorized"];
         } elseif (
-            !in_array($file['ext'], self::$_fileTypes)
+            !in_array($file['ext'], self::$fileTypes)
             && !preg_match("/(".implode(')|(', self::$fileTypes).")/", mime_content_type($file['tmp_path']))
           ) {
             self::$checkFile = ['success' => false, 'message' => "file type ".mime_content_type($file['tmp_path'])." not authorized"];

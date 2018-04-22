@@ -2,9 +2,7 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
     var controller = "code";
     return {
         csrfToken: "",
-
         upload: function (file, params, onSuccess) {
-
             var reader = new FileReader();
 
             if(typeof(file) != "undefined") {
@@ -26,7 +24,7 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
                         return false;
                     }
                     $http.post(
-                       APP+"/user/upload/",
+                       APP+"/user/upload",
                        {file : reader.result, filename: filename, params: params, csrf: csrf}
                    ).then(function (result){
                        if(result.data.success) {
@@ -53,12 +51,11 @@ angular.module('foolib').factory('Upload', function($http, $location, $sce) {
             $http.post(
                 APP+"/"+controller+"/createfile",
                 {file : base64, filename: title, description: description, langage: langage, iteration: iteration, csrf: this.csrfToken}
-            ).then( function(promise) {
-
-                if(promise.data.success) {
-                    onSuccess(promise) ;
+            ).then( function(result) {
+                if(result.data.success) {
+                    onSuccess(result) ;
                 } else {
-                    onError(promise.data);
+                    onError(result.data);
                 }
             });
         },

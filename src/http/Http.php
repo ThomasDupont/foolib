@@ -9,6 +9,8 @@
 
 namespace src\http;
 
+use src\exceptions\HttpException;
+
 final class Http
 {
 
@@ -74,11 +76,11 @@ final class Http
         $call = (object) static::$router[$path] ?? false;
 
         if (!$call) {
-            throw new \HttpException("$path not found", 404);
+            throw new HttpException("$path not found", 404);
         }
 
         if ($method !== $call->verb) {
-            throw new \HttpException("cannot $method for $path", 400);
+            throw new HttpException("cannot $method for $path", 400);
         }
 
         static::$request->controller = $call->controller;

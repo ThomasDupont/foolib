@@ -1,4 +1,3 @@
-
 angular.module('foolib').controller('HomeController', [
     '$scope',
     '$routeParams',
@@ -8,10 +7,9 @@ angular.module('foolib').controller('HomeController', [
     'Upload',
     'mainFactory',
     function ($scope, $routeParams, $http, $location, Ajax, Upload, mainFactory) {
-
         var vm = this;
         vm.mainFactory = mainFactory;
-        vm.mainFactory.init().then(function (promise) {
+        vm.mainFactory.init().then(function () {
                 vm.dataLoading          = false;
                 vm.codeLangage          = [];
                 vm.codeContent          = [];
@@ -34,19 +32,17 @@ angular.module('foolib').controller('HomeController', [
                     langArr    : [],
                     langValue  : "HTML",
                     view: function (code, e) {
-
                         document.getElementById('results').style.display = "none";
                         if(e != null) {
                             vm.style_general.liste_ul_li(e);
                         }
+
                         vm.wantView = true;
                         vm.mirror.clear();
                         this.currentcode = code;
                         mainFactory.triggerFunction(true, function (){
                             vm.mirror.init();
                         }, $scope, 0);
-
-
                     },
                     showCodeInLoadPage: function (i) {
                         var i = i || 0;
@@ -102,7 +98,7 @@ angular.module('foolib').controller('HomeController', [
                         vm.mirror.updateTheme(vm.mirrorTheme);
                     },
                     supprCode: function (id) {
-                        Upload.supprCode(id).then(function (promise) {
+                        Upload.supprCode(id).then(function () {
                             vm.tempTree = [];
                             for (var i = 0; i < mainFactory.tree.length; i++) {
                                 var current = mainFactory.tree[i];
@@ -118,19 +114,18 @@ angular.module('foolib').controller('HomeController', [
                     },
                     updateCode: function (el, id, name, callback) {
                         var _id = id;
-                        Upload.updateCode(el, id, name).then(function (promise) {
-                            //console.log(promise);
+                        Upload.updateCode(el, id, name).then(function () {
                             callback(_id);
                         });
                     },
                     updateScreen: function (file, params, current) {
                         params.pNodeId = $scope.parentNodeID;
-                        Upload.upload(file, params, function (promise) {
-                            if (promise.data.success) {
-                                current.path = promise.data.result.path;
-                                current.id = promise.data.result.nodeId;
+                        Upload.upload(file, params, function (result) {
+                            if (result.data.success) {
+                                current.path = result.data.result.path;
+                                current.id = result.data.result.nodeId;
                             } else {
-                                alert(promise.data.message);
+                                alert(result.data.message);
                             }
                         });
                     },
@@ -169,7 +164,6 @@ angular.module('foolib').controller('HomeController', [
                     result: ""
                 };
 
-
                 //profil
                 vm.fileOk = false;
                 $scope.fileNameChanged = function() {
@@ -179,27 +173,27 @@ angular.module('foolib').controller('HomeController', [
                 vm.updateProfil = {
                     closeModif: function(e) {
                         this.disabled = !this.disabled;
-                        $('#pp_profile_edit').css('display', 'none');
+                        document.getElementById('pp_profile_edit').style.display = 'none';
                         vm.style_general.close_edit_profile(e);
                     },
                     viewModif: function(e) {
                         this.disabled = !this.disabled;
-                        $('#pp_profile_edit').css('display', 'block');
+                        document.getElementById('pp_profile_edit').style.display = 'block';
                         vm.style_general.l_edit_profile(e);
                     },
                     update: function() {
                         if(vm.fileOk) {
                             var file = document.getElementsByClassName('fileUploadPPup');
-                            var nodeID;
+                            var nodeId;
                             for(var i=0, nodes = mainFactory.nodes; i<nodes.length; i++) {
                                 if(nodes[i].parentNode_ID == 0) {
                                     nodeId = nodes[i].node_ID;
                                 }
                             }
 
-                            Upload.upload(file[0].files[0], {pNodeId:nodeId, type: 'profil'}, function (promise) {
+                            Upload.upload(file[0].files[0], {pNodeId:nodeId, type: 'profil'}, function (result) {
                                 vm.fileOk = false;
-                                mainFactory.pprofil = USERDIR+promise.data.result.path;
+                                mainFactory.pprofil = USERDIR+result.data.result.path;
                             });
                         }
                         if(this.modifPasswordNew.length < 6 && this.modifPasswordNew.length > 0) {

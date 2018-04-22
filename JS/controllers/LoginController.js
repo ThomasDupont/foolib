@@ -36,23 +36,20 @@ angular.module('foolib').controller('LoginController', [
             }
 
             Ajax.login($scope.username, $scope.password, type).then(
-                  function(promise){
-                      if(promise.data.success) {
-                          mainFactory.isDisconnectable = true;
-                          mainFactory.userName         = promise.data.result.name;
-                          mainFactory.pprofil          = USERDIR+promise.data.result.pp;
-                          mainFactory.crypt            = promise.data.result.crypt;
-                          localStorage.setItem(STORAGE, promise.data.result.crypt);
-
-
-                          location.replace('/');
-                      } else {
-                          alert("Your credentials aren't recognize");
-                          $scope.PostDataResponse = promise.data.message;
-
-                      }
-                  }
-              );
+                function(promise){
+                    if(promise.data.success) {
+                        mainFactory.isDisconnectable = true;
+                        mainFactory.userName         = promise.data.result.name;
+                        mainFactory.pprofil          = USERDIR+promise.data.result.pp;
+                        mainFactory.crypt            = promise.data.result.crypt;
+                        localStorage.setItem(STORAGE, promise.data.result.crypt);
+                        location.replace('/');
+                    } else {
+                        alert("Your credentials aren't recognize");
+                        $scope.PostDataResponse = promise.data.message;
+                    }
+                }
+            );
         };
 
         $scope.register = function () {
@@ -78,43 +75,41 @@ angular.module('foolib').controller('LoginController', [
                 }
             }
 
-              Ajax.register($scope.username, $scope.email, $scope.password).then(
-                  function(promise){
-                      if(promise.data.success) {
-                          mainFactory.isDisconnectable = true;
-                          mainFactory.userName         = $scope.username;
-                          mainFactory.userEmail        = $scope.email;
-                          mainFactory.userFolder       = promise.data.result.path;
-                          mainFactory.userFolderId     = promise.data.result.nodeId;
-                          mainFactory.crypt            = promise.data.result.crypt;
-                          localStorage.setItem(STORAGE, promise.data.result.crypt);
-                      } else {
-                          alert("An error occured with the account setting");
-                          $scope.PostDataResponse = "An error occured with the account setting";
-                      }
-                  }
-              );
-
-      };
-      $scope.pwdForgot = function () {
-          $scope.showpwd = !$scope.showpwd;
-      };
-      $scope.sendNewPwd = function() {
-          if (!testEmail.test($scope.pwdforgetvar)) {
-              alert("The email format is not good");
-              return false;
-          }
-          Ajax.sendemail({email: $scope.pwdforgetvar, login:"#"}, 2).then(function (promise) {
-              if(promise.data.success) {
-                  alert('A email is sending to you');
-              } else {
-                  alert('An error occured: '+promise.data.message);
-              }
-          });
-      };
-      $scope.gotToTerms = function() {
-          $location.path('terms');
-      }
-
-  }
+            Ajax.register($scope.username, $scope.email, $scope.password).then(
+                function(promise){
+                    if(promise.data.success) {
+                        mainFactory.isDisconnectable = true;
+                        mainFactory.userName         = $scope.username;
+                        mainFactory.userEmail        = $scope.email;
+                        mainFactory.userFolder       = promise.data.result.path;
+                        mainFactory.userFolderId     = promise.data.result.nodeId;
+                        mainFactory.crypt            = promise.data.result.crypt;
+                        localStorage.setItem(STORAGE, promise.data.result.crypt);
+                    } else {
+                        alert("An error occured with the account setting");
+                        $scope.PostDataResponse = "An error occured with the account setting";
+                    }
+                }
+            );
+        };
+        $scope.pwdForgot = function () {
+            $scope.showpwd = !$scope.showpwd;
+        };
+        $scope.sendNewPwd = function() {
+            if (!testEmail.test($scope.pwdforgetvar)) {
+                alert("The email format is not good");
+                return false;
+            }
+            Ajax.sendemail({email: $scope.pwdforgetvar, login:"#"}, 2).then(function (promise) {
+                if(promise.data.success) {
+                    alert('A email is sending to you');
+                } else {
+                    alert('An error occured: '+promise.data.message);
+                }
+            });
+        };
+        $scope.gotToTerms = function() {
+            $location.path('terms');
+        }
+    }
 ]);

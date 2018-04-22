@@ -19,8 +19,9 @@ require_once("src/config/config.php");
 require_once("src/Autoloader.php");
 
 src\Autoloader::register();
+
 if(($post = json_decode(file_get_contents("php://input"))) === null) {
-    throw new \HttpException('Thanks to pass a json object', 400);
+    throw new src\exceptions\HttpException('Thanks to pass a json object', 400);
 }
 
 $response = src\ControllerFactory::load(src\http\Http::getInstance()->setHttp($post)->parseURI());

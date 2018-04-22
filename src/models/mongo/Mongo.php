@@ -15,12 +15,13 @@
      private static $query;
      private static $result;
      private static $insertIds = [];
+     private static $db;
 
      private function __construct()
      {
-         $auth = MONGOUSER === '' ? '' : MONGOUSER.":".MONGOPWD."@";
-         $url = "mongodb://".$auth.MONGOHOST.":".MONGOPORT."/".MONGODATABASE;
-         self::$mongo = new \MongoDB\Driver\Manager($url);
+         $parseUri = explode('/', MONGODBURI);
+         static::$db = array_pop($parseUri);
+         self::$mongo = new \MongoDB\Driver\Manager(MONGODBURI);
          self::$bulk = new \MongoDB\Driver\BulkWrite();
      }
 
@@ -99,7 +100,7 @@
          switch (self::$type) {
             case "bulk":
                 try {
-                    self::$result = self::$mongo->executeBulkWrite(MONGODATABASE.'.'.$collection, self::$bulk);
+                    self::$result = self::$mongo->executeBulkWrite(static::$db.'.'.$collection, self::$bulk);
                 } catch (\MongoDB\Driver\Exception\BulkWriteException $e) {
                     return ['success' => false, 'message' => $e->getMessage()];
                 } catch (\MongoDB\Driver\Exception\RuntimeException $e) {
@@ -109,7 +110,7 @@
                 return ['success' => true, 'result' => $insertIds];
                 break;
             case "query":
-                return self::$mongo->executeQuery(MONGODATABASE.'.'.$collection, self::$query)->toArray();
+                return self::$mongo->executeQuery(static::$db.'.'.$collection, self::$query)->toArray();
                 break;
          }
 

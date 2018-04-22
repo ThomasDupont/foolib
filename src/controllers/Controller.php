@@ -3,6 +3,7 @@
 namespace src\controllers;
 
 use src\http\Http;
+use src\exceptions\HttpException;
 
 abstract class Controller
 {
@@ -29,14 +30,14 @@ abstract class Controller
 
     /**
      * @return string
-     * @throws \HttpException
+     * @throws src\exceptions\HttpException
      */
     public function execute(): string
     {
         $funct = $this->request->action;
 
         if ($funct === __FUNCTION__ || !method_exists($this, $funct)) {
-            throw new \HttpException('wrong_action', 400);
+            throw new HttpException('wrong_action', 400);
         }
 
         return $this->$funct();

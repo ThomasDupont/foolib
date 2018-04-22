@@ -5,6 +5,7 @@ namespace src\services;
 use \PHPMailer\PHPMailer\PHPMailer;
 use src\models\mysql\Mysql;
 use src\log\Log;
+use src\exceptions\HttpException;
 
 final class Emailing
 {
@@ -26,7 +27,7 @@ final class Emailing
                 $body = str_replace(['{link}'] , [$link], $body);
                 break;
             default:
-                throw new \HttpException("not reconize action $action, emailing service", 400);
+                throw new HttpException("not reconize action $action, emailing service", 400);
                 break;
         }
 

@@ -7,10 +7,9 @@ angular.module('foolib').controller('AddController', [
     'Upload',
     'mainFactory',
     function ($scope, $routeParams, $http, $location, Ajax, Upload, mainFactory) {
-
         var vm = this;
         vm.mainFactory = mainFactory;
-        vm.mainFactory.init().then(function (promise) {
+        vm.mainFactory.init().then(function () {
             vm.dataLoading          = false;
             vm.codeLangage          = [];
             vm.codeContent          = [];
@@ -34,8 +33,7 @@ angular.module('foolib').controller('AddController', [
 
                 createFile: function () {
                     vm.mirror.save();
-
-                    if ($("#codeMirror0").val() == "" || vm.codeTitle == "" || lang == "") {
+                    if (document.getElementById('codeMirror0').value == "" || vm.codeTitle == "") {
                         alert("incomplete form");
                         return false;
                     }
@@ -43,9 +41,10 @@ angular.module('foolib').controller('AddController', [
                     var lang       = [];
                     var newObj     = [];
                     var d          = new Date();
+                    var _this = this;
 
                     for (var i = 0; i < this.nbSnippet.length; i++) {
-                        var codeContent = $("#codeMirror"+i).val();
+                        var codeContent = document.getElementById('codeMirror'+i).value;
                         vm.codeContent.push(codeContent);
                         this.nbSnippet[i].content = codeContent;
                         var tmpLang = this.nbSnippet[i].lang;
@@ -56,10 +55,9 @@ angular.module('foolib').controller('AddController', [
                             content: this.nbSnippet[i].content
                         });
                     }
-                    _this = this;
-                    Upload.createFile(vm.codeContent, vm.codeTitle, vm.codeDesc, lang, --i, function (promise) {
 
-                        id = promise.data.result[0];
+                    Upload.createFile(vm.codeContent, vm.codeTitle, vm.codeDesc, lang, --i, function (promise) {
+                        var id = promise.data.result[0];
                         var add = {
                             id: id,
                             name: vm.codeTitle,
@@ -79,7 +77,6 @@ angular.module('foolib').controller('AddController', [
                     });
                 },
                 addCode: function () {
-
                     this.addCodeBool = !this.addCodeBool;
                     if(this.addCodeBool) {
                         setTimeout(function() {
@@ -95,7 +92,6 @@ angular.module('foolib').controller('AddController', [
                     }];
                 },
                 growthNbSnippet: function () {
-
                     this.nbSnippet.push({
                         'lang': "php",
                         'content': ""
@@ -115,11 +111,13 @@ angular.module('foolib').controller('AddController', [
                 viewScreenAdd: false,
                 addScreen: function (current) {
                     current.file = [];
-
-                    //var file = document.getElementsByClassName("screenshot");
                     var files = drop.getResultObject();
                     for (var i = 0; i < files.length; i++) {
-                        Upload.upload(files[i].data, {pNodeId: $scope.parentNodeID, mongoId: current.id, type: 'create'}, function (promise) {
+                        Upload.upload(files[i].data, {
+                            pNodeId: $scope.parentNodeID,
+                            mongoId: current.id,
+                            type: 'create'
+                        }, function (promise) {
                             if (promise.data.success) {
                                 current.file.push({
                                     path: promise.data.result.path,
@@ -132,12 +130,9 @@ angular.module('foolib').controller('AddController', [
                     }
                     this.viewScreenAdd = false;
                 },
-
             };
         }).catch(function(error) {
             Ajax.onError(error)
         });
-
-
     }
 ]);

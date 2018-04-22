@@ -31,11 +31,7 @@ define("SQLPWD", getenv('SQLPWD'));
 /**
  * @package Mongo
  */
-define("MONGOHOST", getenv('MONGOHOST'));
-define("MONGOPORT", (int) getenv('MONGOPORT'));
-define("MONGODATABASE", getenv('MONGODATABASE'));
-define("MONGOUSER", getenv('MONGOUSER'));
-define("MONGOPWD", getenv('MONGOPWD'));
+define("MONGODBURI", getenv('MONGODB_URI'));
 
 /**
  * @package Autoloader
@@ -47,7 +43,7 @@ define("ROOT", dirname(__FILE__).DS."..".DS."..".DS);
  * @package Upload
  */
 define("MAX_FILE_SIZE", 10000000);
-define("FILE_TYPES", 'jpeg,jpg,png');
+define("FILE_TYPES", 'jpeg,jpg,png,jpg');
 define("MAX_FILE_NUMBER", 3);
 define("USERDIR", ROOTDIR."PRODUCTION/");
 define("FILETMPDIR", ROOTDIR."tmp/upload/");

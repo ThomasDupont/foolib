@@ -11,18 +11,18 @@ namespace src;
 
 use src\http\Http;
 use src\models\mysql\SessionManager;
+use src\exceptions\HttpException;
 
 /**
-* @pattern Factory
-* All controller call must be secure with the CSRF token validation
-*/
+ * Class ControllerFactory
+ * @package src
+ */
 final class ControllerFactory
 {
     /**
     * @param Object Http()
     */
-    public static function load(Http $http)
-    : string
+    public static function load(Http $http): string
     {
         $type = $http->getHttp()->controller;
         if ($type === 'csrf') {
@@ -34,13 +34,12 @@ final class ControllerFactory
         }
 
         $class = 'src\controllers\\' . $type . 'Controller';
-        try {
-            $exec = (new $class($http))->execute();
-        } catch (\Exception $e) {
-            throw new \HttpException('bad_route', 400);
+
+        if (!class_exists($class)) {
+            throw new HttpException('bad_route', 400);
         }
 
-        return $exec;
+        return (new $class($http))->execute();
     }
 
     /**
