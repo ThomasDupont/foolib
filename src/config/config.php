@@ -11,8 +11,12 @@ namespace src\config;
 
 use \Dotenv\Dotenv;
 
-$dotenv = new Dotenv(__DIR__);
-$dotenv->load();
+try {
+    $dotenv = new Dotenv(__DIR__);
+    $dotenv->load();
+} catch (\Exception $e) {
+}
+
 
 /**
  * @package Controller
